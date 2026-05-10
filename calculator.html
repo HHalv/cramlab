@@ -15,180 +15,141 @@
       --gray-300:#D1D5DB; --gray-400:#9CA3AF; --gray-500:#6B7280;
       --gray-700:#374151; --gray-900:#111827; --white:#FFFFFF;
       --green-50:#F0FDF4; --green-200:#BBF7D0; --green-700:#15803D;
-      --amber-50:#FFFBEB; --amber-200:#FDE68A; --amber-700:#B45309;
-      --red-50:#FEF2F2; --red-200:#FECACA; --red-700:#B91C1C;
-      --radius:12px; --radius-sm:8px;
-      --shadow-sm:0 1px 3px rgba(0,0,0,0.06);
+      --radius:14px; --radius-sm:8px;
       --shadow-md:0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg:0 12px 40px rgba(0,0,0,0.10);
     }
-    body { font-family:'DM Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); -webkit-font-smoothing:antialiased; }
+    body { font-family:'DM Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); -webkit-font-smoothing:antialiased; min-height:100vh; }
 
-    /* NAV */
-    nav {
-      position:sticky; top:0; z-index:100;
-      background:rgba(255,255,255,0.92); backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--gray-200);
-      padding:0 5%; height:64px;
-      display:flex; align-items:center; justify-content:space-between;
-    }
+    /* ── NAV ── */
+    nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.94); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray-200); padding:0 5%; height:64px; display:flex; align-items:center; justify-content:space-between; }
     .nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
     .logo-icon { width:34px; height:34px; background:var(--blue-600); border-radius:9px; display:flex; align-items:center; justify-content:center; }
     .logo-icon svg { width:18px; height:18px; }
     .logo-text { font-size:18px; font-weight:600; color:var(--gray-900); letter-spacing:-0.3px; }
     .logo-text span { color:var(--blue-600); }
-    .nav-right { display:flex; align-items:center; gap:16px; }
-    .nav-user { font-size:14px; color:var(--gray-500); }
-    .nav-user strong { color:var(--gray-900); }
-    .btn-nav { font-size:13px; font-weight:500; padding:7px 16px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); cursor:pointer; text-decoration:none; font-family:'DM Sans',sans-serif; transition:background 0.2s; }
+    .nav-right { display:flex; align-items:center; gap:10px; }
+    .nav-avatar { width:32px; height:32px; border-radius:50%; background:var(--blue-600); color:var(--white); font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+    .nav-username { font-size:14px; font-weight:500; color:var(--gray-700); }
+    .btn-nav { font-size:13px; font-weight:500; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); cursor:pointer; text-decoration:none; font-family:'DM Sans',sans-serif; transition:background 0.2s; }
     .btn-nav:hover { background:var(--gray-100); }
     .btn-nav.primary { background:var(--blue-600); color:var(--white); border-color:var(--blue-600); }
     .btn-nav.primary:hover { background:var(--blue-700); }
+    .nav-logged-out { display:flex; align-items:center; gap:8px; }
+    .nav-logged-in  { display:none; align-items:center; gap:10px; }
 
-    /* LAYOUT */
-    .page { max-width:1100px; margin:0 auto; padding:48px 5% 80px; display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:start; }
+    /* ── PAGE ── */
+    .page { max-width:900px; margin:0 auto; padding:36px 5% 80px; display:grid; grid-template-columns:200px 1fr; gap:28px; align-items:start; }
 
-    /* SIDEBAR */
+    /* ── SIDEBAR ── */
     .sidebar { position:sticky; top:84px; }
-    .sidebar-title { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--gray-400); padding:0 12px 10px; }
-    .subject-nav { display:flex; flex-direction:column; gap:2px; }
-    .subject-nav-btn {
-      display:flex; align-items:center; gap:10px;
-      padding:10px 12px; border-radius:var(--radius-sm);
-      border:none; background:none; cursor:pointer;
-      font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
-      color:var(--gray-500); text-align:left; width:100%;
-      transition:background 0.15s, color 0.15s;
-    }
-    .subject-nav-btn:hover { background:var(--gray-100); color:var(--gray-900); }
-    .subject-nav-btn.active { background:var(--blue-50); color:var(--blue-700); }
-    .subject-nav-btn .emoji { font-size:18px; width:28px; text-align:center; }
-    .saved-tag { font-size:10px; background:var(--green-50); color:var(--green-700); border:1px solid var(--green-200); padding:2px 6px; border-radius:100px; margin-left:auto; }
+    .sidebar-label { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--gray-400); padding:0 10px 10px; }
+    .subject-btn { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); border:none; background:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--gray-500); text-align:left; width:100%; transition:background 0.15s,color 0.15s; margin-bottom:2px; }
+    .subject-btn:hover { background:var(--gray-100); color:var(--gray-900); }
+    .subject-btn.active { background:var(--blue-50); color:var(--blue-700); font-weight:600; }
+    .subject-btn .s-emoji { font-size:17px; width:22px; text-align:center; }
+    .score-ref { margin-top:20px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:14px; }
+    .score-ref-title { font-size:11px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--gray-400); margin-bottom:10px; }
+    .score-ref-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--gray-100); font-size:12px; }
+    .score-ref-row:last-child { border-bottom:none; }
+    .s5{color:#166534;font-weight:700} .s4{color:#1D4ED8;font-weight:700} .s3{color:#92400E;font-weight:700} .s2{color:#9A3412;font-weight:700} .s1{color:#991B1B;font-weight:700}
+    .score-ref-desc { color:var(--gray-500); font-size:12px; }
 
-    /* CALCULATOR PANEL */
+    /* ── MAIN ── */
+    main { display:flex; flex-direction:column; gap:0; min-width:0; }
     .calc-panel { display:none; }
-    .calc-panel.active { display:block; }
+    .calc-panel.active { display:flex; flex-direction:column; gap:16px; }
 
-    .calc-header { margin-bottom:32px; }
-    .calc-header-top { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
-    .calc-emoji { font-size:32px; }
-    .calc-title { font-family:'Instrument Serif',serif; font-size:32px; font-weight:400; line-height:1.1; }
-    .calc-subtitle { font-size:15px; color:var(--gray-500); line-height:1.6; }
+    /* Result card */
+    .result-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:24px 28px; display:flex; align-items:center; gap:28px; }
+    .result-score-wrap { text-align:center; min-width:72px; }
+    .result-score { font-family:'Instrument Serif',serif; font-size:72px; line-height:1; color:var(--blue-600); }
+    .result-score-label { font-size:11px; color:var(--gray-400); font-weight:500; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
+    .result-details { flex:1; min-width:0; }
+    .result-bar-wrap { background:var(--gray-100); border-radius:100px; height:10px; margin-bottom:10px; overflow:hidden; }
+    .result-bar-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue-600),var(--blue-400)); transition:width 0.7s cubic-bezier(.16,1,.3,1); width:50%; }
+    .result-bands { display:flex; justify-content:space-between; font-size:11px; color:var(--gray-400); margin-bottom:10px; }
+    .result-verdict { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:500; padding:5px 12px; border-radius:100px; }
+    .result-composite { font-size:12px; color:var(--gray-400); margin-top:6px; }
 
-    /* SCORE RESULT */
-    .score-result-bar {
-      background:var(--white); border:1px solid var(--gray-200);
-      border-radius:16px; padding:28px; margin-bottom:28px;
-      display:flex; align-items:center; gap:32px;
-    }
-    .big-score {
-      font-family:'Instrument Serif',serif; font-size:80px; line-height:1;
-      color:var(--blue-600); min-width:80px; text-align:center;
-    }
-    .score-details { flex:1; }
-    .score-label { font-size:13px; color:var(--gray-500); margin-bottom:6px; }
-    .score-progress-wrap { background:var(--gray-100); border-radius:100px; height:10px; margin-bottom:10px; overflow:hidden; }
-    .score-progress-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue-600),var(--blue-400)); transition:width 0.8s cubic-bezier(.16,1,.3,1); }
-    .score-bands { display:flex; justify-content:space-between; font-size:11px; color:var(--gray-400); }
-    .score-verdict {
-      display:inline-flex; align-items:center; gap:6px;
-      font-size:13px; font-weight:500; padding:5px 12px;
-      border-radius:100px; margin-top:10px;
-    }
+    /* Section group */
+    .section-group { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); overflow:hidden; }
+    .section-group-header { padding:16px 20px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; justify-content:space-between; }
+    .section-group-title { font-size:14px; font-weight:600; color:var(--gray-900); }
+    .section-group-weight { font-size:11px; font-weight:500; padding:3px 9px; background:var(--blue-50); color:var(--blue-700); border:1px solid var(--blue-100); border-radius:100px; }
 
-    /* SECTIONS */
-    .sections-grid { display:flex; flex-direction:column; gap:20px; }
-    .section-card {
-      background:var(--white); border:1px solid var(--gray-200);
-      border-radius:var(--radius); overflow:hidden;
-    }
-    .section-card-header {
-      padding:18px 22px 14px;
-      border-bottom:1px solid var(--gray-100);
-      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
-    }
-    .section-name { font-size:15px; font-weight:600; color:var(--gray-900); margin-bottom:4px; }
-    .section-desc { font-size:13px; color:var(--gray-500); line-height:1.5; max-width:480px; }
-    .section-weight {
-      font-size:12px; font-weight:500; padding:4px 10px;
-      background:var(--blue-50); color:var(--blue-700);
-      border:1px solid var(--blue-100); border-radius:100px; white-space:nowrap; flex-shrink:0;
-    }
-    .section-card-body { padding:18px 22px; }
+    /* ── INPUT ROW ── */
+    .input-row { display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--gray-100); position:relative; }
+    .input-row:last-child { border-bottom:none; }
+    .input-row-left { display:flex; flex-direction:column; gap:10px; min-width:0; }
+    .input-row-label { display:flex; align-items:center; gap:8px; }
+    .input-row-name { font-size:14px; font-weight:500; color:var(--gray-800); }
 
-    .input-row { display:flex; align-items:center; gap:16px; margin-bottom:14px; }
-    .input-label { font-size:13px; color:var(--gray-700); font-weight:500; min-width:160px; }
-    .input-wrap { display:flex; align-items:center; gap:10px; flex:1; }
-    input[type="number"] {
-      width:80px; padding:8px 12px;
-      border:1px solid var(--gray-300); border-radius:var(--radius-sm);
-      font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
-      color:var(--gray-900); text-align:center; outline:none;
-      transition:border-color 0.2s, box-shadow 0.2s;
-    }
-    input[type="number"]:focus { border-color:var(--blue-500); box-shadow:0 0 0 3px rgba(59,130,246,0.12); }
+    /* Tooltip */
+    .tip-icon { width:18px; height:18px; border-radius:50%; background:var(--gray-100); color:var(--gray-400); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:help; position:relative; flex-shrink:0; border:1px solid var(--gray-200); transition:background 0.15s; }
+    .tip-icon:hover { background:var(--blue-50); color:var(--blue-600); border-color:var(--blue-200); }
+    .tip-icon .tip-popup { display:none; position:absolute; left:24px; top:50%; transform:translateY(-50%); width:260px; background:var(--gray-900); color:var(--white); font-size:12px; font-weight:400; line-height:1.5; padding:10px 14px; border-radius:var(--radius-sm); z-index:50; pointer-events:none; }
+    .tip-icon:hover .tip-popup { display:block; }
+    .tip-icon .tip-popup::before { content:''; position:absolute; right:100%; top:50%; transform:translateY(-50%); border:5px solid transparent; border-right-color:var(--gray-900); }
+
+    /* Slider row */
+    .slider-row { display:flex; align-items:center; gap:8px; }
+    .adj-btn { width:32px; height:32px; border-radius:8px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); font-size:18px; font-weight:300; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.15s,border-color 0.15s; line-height:1; user-select:none; -webkit-user-select:none; }
+    .adj-btn:hover { background:var(--blue-50); border-color:var(--blue-200); color:var(--blue-600); }
+    .adj-btn:active { background:var(--blue-100); }
+    input[type="range"] { flex:1; height:6px; -webkit-appearance:none; appearance:none; border-radius:100px; background:var(--gray-200); outline:none; cursor:pointer; min-width:0; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--blue-600); cursor:pointer; box-shadow:0 1px 4px rgba(37,99,235,0.3); transition:transform 0.1s; }
+    input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+    input[type="range"]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:var(--blue-600); cursor:pointer; border:none; }
+    .input-val-display { min-width:52px; text-align:center; }
+    .input-val { font-size:15px; font-weight:600; color:var(--blue-600); }
     .input-max { font-size:12px; color:var(--gray-400); }
 
-    input[type="range"] {
-      flex:1; accent-color:var(--blue-600); cursor:pointer;
-    }
-    .subscore-display {
-      font-size:13px; font-weight:600; color:var(--blue-600);
-      min-width:60px; text-align:right;
-    }
-
-    .tip-box {
-      background:var(--blue-50); border-left:3px solid var(--blue-500);
-      border-radius:0 var(--radius-sm) var(--radius-sm) 0;
-      padding:12px 16px; margin-top:14px;
-      font-size:13px; color:var(--blue-700); line-height:1.6;
-    }
-    .tip-box strong { font-weight:600; }
-
-    .calc-actions { display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
-    .btn-calc {
-      padding:12px 24px; border-radius:var(--radius-sm);
-      font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
-      cursor:pointer; border:none; transition:background 0.2s, transform 0.15s;
-    }
+    /* Actions */
+    .calc-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .btn-calc { padding:11px 22px; border-radius:var(--radius-sm); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:none; transition:background 0.2s,transform 0.15s; }
     .btn-calc:hover { transform:translateY(-1px); }
     .btn-calc.primary { background:var(--blue-600); color:var(--white); }
     .btn-calc.primary:hover { background:var(--blue-700); }
     .btn-calc.secondary { background:var(--white); color:var(--gray-700); border:1px solid var(--gray-200); }
     .btn-calc.secondary:hover { border-color:var(--gray-400); }
-    .save-status { font-size:13px; color:var(--green-700); display:flex; align-items:center; gap:6px; }
+    .save-status { font-size:13px; color:var(--green-700); }
 
-    /* SCORING INFO TABLE */
-    .scoring-table { width:100%; border-collapse:collapse; margin-top:20px; font-size:13px; }
-    .scoring-table th { background:var(--gray-50); padding:10px 14px; text-align:left; font-weight:600; color:var(--gray-700); border-bottom:2px solid var(--gray-200); }
-    .scoring-table td { padding:10px 14px; border-bottom:1px solid var(--gray-100); color:var(--gray-600); }
-    .scoring-table tr:last-child td { border-bottom:none; }
-    .score-pill-5 { background:#F0FDF4; color:#166534; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
-    .score-pill-4 { background:#EFF6FF; color:#1D4ED8; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
-    .score-pill-3 { background:#FFFBEB; color:#92400E; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
-    .score-pill-2 { background:#FFF7ED; color:#9A3412; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
-    .score-pill-1 { background:#FEF2F2; color:#991B1B; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
+    /* ── GOOGLE FIX NOTICE ── */
+    .google-fix-banner { background:#FFF7ED; border:1px solid #FDE68A; border-radius:var(--radius-sm); padding:12px 16px; font-size:13px; color:#92400E; display:none; margin-bottom:4px; line-height:1.5; }
+    .google-fix-banner strong { font-weight:600; }
+    .google-fix-banner a { color:#92400E; }
 
-    @media(max-width:768px){
+    /* ── RESPONSIVE ── */
+    @media(max-width:680px){
       .page { grid-template-columns:1fr; }
-      .sidebar { position:static; }
-      .subject-nav { flex-direction:row; flex-wrap:wrap; }
-      .score-result-bar { flex-direction:column; gap:16px; text-align:center; }
+      .sidebar { position:static; display:flex; flex-direction:column; }
+      .subject-btn-row { display:flex; flex-wrap:wrap; gap:6px; }
+      .subject-btn { width:auto; flex:1; min-width:120px; justify-content:center; }
+      .result-card { flex-direction:column; text-align:center; gap:16px; }
+      .tip-icon .tip-popup { left:auto; right:0; top:auto; bottom:24px; transform:none; }
+      .tip-icon .tip-popup::before { display:none; }
     }
   </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
-    <div class="logo-icon">
-      <svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity="0.9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg>
-    </div>
+    <div class="logo-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity="0.9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg></div>
     <span class="logo-text">Cram<span>Lab</span></span>
   </a>
   <div class="nav-right">
-    <span class="nav-user" id="nav-user-display"></span>
-    <a href="auth.html" class="btn-nav primary" id="nav-login-btn">Sign In</a>
-    <button class="btn-nav" id="nav-logout-btn" style="display:none" onclick="signOut()">Sign Out</button>
+    <a href="index.html" class="btn-nav">← Home</a>
+    <div class="nav-logged-out" id="nav-logged-out">
+      <a href="auth.html" class="btn-nav primary">Sign In</a>
+    </div>
+    <div class="nav-logged-in" id="nav-logged-in">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span class="nav-username" id="nav-username"></span>
+      <button class="btn-nav" id="nav-signout-btn">Sign out</button>
+    </div>
   </div>
 </nav>
 
@@ -196,506 +157,792 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-title">AP Subjects</div>
-    <div class="subject-nav">
-      <button class="subject-nav-btn active" onclick="showCalc('calc')" id="nav-calc">
-        <span class="emoji">📐</span> Calculus AB
-      </button>
-      <button class="subject-nav-btn" onclick="showCalc('eng')" id="nav-eng">
-        <span class="emoji">✍️</span> English Lang
-      </button>
-      <button class="subject-nav-btn" onclick="showCalc('ush')" id="nav-ush">
-        <span class="emoji">🏛️</span> US History
-      </button>
-      <button class="subject-nav-btn" onclick="showCalc('bio')" id="nav-bio">
-        <span class="emoji">🧬</span> Biology
-      </button>
-      <button class="subject-nav-btn" onclick="showCalc('psych')" id="nav-psych">
-        <span class="emoji">🧠</span> Psychology
-      </button>
+    <div class="sidebar-label">AP Subjects</div>
+    <div class="subject-btn-row">
+      <button class="subject-btn active" id="nav-calc" onclick="showCalc('calc')"><span class="s-emoji">📐</span>Calculus AB</button>
+      <button class="subject-btn" id="nav-eng"   onclick="showCalc('eng')"><span class="s-emoji">✍️</span>English Lang</button>
+      <button class="subject-btn" id="nav-ush"   onclick="showCalc('ush')"><span class="s-emoji">🏛️</span>US History</button>
+      <button class="subject-btn" id="nav-bio"   onclick="showCalc('bio')"><span class="s-emoji">🧬</span>Biology</button>
+      <button class="subject-btn" id="nav-psych" onclick="showCalc('psych')"><span class="s-emoji">🧠</span>Psychology</button>
     </div>
-
-    <div style="margin-top:28px; padding:16px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-sm);">
-      <div style="font-size:12px; font-weight:600; color:var(--gray-700); margin-bottom:6px;">How scores work</div>
-      <div style="font-size:12px; color:var(--gray-500); line-height:1.6;">AP scores range from 1–5. A 3 is considered passing. Many colleges accept scores of 4 or 5 for credit.</div>
-      <table class="scoring-table" style="margin-top:12px;">
-        <tr><td><span class="score-pill-5">5</span></td><td>Extremely well qualified</td></tr>
-        <tr><td><span class="score-pill-4">4</span></td><td>Well qualified</td></tr>
-        <tr><td><span class="score-pill-3">3</span></td><td>Qualified</td></tr>
-        <tr><td><span class="score-pill-2">2</span></td><td>Possibly qualified</td></tr>
-        <tr><td><span class="score-pill-1">1</span></td><td>No recommendation</td></tr>
-      </table>
+    <div class="score-ref">
+      <div class="score-ref-title">AP Score Guide</div>
+      <div class="score-ref-row"><span class="s5">5</span><span class="score-ref-desc">Extremely well qualified</span></div>
+      <div class="score-ref-row"><span class="s4">4</span><span class="score-ref-desc">Well qualified</span></div>
+      <div class="score-ref-row"><span class="s3">3</span><span class="score-ref-desc">Qualified (passing)</span></div>
+      <div class="score-ref-row"><span class="s2">2</span><span class="score-ref-desc">Possibly qualified</span></div>
+      <div class="score-ref-row"><span class="s1">1</span><span class="score-ref-desc">No recommendation</span></div>
     </div>
   </aside>
 
-  <!-- CALCULATORS -->
+  <!-- MAIN -->
   <main>
 
-    <!-- ── AP CALCULUS AB ── -->
+    <!-- ══════════════════════════════════
+         AP CALCULUS AB
+    ══════════════════════════════════ -->
     <div class="calc-panel active" id="panel-calc">
-      <div class="calc-header">
-        <div class="calc-header-top">
-          <div class="calc-emoji">📐</div>
-          <div class="calc-title">AP Calculus AB</div>
-        </div>
-        <div class="calc-subtitle">Enter your scores for each section below. The calculator uses real College Board composite scoring to predict your final 1–5 score.</div>
-      </div>
 
-      <div class="score-result-bar">
-        <div class="big-score" id="calc-score">–</div>
-        <div class="score-details">
-          <div class="score-label">Predicted AP Score</div>
-          <div class="score-progress-wrap"><div class="score-progress-fill" id="calc-bar" style="width:0%"></div></div>
-          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="score-verdict" id="calc-verdict"></div>
+      <div class="result-card">
+        <div class="result-score-wrap">
+          <div class="result-score" id="calc-score">–</div>
+          <div class="result-score-label">AP Score</div>
+        </div>
+        <div class="result-details">
+          <div class="result-bar-wrap"><div class="result-bar-fill" id="calc-bar" style="width:50%"></div></div>
+          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="result-verdict" id="calc-verdict"></div>
+          <div class="result-composite" id="calc-composite"></div>
         </div>
       </div>
 
-      <div class="sections-grid">
-        <!-- Section 1: MCQ -->
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section I — Multiple Choice (MCQ)</div>
-              <div class="section-desc">45 questions, 105 minutes. Part A (30 questions, no calculator) and Part B (15 questions, graphing calculator required). Tests limits, derivatives, integrals, and applications.</div>
+      <!-- MCQ -->
+      <div class="section-group">
+        <div class="section-group-header">
+          <div class="section-group-title">Section I — Multiple Choice</div>
+          <div class="section-group-weight">50% of score</div>
+        </div>
+        <!-- MCQ Part A -->
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Part A — No Calculator (Q1–30)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">30 questions, 60 min. Tests limits, derivatives, and integrals without a calculator. Each correct answer = 1 point. No penalty for wrong answers.</div></div>
             </div>
-            <div class="section-weight">50% of score</div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-mcq-a',-1)">−</button>
+              <input type="range" id="calc-mcq-a-range" min="0" max="30" value="15" oninput="setVal('calc-mcq-a',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-mcq-a',1)">+</button>
+            </div>
           </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Questions correct</div>
-              <div class="input-wrap">
-                <input type="number" id="calc-mcq" min="0" max="45" value="0" oninput="calcScore()">
-                <input type="range" min="0" max="45" value="0" oninput="sync('calc-mcq',this.value);calcScore()">
-                <div class="input-max">/ 45</div>
-              </div>
-            </div>
-            <div class="tip-box">
-              <strong>Tip:</strong> Each correct answer is worth 1 point. There is no penalty for wrong answers on the MCQ — always guess if unsure. Part A counts for 33% and Part B for 17% of your total score.
-            </div>
+          <div class="input-val-display">
+            <div class="input-val" id="calc-mcq-a-display">15</div>
+            <div class="input-max">/ 30</div>
           </div>
         </div>
+        <!-- MCQ Part B -->
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Part B — Calculator (Q31–45)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">15 questions, 45 min. Graphing calculator required. Tests applications of calculus — motion, area, rates of change. Each correct = 1 point.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-mcq-b',-1)">−</button>
+              <input type="range" id="calc-mcq-b-range" min="0" max="15" value="8" oninput="setVal('calc-mcq-b',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-mcq-b',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display">
+            <div class="input-val" id="calc-mcq-b-display">8</div>
+            <div class="input-max">/ 15</div>
+          </div>
+        </div>
+      </div>
 
-        <!-- Section 2: FRQ -->
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section II — Free Response (FRQ)</div>
-              <div class="section-desc">6 questions, 90 minutes. Part A (2 problems, graphing calculator required) and Part B (4 problems, no calculator). Graded on a 0–9 scale per question.</div>
+      <!-- FRQ -->
+      <div class="section-group">
+        <div class="section-group-header">
+          <div class="section-group-title">Section II — Free Response</div>
+          <div class="section-group-weight">50% of score</div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 1 — Calculator (Problem 1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Calculator allowed. Usually involves a function given as a graph or table. Show all work — partial credit is awarded even if the final answer is wrong.</div></div>
             </div>
-            <div class="section-weight">50% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div id="calc-frq-inputs"></div>
-            <div class="tip-box">
-              <strong>Tip:</strong> Each FRQ is worth 9 points. Show all work clearly — partial credit is awarded even if your final answer is wrong. Graders look for correct setup, correct calculus, and correct answer with units.
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-frq-1',-1)">−</button>
+              <input type="range" id="calc-frq-1-range" min="0" max="9" value="5" oninput="setVal('calc-frq-1',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-frq-1',1)">+</button>
             </div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="calc-frq-1-display">5</div><div class="input-max">/ 9</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 2 — Calculator (Problem 2)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Calculator allowed. Often tests area between curves, accumulation functions, or motion problems. Always include units in your answer.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-frq-2',-1)">−</button>
+              <input type="range" id="calc-frq-2-range" min="0" max="9" value="5" oninput="setVal('calc-frq-2',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-frq-2',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="calc-frq-2-display">5</div><div class="input-max">/ 9</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 3 — No Calculator (Problem 3)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">No calculator. Tests derivatives, chain rule, implicit differentiation, or related rates. Write out every step clearly for full credit.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-frq-3',-1)">−</button>
+              <input type="range" id="calc-frq-3-range" min="0" max="9" value="5" oninput="setVal('calc-frq-3',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-frq-3',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="calc-frq-3-display">5</div><div class="input-max">/ 9</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 4 — No Calculator (Problem 4)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">No calculator. Often involves analyzing a function from its derivative or a table of values.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-frq-4',-1)">−</button>
+              <input type="range" id="calc-frq-4-range" min="0" max="9" value="5" oninput="setVal('calc-frq-4',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-frq-4',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="calc-frq-4-display">5</div><div class="input-max">/ 9</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 5 — No Calculator (Problem 5)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">No calculator. Frequently tests integrals, FTC, or differential equations. Show the setup (integral notation) before evaluating.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-frq-5',-1)">−</button>
+              <input type="range" id="calc-frq-5-range" min="0" max="9" value="5" oninput="setVal('calc-frq-5',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-frq-5',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="calc-frq-5-display">5</div><div class="input-max">/ 9</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 6 — No Calculator (Problem 6)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">No calculator. Often the most conceptual problem — may test limits, continuity, or MVT/IVT. Define your reasoning clearly in words as well as math.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('calc-frq-6',-1)">−</button>
+              <input type="range" id="calc-frq-6-range" min="0" max="9" value="5" oninput="setVal('calc-frq-6',this.value);calcScore()">
+              <button class="adj-btn" onclick="adj('calc-frq-6',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="calc-frq-6-display">5</div><div class="input-max">/ 9</div></div>
         </div>
       </div>
 
       <div class="calc-actions">
-        <button class="btn-calc primary" onclick="calcScore()">Calculate My Score</button>
         <button class="btn-calc secondary" onclick="resetCalc('calc')">Reset</button>
         <span class="save-status" id="calc-save-status"></span>
       </div>
     </div>
 
-    <!-- ── AP ENGLISH LANGUAGE ── -->
+    <!-- ══════════════════════════════════
+         AP ENGLISH LANGUAGE
+    ══════════════════════════════════ -->
     <div class="calc-panel" id="panel-eng">
-      <div class="calc-header">
-        <div class="calc-header-top">
-          <div class="calc-emoji">✍️</div>
-          <div class="calc-title">AP English Language & Composition</div>
-        </div>
-        <div class="calc-subtitle">The exam tests rhetorical analysis, argument writing, and synthesis. Enter your scores for each section to predict your final 1–5 score.</div>
-      </div>
-
-      <div class="score-result-bar">
-        <div class="big-score" id="eng-score">–</div>
-        <div class="score-details">
-          <div class="score-label">Predicted AP Score</div>
-          <div class="score-progress-wrap"><div class="score-progress-fill" id="eng-bar" style="width:0%"></div></div>
-          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="score-verdict" id="eng-verdict"></div>
+      <div class="result-card">
+        <div class="result-score-wrap"><div class="result-score" id="eng-score">–</div><div class="result-score-label">AP Score</div></div>
+        <div class="result-details">
+          <div class="result-bar-wrap"><div class="result-bar-fill" id="eng-bar" style="width:50%"></div></div>
+          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="result-verdict" id="eng-verdict"></div>
+          <div class="result-composite" id="eng-composite"></div>
         </div>
       </div>
 
-      <div class="sections-grid">
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section I — Multiple Choice</div>
-              <div class="section-desc">45 questions, 60 minutes. Tests your ability to read and analyze nonfiction prose passages for rhetorical strategies, purpose, and argumentation.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section I — Multiple Choice</div><div class="section-group-weight">45% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ — Reading Passages (Q1–23)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">23 questions on two passages. Tests rhetorical analysis: purpose, tone, diction, structure. Read the question before the passage to know what to look for.</div></div>
             </div>
-            <div class="section-weight">45% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Questions correct</div>
-              <div class="input-wrap">
-                <input type="number" id="eng-mcq" min="0" max="45" value="0" oninput="engScore()">
-                <input type="range" min="0" max="45" value="0" oninput="sync('eng-mcq',this.value);engScore()">
-                <div class="input-max">/ 45</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('eng-mcq-1',-1)">−</button>
+              <input type="range" id="eng-mcq-1-range" min="0" max="23" value="12" oninput="setVal('eng-mcq-1',this.value);engScore()">
+              <button class="adj-btn" onclick="adj('eng-mcq-1',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> Focus on identifying the author's rhetorical choices and their effects. Questions often ask about tone, diction, structure, and purpose. No penalty for guessing.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="eng-mcq-1-display">12</div><div class="input-max">/ 23</div></div>
         </div>
-
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Essay 1 — Synthesis</div>
-              <div class="section-desc">45 minutes. Read 6–7 sources and write an argument that synthesizes at least 3 of them. Tests your ability to use evidence from multiple sources to support a position.</div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ — Reading Passages (Q24–45)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">22 questions on two more passages. Look for how the author builds their argument and what rhetorical choices they make at the sentence and paragraph level.</div></div>
             </div>
-            <div class="section-weight">~18% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Essay score (0–6)</div>
-              <div class="input-wrap">
-                <input type="number" id="eng-synth" min="0" max="6" value="0" oninput="engScore()">
-                <input type="range" min="0" max="6" value="0" oninput="sync('eng-synth',this.value);engScore()">
-                <div class="input-max">/ 6</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('eng-mcq-2',-1)">−</button>
+              <input type="range" id="eng-mcq-2-range" min="0" max="22" value="11" oninput="setVal('eng-mcq-2',this.value);engScore()">
+              <button class="adj-btn" onclick="adj('eng-mcq-2',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Scoring rubric:</strong> 6 = effective argument with skillful use of sources; 5 = generally effective; 4 = adequate; 3 = inadequate but shows some skill; 2 = little success; 1 = little or no skill.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="eng-mcq-2-display">11</div><div class="input-max">/ 22</div></div>
         </div>
+      </div>
 
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Essay 2 — Rhetorical Analysis</div>
-              <div class="section-desc">40 minutes. Read a non-fiction passage and write an essay analyzing how the author's rhetorical choices contribute to their argument or purpose.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section II — Free Response (Essays)</div><div class="section-group-weight">55% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Essay 1 — Synthesis (0–6)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">45 min. Read 6–7 sources and write an argument incorporating at least 3. A score of 6 requires a defensible thesis, skillful use of evidence, and sophisticated reasoning.</div></div>
             </div>
-            <div class="section-weight">~18% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Essay score (0–6)</div>
-              <div class="input-wrap">
-                <input type="number" id="eng-rheto" min="0" max="6" value="0" oninput="engScore()">
-                <input type="range" min="0" max="6" value="0" oninput="sync('eng-rheto',this.value);engScore()">
-                <div class="input-max">/ 6</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('eng-synth',-1)">−</button>
+              <input type="range" id="eng-synth-range" min="0" max="6" value="3" oninput="setVal('eng-synth',this.value);engScore()">
+              <button class="adj-btn" onclick="adj('eng-synth',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> Name specific rhetorical devices (ethos, pathos, logos, anaphora, etc.) and always connect them back to the author's purpose. Don't just identify — explain the effect.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="eng-synth-display">3</div><div class="input-max">/ 6</div></div>
         </div>
-
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Essay 3 — Argument</div>
-              <div class="section-desc">40 minutes. Develop and support your own argument in response to a provided prompt. You may draw on any appropriate evidence — no sources are given.</div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Essay 2 — Rhetorical Analysis (0–6)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">40 min. Analyze how an author's rhetorical choices contribute to their purpose. Name specific devices AND explain their effect — don't just identify them.</div></div>
             </div>
-            <div class="section-weight">~18% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Essay score (0–6)</div>
-              <div class="input-wrap">
-                <input type="number" id="eng-arg" min="0" max="6" value="0" oninput="engScore()">
-                <input type="range" min="0" max="6" value="0" oninput="sync('eng-arg',this.value);engScore()">
-                <div class="input-max">/ 6</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('eng-rheto',-1)">−</button>
+              <input type="range" id="eng-rheto-range" min="0" max="6" value="3" oninput="setVal('eng-rheto',this.value);engScore()">
+              <button class="adj-btn" onclick="adj('eng-rheto',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> A strong argument essay has a clear, defensible thesis, specific and relevant evidence, and clear reasoning connecting evidence to your claim. Complexity (acknowledging counterarguments) earns you the top score.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="eng-rheto-display">3</div><div class="input-max">/ 6</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Essay 3 — Argument (0–6)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">40 min. Develop your own argument using any evidence you choose. A strong thesis + specific evidence + clear reasoning = top score. Acknowledge counterarguments for complexity.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('eng-arg',-1)">−</button>
+              <input type="range" id="eng-arg-range" min="0" max="6" value="3" oninput="setVal('eng-arg',this.value);engScore()">
+              <button class="adj-btn" onclick="adj('eng-arg',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="eng-arg-display">3</div><div class="input-max">/ 6</div></div>
         </div>
       </div>
 
       <div class="calc-actions">
-        <button class="btn-calc primary" onclick="engScore()">Calculate My Score</button>
         <button class="btn-calc secondary" onclick="resetCalc('eng')">Reset</button>
         <span class="save-status" id="eng-save-status"></span>
       </div>
     </div>
 
-    <!-- ── AP US HISTORY ── -->
+    <!-- ══════════════════════════════════
+         AP US HISTORY
+    ══════════════════════════════════ -->
     <div class="calc-panel" id="panel-ush">
-      <div class="calc-header">
-        <div class="calc-header-top">
-          <div class="calc-emoji">🏛️</div>
-          <div class="calc-title">AP US History (APUSH)</div>
-        </div>
-        <div class="calc-subtitle">APUSH tests historical thinking skills across four time periods. Enter your scores below to predict your final 1–5 score.</div>
-      </div>
-
-      <div class="score-result-bar">
-        <div class="big-score" id="ush-score">–</div>
-        <div class="score-details">
-          <div class="score-label">Predicted AP Score</div>
-          <div class="score-progress-wrap"><div class="score-progress-fill" id="ush-bar" style="width:0%"></div></div>
-          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="score-verdict" id="ush-verdict"></div>
+      <div class="result-card">
+        <div class="result-score-wrap"><div class="result-score" id="ush-score">–</div><div class="result-score-label">AP Score</div></div>
+        <div class="result-details">
+          <div class="result-bar-wrap"><div class="result-bar-fill" id="ush-bar" style="width:50%"></div></div>
+          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="result-verdict" id="ush-verdict"></div>
+          <div class="result-composite" id="ush-composite"></div>
         </div>
       </div>
 
-      <div class="sections-grid">
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section I Part A — Multiple Choice</div>
-              <div class="section-desc">55 questions, 55 minutes. Questions are grouped in sets of 3–4 around primary/secondary source excerpts, images, maps, or charts.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section I Part A — Multiple Choice</div><div class="section-group-weight">40% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Set 1 — Questions 1–14</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Grouped around primary/secondary sources. Read the source carefully — most questions test contextualization and causation, not just recall.</div></div>
             </div>
-            <div class="section-weight">40% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Questions correct</div>
-              <div class="input-wrap">
-                <input type="number" id="ush-mcq" min="0" max="55" value="0" oninput="ushScore()">
-                <input type="range" min="0" max="55" value="0" oninput="sync('ush-mcq',this.value);ushScore()">
-                <div class="input-max">/ 55</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-mcq-1',-1)">−</button>
+              <input type="range" id="ush-mcq-1-range" min="0" max="14" value="7" oninput="setVal('ush-mcq-1',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-mcq-1',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> Questions are based on historical thinking skills: causation, continuity, comparison, and contextualization. Practice reading primary sources critically. No penalty for wrong answers.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="ush-mcq-1-display">7</div><div class="input-max">/ 14</div></div>
         </div>
-
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section I Part B — Short Answer (SAQ)</div>
-              <div class="section-desc">3 of 4 questions answered, 40 minutes. Each SAQ has 3 parts (a, b, c) worth 1 point each. You describe, explain, or evaluate historical events and arguments.</div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Set 2 — Questions 15–28</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Another set of stimulus-based questions. Look for the historical thinking skill being tested: comparison, causation, continuity and change over time.</div></div>
             </div>
-            <div class="section-weight">20% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">SAQ total points</div>
-              <div class="input-wrap">
-                <input type="number" id="ush-saq" min="0" max="9" value="0" oninput="ushScore()">
-                <input type="range" min="0" max="9" value="0" oninput="sync('ush-saq',this.value);ushScore()">
-                <div class="input-max">/ 9</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-mcq-2',-1)">−</button>
+              <input type="range" id="ush-mcq-2-range" min="0" max="14" value="7" oninput="setVal('ush-mcq-2',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-mcq-2',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> SAQs do NOT require a thesis. Answer each part (a, b, c) directly and specifically. Use concrete historical evidence. Aim for 3–5 sentences per part.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="ush-mcq-2-display">7</div><div class="input-max">/ 14</div></div>
         </div>
-
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section II Part A — DBQ (Document-Based Question)</div>
-              <div class="section-desc">60 minutes (includes 15-min reading). Analyze 7 documents and write a historically defensible essay. Tests sourcing, contextualization, and argument complexity.</div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Set 3 — Questions 29–55</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Final MCQ set. Covers later time periods (post-Civil War through modern). Process of elimination is your friend — wrong answers often have one anachronistic or out-of-scope detail.</div></div>
             </div>
-            <div class="section-weight">25% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">DBQ score (0–7)</div>
-              <div class="input-wrap">
-                <input type="number" id="ush-dbq" min="0" max="7" value="0" oninput="ushScore()">
-                <input type="range" min="0" max="7" value="0" oninput="sync('ush-dbq',this.value);ushScore()">
-                <div class="input-max">/ 7</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-mcq-3',-1)">−</button>
+              <input type="range" id="ush-mcq-3-range" min="0" max="27" value="14" oninput="setVal('ush-mcq-3',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-mcq-3',1)">+</button>
             </div>
-            <div class="tip-box"><strong>DBQ rubric breakdown:</strong> Thesis (1pt) + Contextualization (1pt) + Evidence — document use (2pts) + Evidence — outside evidence (1pt) + Analysis & Reasoning — sourcing (1pt) + Complexity (1pt). Don't skip contextualization — it's an easy point students miss.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="ush-mcq-3-display">14</div><div class="input-max">/ 27</div></div>
         </div>
+      </div>
 
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section II Part B — LEQ (Long Essay Question)</div>
-              <div class="section-desc">40 minutes. Choose 1 of 3 prompts and write a historical argument essay using specific evidence. Tests causation, continuity and change, or comparison.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section I Part B — Short Answer (SAQ)</div><div class="section-group-weight">20% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">SAQ 1 — Required (0–3 pts)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Required for everyone. Usually based on a secondary source (historian's argument). Answer parts a, b, and c directly — no thesis needed. 3–5 sentences per part.</div></div>
             </div>
-            <div class="section-weight">15% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">LEQ score (0–6)</div>
-              <div class="input-wrap">
-                <input type="number" id="ush-leq" min="0" max="6" value="0" oninput="ushScore()">
-                <input type="range" min="0" max="6" value="0" oninput="sync('ush-leq',this.value);ushScore()">
-                <div class="input-max">/ 6</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-saq-1',-1)">−</button>
+              <input type="range" id="ush-saq-1-range" min="0" max="3" value="2" oninput="setVal('ush-saq-1',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-saq-1',1)">+</button>
             </div>
-            <div class="tip-box"><strong>LEQ rubric:</strong> Thesis (1pt) + Contextualization (1pt) + Evidence (2pts) + Analysis & Reasoning (2pts). Your thesis must make a historically defensible claim and establish a line of reasoning — not just restate the prompt.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="ush-saq-1-display">2</div><div class="input-max">/ 3</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">SAQ 2 — Required (0–3 pts)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Required for everyone. Often based on a primary source image, map, or document. Be specific — vague answers don't earn credit.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-saq-2',-1)">−</button>
+              <input type="range" id="ush-saq-2-range" min="0" max="3" value="2" oninput="setVal('ush-saq-2',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-saq-2',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-saq-2-display">2</div><div class="input-max">/ 3</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">SAQ 3 or 4 — Your Choice (0–3 pts)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Choose ONE of SAQ 3 or SAQ 4. SAQ 3 covers periods 1–5 (pre-1877), SAQ 4 covers periods 6–9 (post-1877). Pick the time period you know better.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-saq-3',-1)">−</button>
+              <input type="range" id="ush-saq-3-range" min="0" max="3" value="2" oninput="setVal('ush-saq-3',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-saq-3',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-saq-3-display">2</div><div class="input-max">/ 3</div></div>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section II Part A — DBQ</div><div class="section-group-weight">25% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Thesis / Claim (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Your thesis must make a historically defensible claim AND establish a line of reasoning. It cannot just restate the prompt. Place it in the intro or conclusion.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-dbq-thesis',-1)">−</button>
+              <input type="range" id="ush-dbq-thesis-range" min="0" max="1" value="1" oninput="setVal('ush-dbq-thesis',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-dbq-thesis',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-dbq-thesis-display">1</div><div class="input-max">/ 1</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Contextualization (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Describe a broader historical context that is RELEVANT to the prompt. Must be more than a phrase — explain how the context relates to your argument. This is the most commonly missed point.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-dbq-context',-1)">−</button>
+              <input type="range" id="ush-dbq-context-range" min="0" max="1" value="1" oninput="setVal('ush-dbq-context',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-dbq-context',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-dbq-context-display">1</div><div class="input-max">/ 1</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Evidence — Document Use (0–2)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">1 pt: accurately use content from at least 3 documents. 2 pts: use at least 6 documents AND explain how each supports your argument. Don't just quote — analyze.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-dbq-evidence',-1)">−</button>
+              <input type="range" id="ush-dbq-evidence-range" min="0" max="2" value="1" oninput="setVal('ush-dbq-evidence',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-dbq-evidence',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-dbq-evidence-display">1</div><div class="input-max">/ 2</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Evidence — Outside Evidence (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Use at least one piece of historically accurate evidence NOT found in the documents. Must be relevant and must explain how it supports your argument.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-dbq-outside',-1)">−</button>
+              <input type="range" id="ush-dbq-outside-range" min="0" max="1" value="1" oninput="setVal('ush-dbq-outside',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-dbq-outside',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-dbq-outside-display">1</div><div class="input-max">/ 1</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Sourcing — HAPP Analysis (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">For at least 3 documents, explain the Historical situation, Audience, Purpose, or Point of View AND how it affects the document's meaning or limitations. Must go beyond just naming these.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-dbq-sourcing',-1)">−</button>
+              <input type="range" id="ush-dbq-sourcing-range" min="0" max="1" value="1" oninput="setVal('ush-dbq-sourcing',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-dbq-sourcing',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-dbq-sourcing-display">1</div><div class="input-max">/ 1</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Complexity (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Demonstrate a complex understanding: explain nuance, multiple causes, both similarities AND differences, or how the argument applies across time periods. Must be sustained throughout the essay, not just one sentence.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-dbq-complex',-1)">−</button>
+              <input type="range" id="ush-dbq-complex-range" min="0" max="1" value="0" oninput="setVal('ush-dbq-complex',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-dbq-complex',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-dbq-complex-display">0</div><div class="input-max">/ 1</div></div>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section II Part B — LEQ</div><div class="section-group-weight">15% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Thesis / Claim (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Same standard as DBQ — make a historically defensible claim with a line of reasoning. Your thesis should preview the structure of your argument.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-leq-thesis',-1)">−</button>
+              <input type="range" id="ush-leq-thesis-range" min="0" max="1" value="1" oninput="setVal('ush-leq-thesis',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-leq-thesis',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-leq-thesis-display">1</div><div class="input-max">/ 1</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Contextualization (0–1)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Describe a broader historical context BEFORE or around your topic. Write at least 3 sentences connecting the context to your argument — not just a mention.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-leq-context',-1)">−</button>
+              <input type="range" id="ush-leq-context-range" min="0" max="1" value="1" oninput="setVal('ush-leq-context',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-leq-context',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-leq-context-display">1</div><div class="input-max">/ 1</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Evidence (0–2)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">1 pt: provide at least two specific, relevant pieces of evidence. 2 pts: use that evidence to support your argument — explain the connection, don't just list facts.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-leq-evidence',-1)">−</button>
+              <input type="range" id="ush-leq-evidence-range" min="0" max="2" value="1" oninput="setVal('ush-leq-evidence',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-leq-evidence',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-leq-evidence-display">1</div><div class="input-max">/ 2</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Analysis & Reasoning (0–2)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">1 pt: use a historical thinking skill (causation, comparison, or continuity/change) to frame your argument. 2 pts: demonstrate complex understanding as described above.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('ush-leq-analysis',-1)">−</button>
+              <input type="range" id="ush-leq-analysis-range" min="0" max="2" value="1" oninput="setVal('ush-leq-analysis',this.value);ushScore()">
+              <button class="adj-btn" onclick="adj('ush-leq-analysis',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="ush-leq-analysis-display">1</div><div class="input-max">/ 2</div></div>
         </div>
       </div>
 
       <div class="calc-actions">
-        <button class="btn-calc primary" onclick="ushScore()">Calculate My Score</button>
         <button class="btn-calc secondary" onclick="resetCalc('ush')">Reset</button>
         <span class="save-status" id="ush-save-status"></span>
       </div>
     </div>
 
-    <!-- ── AP BIOLOGY ── -->
+    <!-- ══════════════════════════════════
+         AP BIOLOGY
+    ══════════════════════════════════ -->
     <div class="calc-panel" id="panel-bio">
-      <div class="calc-header">
-        <div class="calc-header-top">
-          <div class="calc-emoji">🧬</div>
-          <div class="calc-title">AP Biology</div>
-        </div>
-        <div class="calc-subtitle">AP Bio covers four Big Ideas: evolution, cellular processes, genetics, and ecology. Enter your scores to predict your final 1–5.</div>
-      </div>
-
-      <div class="score-result-bar">
-        <div class="big-score" id="bio-score">–</div>
-        <div class="score-details">
-          <div class="score-label">Predicted AP Score</div>
-          <div class="score-progress-wrap"><div class="score-progress-fill" id="bio-bar" style="width:0%"></div></div>
-          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="score-verdict" id="bio-verdict"></div>
+      <div class="result-card">
+        <div class="result-score-wrap"><div class="result-score" id="bio-score">–</div><div class="result-score-label">AP Score</div></div>
+        <div class="result-details">
+          <div class="result-bar-wrap"><div class="result-bar-fill" id="bio-bar" style="width:50%"></div></div>
+          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="result-verdict" id="bio-verdict"></div>
+          <div class="result-composite" id="bio-composite"></div>
         </div>
       </div>
 
-      <div class="sections-grid">
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section I — Multiple Choice & Grid-In</div>
-              <div class="section-desc">60 questions, 90 minutes. Includes 50 MCQs (many grouped around data/graphs) and 6 grid-in math questions requiring calculations without answer choices.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section I — Multiple Choice & Grid-In</div><div class="section-group-weight">50% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Part A — Questions 1–25</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">25 discrete MCQs. Tests recall and application of core biology concepts across all four Big Ideas. Process of elimination works well here.</div></div>
             </div>
-            <div class="section-weight">50% of score</div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-mcq-a',-1)">−</button>
+              <input type="range" id="bio-mcq-a-range" min="0" max="25" value="13" oninput="setVal('bio-mcq-a',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-mcq-a',1)">+</button>
+            </div>
           </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">MCQ correct (0–50)</div>
-              <div class="input-wrap">
-                <input type="number" id="bio-mcq" min="0" max="50" value="0" oninput="bioScore()">
-                <input type="range" min="0" max="50" value="0" oninput="sync('bio-mcq',this.value);bioScore()">
-                <div class="input-max">/ 50</div>
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="input-label">Grid-in correct (0–6)</div>
-              <div class="input-wrap">
-                <input type="number" id="bio-grid" min="0" max="6" value="0" oninput="bioScore()">
-                <input type="range" min="0" max="6" value="0" oninput="sync('bio-grid',this.value);bioScore()">
-                <div class="input-max">/ 6</div>
-              </div>
-            </div>
-            <div class="tip-box"><strong>Tip:</strong> Grid-in questions often involve Hardy-Weinberg calculations, chi-square, or energy flow percentages. Practice these math problems — they require exact answers with no multiple choice to guide you.</div>
-          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-mcq-a-display">13</div><div class="input-max">/ 25</div></div>
         </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Part B — Questions 26–50</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">25 questions grouped around data, graphs, or experimental scenarios. Practice reading axes carefully and identifying independent/dependent variables.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-mcq-b',-1)">−</button>
+              <input type="range" id="bio-mcq-b-range" min="0" max="25" value="13" oninput="setVal('bio-mcq-b',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-mcq-b',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-mcq-b-display">13</div><div class="input-max">/ 25</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Grid-In Questions (6 total)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">6 math-based questions requiring exact answers. Common topics: Hardy-Weinberg (p²+2pq+q²=1), chi-square, energy flow (10% rule), surface area to volume. Practice these — no answer choices to guide you.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-gridin',-1)">−</button>
+              <input type="range" id="bio-gridin-range" min="0" max="6" value="3" oninput="setVal('bio-gridin',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-gridin',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-gridin-display">3</div><div class="input-max">/ 6</div></div>
+        </div>
+      </div>
 
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section II — Free Response</div>
-              <div class="section-desc">6 questions, 90 minutes. Includes 2 long FRQs (8–10 pts each) and 4 short FRQs (4 pts each). Tests ability to design experiments, analyze data, and explain biological concepts.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section II — Free Response</div><div class="section-group-weight">50% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Long FRQ 1 (0–10)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Often asks you to design an experiment. Include: clear hypothesis, independent variable, dependent variable, control group, how you'd measure results, and sample size. Each sub-part is worth 1–3 pts.</div></div>
             </div>
-            <div class="section-weight">50% of score</div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-frq1',-1)">−</button>
+              <input type="range" id="bio-frq1-range" min="0" max="10" value="5" oninput="setVal('bio-frq1',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-frq1',1)">+</button>
+            </div>
           </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Long FRQ 1 (0–10)</div>
-              <div class="input-wrap">
-                <input type="number" id="bio-frq1" min="0" max="10" value="0" oninput="bioScore()">
-                <input type="range" min="0" max="10" value="0" oninput="sync('bio-frq1',this.value);bioScore()">
-                <div class="input-max">/ 10</div>
-              </div>
+          <div class="input-val-display"><div class="input-val" id="bio-frq1-display">5</div><div class="input-max">/ 10</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Long FRQ 2 (0–10)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Usually involves analyzing data or a biological scenario. Always describe the trend in data AND explain the biological mechanism. One without the other won't earn full credit.</div></div>
             </div>
-            <div class="input-row">
-              <div class="input-label">Long FRQ 2 (0–10)</div>
-              <div class="input-wrap">
-                <input type="number" id="bio-frq2" min="0" max="10" value="0" oninput="bioScore()">
-                <input type="range" min="0" max="10" value="0" oninput="sync('bio-frq2',this.value);bioScore()">
-                <div class="input-max">/ 10</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-frq2',-1)">−</button>
+              <input type="range" id="bio-frq2-range" min="0" max="10" value="5" oninput="setVal('bio-frq2',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-frq2',1)">+</button>
             </div>
-            <div class="input-row">
-              <div class="input-label">Short FRQs total (0–16)</div>
-              <div class="input-wrap">
-                <input type="number" id="bio-sfrq" min="0" max="16" value="0" oninput="bioScore()">
-                <input type="range" min="0" max="16" value="0" oninput="sync('bio-sfrq',this.value);bioScore()">
-                <div class="input-max">/ 16</div>
-              </div>
-            </div>
-            <div class="tip-box"><strong>Tip:</strong> Long FRQs often ask you to design an experiment. Include: hypothesis, independent/dependent variables, control group, sample size, and how you'd measure results. For data analysis, always describe trends AND explain the biological mechanism behind them.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="bio-frq2-display">5</div><div class="input-max">/ 10</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Short FRQ 1 (0–4)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">4-point short FRQ. Usually 3–4 sub-parts, each worth 1 point. Answer directly and specifically — extra information doesn't hurt but wastes time.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-sfrq1',-1)">−</button>
+              <input type="range" id="bio-sfrq1-range" min="0" max="4" value="2" oninput="setVal('bio-sfrq1',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-sfrq1',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-sfrq1-display">2</div><div class="input-max">/ 4</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Short FRQ 2 (0–4)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">4-point short FRQ. Often involves genetics, cell communication, or ecology. Draw diagrams if helpful — labeled diagrams can earn points.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-sfrq2',-1)">−</button>
+              <input type="range" id="bio-sfrq2-range" min="0" max="4" value="2" oninput="setVal('bio-sfrq2',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-sfrq2',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-sfrq2-display">2</div><div class="input-max">/ 4</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Short FRQ 3 (0–4)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">4-point short FRQ. Vary widely in topic. If you're unsure, use core biology principles (natural selection, homeostasis, energy flow) to reason through your answer.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-sfrq3',-1)">−</button>
+              <input type="range" id="bio-sfrq3-range" min="0" max="4" value="2" oninput="setVal('bio-sfrq3',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-sfrq3',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-sfrq3-display">2</div><div class="input-max">/ 4</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">Short FRQ 4 (0–4)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Final short FRQ. Treat each sub-part independently — you can get partial credit even if you miss one part.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('bio-sfrq4',-1)">−</button>
+              <input type="range" id="bio-sfrq4-range" min="0" max="4" value="2" oninput="setVal('bio-sfrq4',this.value);bioScore()">
+              <button class="adj-btn" onclick="adj('bio-sfrq4',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="bio-sfrq4-display">2</div><div class="input-max">/ 4</div></div>
         </div>
       </div>
 
       <div class="calc-actions">
-        <button class="btn-calc primary" onclick="bioScore()">Calculate My Score</button>
         <button class="btn-calc secondary" onclick="resetCalc('bio')">Reset</button>
         <span class="save-status" id="bio-save-status"></span>
       </div>
     </div>
 
-    <!-- ── AP PSYCHOLOGY ── -->
+    <!-- ══════════════════════════════════
+         AP PSYCHOLOGY
+    ══════════════════════════════════ -->
     <div class="calc-panel" id="panel-psych">
-      <div class="calc-header">
-        <div class="calc-header-top">
-          <div class="calc-emoji">🧠</div>
-          <div class="calc-title">AP Psychology</div>
-        </div>
-        <div class="calc-subtitle">AP Psych covers behavior, cognition, development, social psychology, and disorders. One of the most straightforward AP exams to score well on with good preparation.</div>
-      </div>
-
-      <div class="score-result-bar">
-        <div class="big-score" id="psych-score">–</div>
-        <div class="score-details">
-          <div class="score-label">Predicted AP Score</div>
-          <div class="score-progress-wrap"><div class="score-progress-fill" id="psych-bar" style="width:0%"></div></div>
-          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="score-verdict" id="psych-verdict"></div>
+      <div class="result-card">
+        <div class="result-score-wrap"><div class="result-score" id="psych-score">–</div><div class="result-score-label">AP Score</div></div>
+        <div class="result-details">
+          <div class="result-bar-wrap"><div class="result-bar-fill" id="psych-bar" style="width:50%"></div></div>
+          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="result-verdict" id="psych-verdict"></div>
+          <div class="result-composite" id="psych-composite"></div>
         </div>
       </div>
 
-      <div class="sections-grid">
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section I — Multiple Choice</div>
-              <div class="section-desc">100 questions, 70 minutes. The largest MCQ section of any AP exam. Tests vocabulary and concept recall across all 9 units of the course.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section I — Multiple Choice (100 Questions)</div><div class="section-group-weight">66.7% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Block 1 — Q1–33 (Units 1–4)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Covers: Biological Bases of Behavior, Sensation & Perception, States of Consciousness, and Learning. Know your neurotransmitters and classical vs. operant conditioning cold.</div></div>
             </div>
-            <div class="section-weight">66.7% of score</div>
-          </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">Questions correct</div>
-              <div class="input-wrap">
-                <input type="number" id="psych-mcq" min="0" max="100" value="0" oninput="psychScore()">
-                <input type="range" min="0" max="100" value="0" oninput="sync('psych-mcq',this.value);psychScore()">
-                <div class="input-max">/ 100</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('psych-mcq-1',-1)">−</button>
+              <input type="range" id="psych-mcq-1-range" min="0" max="33" value="17" oninput="setVal('psych-mcq-1',this.value);psychScore()">
+              <button class="adj-btn" onclick="adj('psych-mcq-1',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> AP Psych is vocabulary-heavy. Flashcards for key terms (especially researchers and their studies) are essential. Know Pavlov, Skinner, Piaget, Freud, Erikson, and Bandura inside out. With 100 questions, pacing matters — don't spend more than 40 seconds per question.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="psych-mcq-1-display">17</div><div class="input-max">/ 33</div></div>
         </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Block 2 — Q34–67 (Units 5–7)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Covers: Cognition, Developmental Psychology, Motivation & Emotion. Know Piaget's stages, Erikson's stages, and theories of motivation (Maslow, drive-reduction).</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('psych-mcq-2',-1)">−</button>
+              <input type="range" id="psych-mcq-2-range" min="0" max="34" value="17" oninput="setVal('psych-mcq-2',this.value);psychScore()">
+              <button class="adj-btn" onclick="adj('psych-mcq-2',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="psych-mcq-2-display">17</div><div class="input-max">/ 34</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">MCQ Block 3 — Q68–100 (Units 8–9)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Covers: Clinical Psychology (disorders + treatments) and Social Psychology. Know the DSM categories, therapy types, and Milgram/Zimbardo/Asch experiments.</div></div>
+            </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('psych-mcq-3',-1)">−</button>
+              <input type="range" id="psych-mcq-3-range" min="0" max="33" value="17" oninput="setVal('psych-mcq-3',this.value);psychScore()">
+              <button class="adj-btn" onclick="adj('psych-mcq-3',1)">+</button>
+            </div>
+          </div>
+          <div class="input-val-display"><div class="input-val" id="psych-mcq-3-display">17</div><div class="input-max">/ 33</div></div>
+        </div>
+      </div>
 
-        <div class="section-card">
-          <div class="section-card-header">
-            <div>
-              <div class="section-name">Section II — Free Response</div>
-              <div class="section-desc">2 questions, 50 minutes. Question 1 is a concept application scenario (7 pts). Question 2 is a research design question (8 pts). Both test your ability to apply psychological concepts to real situations.</div>
+      <div class="section-group">
+        <div class="section-group-header"><div class="section-group-title">Section II — Free Response</div><div class="section-group-weight">33.3% of score</div></div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 1 — Concept Application (0–7)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">A scenario is described and you must apply 7 specific psychological concepts to it. Label each answer clearly (e.g., "Operant Conditioning: ..."). You need definition + correct application to earn each point.</div></div>
             </div>
-            <div class="section-weight">33.3% of score</div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('psych-frq1',-1)">−</button>
+              <input type="range" id="psych-frq1-range" min="0" max="7" value="4" oninput="setVal('psych-frq1',this.value);psychScore()">
+              <button class="adj-btn" onclick="adj('psych-frq1',1)">+</button>
+            </div>
           </div>
-          <div class="section-card-body">
-            <div class="input-row">
-              <div class="input-label">FRQ 1 — Application (0–7)</div>
-              <div class="input-wrap">
-                <input type="number" id="psych-frq1" min="0" max="7" value="0" oninput="psychScore()">
-                <input type="range" min="0" max="7" value="0" oninput="sync('psych-frq1',this.value);psychScore()">
-                <div class="input-max">/ 7</div>
-              </div>
+          <div class="input-val-display"><div class="input-val" id="psych-frq1-display">4</div><div class="input-max">/ 7</div></div>
+        </div>
+        <div class="input-row">
+          <div class="input-row-left">
+            <div class="input-row-label">
+              <span class="input-row-name">FRQ 2 — Research Design (0–8)</span>
+              <div class="tip-icon">ⓘ<div class="tip-popup">Tests research methods and statistics. Know: independent vs dependent variables, operational definitions, random assignment, experimental vs. control groups, and how to interpret statistical significance.</div></div>
             </div>
-            <div class="input-row">
-              <div class="input-label">FRQ 2 — Research (0–8)</div>
-              <div class="input-wrap">
-                <input type="number" id="psych-frq2" min="0" max="8" value="0" oninput="psychScore()">
-                <input type="range" min="0" max="8" value="0" oninput="sync('psych-frq2',this.value);psychScore()">
-                <div class="input-max">/ 8</div>
-              </div>
+            <div class="slider-row">
+              <button class="adj-btn" onclick="adj('psych-frq2',-1)">−</button>
+              <input type="range" id="psych-frq2-range" min="0" max="8" value="4" oninput="setVal('psych-frq2',this.value);psychScore()">
+              <button class="adj-btn" onclick="adj('psych-frq2',1)">+</button>
             </div>
-            <div class="tip-box"><strong>Tip:</strong> FRQ answers are graded by whether you correctly define and apply each psychological term — not by essay quality. Label each answer clearly (e.g. "Operant Conditioning: In the scenario, the teacher giving stickers is a positive reinforcer because..."). You don't need paragraphs — clear, direct answers earn full points.</div>
           </div>
+          <div class="input-val-display"><div class="input-val" id="psych-frq2-display">4</div><div class="input-max">/ 8</div></div>
         </div>
       </div>
 
       <div class="calc-actions">
-        <button class="btn-calc primary" onclick="psychScore()">Calculate My Score</button>
         <button class="btn-calc secondary" onclick="resetCalc('psych')">Reset</button>
         <span class="save-status" id="psych-save-status"></span>
       </div>
@@ -704,10 +951,10 @@
   </main>
 </div>
 
-<!-- Firebase + Scoring Logic -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut as fbSignOut }
+  import { initializeApp }        from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut,
+           GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult }
            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -718,220 +965,245 @@
   const db   = getFirestore(app);
   let currentUser = null;
 
+  // ── AUTH STATE ──
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
-      document.getElementById('nav-user-display').innerHTML = `Welcome, <strong>${user.displayName || user.email.split('@')[0]}</strong>`;
-      document.getElementById('nav-login-btn').style.display = 'none';
-      document.getElementById('nav-logout-btn').style.display = 'block';
+      const name = user.displayName || user.email.split('@')[0];
+      document.getElementById('nav-logged-out').style.display = 'none';
+      document.getElementById('nav-logged-in').style.display  = 'flex';
+      document.getElementById('nav-avatar').textContent   = name.charAt(0).toUpperCase();
+      document.getElementById('nav-username').textContent = name;
       // Load saved scores
-      const snap = await getDoc(doc(db, 'users', user.uid));
-      if (snap.exists()) {
-        const data = snap.data();
-        if (data.scores) loadSavedScores(data.scores);
-      }
+      try {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        if (snap.exists() && snap.data().scores) loadSaved(snap.data().scores);
+      } catch(e) { console.warn('Could not load saved scores:', e); }
+      // Recalculate after loading
+      calcScore(); engScore(); ushScore(); bioScore(); psychScore();
     } else {
-      document.getElementById('nav-login-btn').style.display = 'block';
-      document.getElementById('nav-logout-btn').style.display = 'none';
+      document.getElementById('nav-logged-out').style.display = 'flex';
+      document.getElementById('nav-logged-in').style.display  = 'none';
     }
   });
 
-  function loadSavedScores(scores) {
-    const fields = {
-      'calc-mcq': scores.calc_mcq,
-      'eng-mcq': scores.eng_mcq, 'eng-synth': scores.eng_synth,
-      'eng-rheto': scores.eng_rheto, 'eng-arg': scores.eng_arg,
-      'ush-mcq': scores.ush_mcq, 'ush-saq': scores.ush_saq,
-      'ush-dbq': scores.ush_dbq, 'ush-leq': scores.ush_leq,
-      'bio-mcq': scores.bio_mcq, 'bio-grid': scores.bio_grid,
-      'bio-frq1': scores.bio_frq1, 'bio-frq2': scores.bio_frq2, 'bio-sfrq': scores.bio_sfrq,
-      'psych-mcq': scores.psych_mcq, 'psych-frq1': scores.psych_frq1, 'psych-frq2': scores.psych_frq2
+  document.getElementById('nav-signout-btn')?.addEventListener('click', () => signOut(auth));
+
+  // ── SAVE SCORES ──
+  async function saveScores(prefix, data) {
+    if (!currentUser) return;
+    const el = document.getElementById(`${prefix}-save-status`);
+    try {
+      const update = { 'scores.updatedAt': serverTimestamp() };
+      Object.entries(data).forEach(([k,v]) => update[`scores.${k}`] = v);
+      await setDoc(doc(db, 'users', currentUser.uid), update, { merge: true });
+      if (el) { el.textContent = '✓ Saved'; setTimeout(() => el.textContent='', 2500); }
+    } catch(e) { if (el) el.textContent = 'Save failed'; }
+  }
+
+  function loadSaved(scores) {
+    const map = {
+      'calc-mcq-a':scores.calc_mcq_a, 'calc-mcq-b':scores.calc_mcq_b,
+      'calc-frq-1':scores.calc_frq_1, 'calc-frq-2':scores.calc_frq_2,
+      'calc-frq-3':scores.calc_frq_3, 'calc-frq-4':scores.calc_frq_4,
+      'calc-frq-5':scores.calc_frq_5, 'calc-frq-6':scores.calc_frq_6,
+      'eng-mcq-1':scores.eng_mcq_1, 'eng-mcq-2':scores.eng_mcq_2,
+      'eng-synth':scores.eng_synth, 'eng-rheto':scores.eng_rheto, 'eng-arg':scores.eng_arg,
+      'ush-mcq-1':scores.ush_mcq_1, 'ush-mcq-2':scores.ush_mcq_2, 'ush-mcq-3':scores.ush_mcq_3,
+      'ush-saq-1':scores.ush_saq_1, 'ush-saq-2':scores.ush_saq_2, 'ush-saq-3':scores.ush_saq_3,
+      'ush-dbq-thesis':scores.ush_dbq_thesis, 'ush-dbq-context':scores.ush_dbq_context,
+      'ush-dbq-evidence':scores.ush_dbq_evidence, 'ush-dbq-outside':scores.ush_dbq_outside,
+      'ush-dbq-sourcing':scores.ush_dbq_sourcing, 'ush-dbq-complex':scores.ush_dbq_complex,
+      'ush-leq-thesis':scores.ush_leq_thesis, 'ush-leq-context':scores.ush_leq_context,
+      'ush-leq-evidence':scores.ush_leq_evidence, 'ush-leq-analysis':scores.ush_leq_analysis,
+      'bio-mcq-a':scores.bio_mcq_a, 'bio-mcq-b':scores.bio_mcq_b, 'bio-gridin':scores.bio_gridin,
+      'bio-frq1':scores.bio_frq1, 'bio-frq2':scores.bio_frq2,
+      'bio-sfrq1':scores.bio_sfrq1, 'bio-sfrq2':scores.bio_sfrq2,
+      'bio-sfrq3':scores.bio_sfrq3, 'bio-sfrq4':scores.bio_sfrq4,
+      'psych-mcq-1':scores.psych_mcq_1, 'psych-mcq-2':scores.psych_mcq_2,
+      'psych-mcq-3':scores.psych_mcq_3,
+      'psych-frq1':scores.psych_frq1, 'psych-frq2':scores.psych_frq2
     };
-    // Also load FRQ inputs for calc
-    if (scores.calc_frq) {
-      scores.calc_frq.forEach((v, i) => {
-        const el = document.getElementById(`calc-frq-${i}`);
-        if (el) { el.value = v; syncRange(`calc-frq-${i}`, v); }
-      });
-    }
-    Object.entries(fields).forEach(([id, val]) => {
-      if (val !== undefined) {
-        const el = document.getElementById(id);
-        if (el) { el.value = val; syncRange(id, val); }
+    Object.entries(map).forEach(([id, val]) => {
+      if (val !== undefined && val !== null) {
+        setValSilent(id, val);
       }
     });
-    calcScore(); engScore(); ushScore(); bioScore(); psychScore();
   }
-
-  function syncRange(inputId, val) {
-    // sync corresponding range input
-    const inputs = document.querySelectorAll('input[type="range"]');
-    inputs.forEach(r => {
-      const next = r.previousElementSibling;
-      if (next && next.id === inputId) r.value = val;
-    });
-  }
-
-  async function saveScores(subject, data) {
-    if (!currentUser) return;
-    const statusEl = document.getElementById(`${subject}-save-status`);
-    try {
-      const update = {};
-      Object.entries(data).forEach(([k,v]) => { update[`scores.${k}`] = v; });
-      update['scores.updatedAt'] = serverTimestamp();
-      await setDoc(doc(db, 'users', currentUser.uid), update, { merge: true });
-      if (statusEl) { statusEl.textContent = '✓ Saved'; setTimeout(() => { statusEl.textContent = ''; }, 3000); }
-    } catch(e) {
-      if (statusEl) statusEl.textContent = 'Save failed';
-    }
-  }
-
-  window.signOut = async () => {
-    await fbSignOut(auth);
-    window.location.href = 'index.html';
-  };
 
   // ── HELPERS ──
-  window.sync = (id, val) => {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, Number(v)||0)); }
+
+  function getMax(id) {
+    const r = document.getElementById(`${id}-range`);
+    return r ? Number(r.max) : 100;
+  }
+  function getVal(id) {
+    const r = document.getElementById(`${id}-range`);
+    return r ? Number(r.value) : 0;
+  }
+
+  window.setVal = function(id, v) {
+    const max = getMax(id);
+    const val = clamp(v, 0, max);
+    const range   = document.getElementById(`${id}-range`);
+    const display = document.getElementById(`${id}-display`);
+    if (range)   range.value   = val;
+    if (display) display.textContent = val;
   };
 
-  function clamp(v, min, max) { return Math.min(max, Math.max(min, Number(v) || 0)); }
+  function setValSilent(id, v) { window.setVal(id, v); }
+
+  window.adj = function(id, delta) {
+    const current = getVal(id);
+    const max     = getMax(id);
+    window.setVal(id, clamp(current + delta, 0, max));
+    // Trigger score recalc based on which subject
+    if (id.startsWith('calc')) calcScore();
+    else if (id.startsWith('eng')) engScore();
+    else if (id.startsWith('ush')) ushScore();
+    else if (id.startsWith('bio')) bioScore();
+    else if (id.startsWith('psych')) psychScore();
+  };
 
   function verdict(score) {
-    const map = {
-      5: { text:'Extremely well qualified 🎉', bg:'#F0FDF4', border:'#BBF7D0', color:'#166534' },
-      4: { text:'Well qualified ✓', bg:'#EFF6FF', border:'#BFDBFE', color:'#1D4ED8' },
-      3: { text:'Qualified — passing score', bg:'#FFFBEB', border:'#FDE68A', color:'#92400E' },
-      2: { text:'Possibly qualified', bg:'#FFF7ED', border:'#FED7AA', color:'#9A3412' },
-      1: { text:'No recommendation', bg:'#FEF2F2', border:'#FECACA', color:'#991B1B' },
+    const m = {
+      5:{t:'Extremely well qualified 🎉',bg:'#F0FDF4',border:'#BBF7D0',color:'#166534'},
+      4:{t:'Well qualified ✓',bg:'#EFF6FF',border:'#BFDBFE',color:'#1D4ED8'},
+      3:{t:'Qualified — passing',bg:'#FFFBEB',border:'#FDE68A',color:'#92400E'},
+      2:{t:'Possibly qualified',bg:'#FFF7ED',border:'#FED7AA',color:'#9A3412'},
+      1:{t:'No recommendation',bg:'#FEF2F2',border:'#FECACA',color:'#991B1B'},
     };
-    return map[score] || { text:'Enter your scores above', bg:'#F3F4F6', border:'#E5E7EB', color:'#6B7280' };
+    return m[score]||{t:'',bg:'',border:'',color:''};
   }
 
-  function displayScore(prefix, apScore) {
-    const scoreEl = document.getElementById(`${prefix}-score`);
-    const barEl   = document.getElementById(`${prefix}-bar`);
-    const verdEl  = document.getElementById(`${prefix}-verdict`);
+  function display(prefix, apScore, composite, maxComposite) {
+    const scoreEl   = document.getElementById(`${prefix}-score`);
+    const barEl     = document.getElementById(`${prefix}-bar`);
+    const verdEl    = document.getElementById(`${prefix}-verdict`);
+    const compEl    = document.getElementById(`${prefix}-composite`);
     if (!scoreEl) return;
-    scoreEl.textContent = apScore || '–';
-    barEl.style.width = apScore ? `${(apScore / 5) * 100}%` : '0%';
-    if (apScore) {
-      const v = verdict(apScore);
-      verdEl.textContent = v.text;
-      verdEl.style.background = v.bg;
-      verdEl.style.border = `1px solid ${v.border}`;
-      verdEl.style.color = v.color;
-    } else {
-      verdEl.textContent = '';
-      verdEl.style.background = '';
-    }
+    scoreEl.textContent = apScore;
+    barEl.style.width   = `${(apScore/5)*100}%`;
+    const v = verdict(apScore);
+    verdEl.textContent  = v.t;
+    verdEl.style.cssText = `background:${v.bg};border:1px solid ${v.border};color:${v.color}`;
+    if (compEl) compEl.textContent = `Raw composite: ${Math.round(composite)} / ${maxComposite}`;
   }
 
-  // ── CALCULUS AB ──
-  // Build FRQ inputs dynamically
-  (function buildCalcFRQ() {
-    const container = document.getElementById('calc-frq-inputs');
-    if (!container) return;
-    for (let i = 0; i < 6; i++) {
-      container.innerHTML += `
-        <div class="input-row">
-          <div class="input-label">FRQ ${i+1} score (0–9)</div>
-          <div class="input-wrap">
-            <input type="number" id="calc-frq-${i}" min="0" max="9" value="0" oninput="calcScore()">
-            <input type="range" min="0" max="9" value="0" oninput="sync('calc-frq-${i}',this.value);calcScore()">
-            <div class="input-max">/ 9</div>
-          </div>
-        </div>`;
-    }
-  })();
+  window.resetCalc = function(prefix) {
+    document.querySelectorAll(`#panel-${prefix} input[type="range"]`).forEach(r => {
+      const id  = r.id.replace('-range','');
+      const max = Number(r.max);
+      const half = Math.round(max/2);
+      r.value = half;
+      const d = document.getElementById(`${id}-display`);
+      if (d) d.textContent = half;
+    });
+    if (prefix==='calc') calcScore();
+    else if (prefix==='eng') engScore();
+    else if (prefix==='ush') ushScore();
+    else if (prefix==='bio') bioScore();
+    else if (prefix==='psych') psychScore();
+  };
+
+  // ── CALCULATORS ──
 
   window.calcScore = function() {
-    const mcq = clamp(document.getElementById('calc-mcq')?.value, 0, 45);
-    let frqTotal = 0;
-    for (let i = 0; i < 6; i++) {
-      frqTotal += clamp(document.getElementById(`calc-frq-${i}`)?.value, 0, 9);
-    }
-    // Composite: MCQ (1.0000 × correct) + FRQ (1.0000 × points), max ~45+54=99
-    const composite = (mcq * 1.0) + (frqTotal * 1.0);
-    const apScore = composite >= 76 ? 5 : composite >= 58 ? 4 : composite >= 40 ? 3 : composite >= 27 ? 2 : 1;
-    displayScore('calc', apScore);
-    const frqArr = Array.from({length:6}, (_,i) => clamp(document.getElementById(`calc-frq-${i}`)?.value,0,9));
-    saveScores('calc', { calc_mcq: mcq, calc_frq: frqArr });
-  };
-  window.resetCalc = function(prefix) {
-    document.querySelectorAll(`#panel-${prefix} input`).forEach(el => { el.value = 0; });
-    displayScore(prefix, null);
+    const mcq = getVal('calc-mcq-a') + getVal('calc-mcq-b');
+    const frq = getVal('calc-frq-1') + getVal('calc-frq-2') + getVal('calc-frq-3') +
+                getVal('calc-frq-4') + getVal('calc-frq-5') + getVal('calc-frq-6');
+    const composite = mcq + frq; // max 45+54=99
+    const score = composite>=76?5:composite>=58?4:composite>=40?3:composite>=27?2:1;
+    display('calc', score, composite, 99);
+    saveScores('calc', {
+      calc_mcq_a:getVal('calc-mcq-a'), calc_mcq_b:getVal('calc-mcq-b'),
+      calc_frq_1:getVal('calc-frq-1'), calc_frq_2:getVal('calc-frq-2'),
+      calc_frq_3:getVal('calc-frq-3'), calc_frq_4:getVal('calc-frq-4'),
+      calc_frq_5:getVal('calc-frq-5'), calc_frq_6:getVal('calc-frq-6'),
+    });
   };
 
-  // ── ENGLISH LANGUAGE ──
   window.engScore = function() {
-    const mcq   = clamp(document.getElementById('eng-mcq')?.value, 0, 45);
-    const synth = clamp(document.getElementById('eng-synth')?.value, 0, 6);
-    const rheto = clamp(document.getElementById('eng-rheto')?.value, 0, 6);
-    const arg   = clamp(document.getElementById('eng-arg')?.value, 0, 6);
-    // Weighted composite out of ~150
-    const composite = (mcq / 45 * 67.5) + (synth / 6 * 27.5) + (rheto / 6 * 27.5) + (arg / 6 * 27.5);
-    const apScore = composite >= 114 ? 5 : composite >= 98 ? 4 : composite >= 81 ? 3 : composite >= 58 ? 2 : 1;
-    displayScore('eng', apScore);
-    saveScores('eng', { eng_mcq: mcq, eng_synth: synth, eng_rheto: rheto, eng_arg: arg });
+    const mcq   = getVal('eng-mcq-1') + getVal('eng-mcq-2');
+    const essays = getVal('eng-synth') + getVal('eng-rheto') + getVal('eng-arg');
+    const composite = (mcq/45*67.5) + (essays/18*82.5);
+    const score = composite>=114?5:composite>=98?4:composite>=81?3:composite>=58?2:1;
+    display('eng', score, Math.round(composite), 150);
+    saveScores('eng', {
+      eng_mcq_1:getVal('eng-mcq-1'), eng_mcq_2:getVal('eng-mcq-2'),
+      eng_synth:getVal('eng-synth'), eng_rheto:getVal('eng-rheto'), eng_arg:getVal('eng-arg'),
+    });
   };
 
-  // ── US HISTORY ──
   window.ushScore = function() {
-    const mcq = clamp(document.getElementById('ush-mcq')?.value, 0, 55);
-    const saq = clamp(document.getElementById('ush-saq')?.value, 0, 9);
-    const dbq = clamp(document.getElementById('ush-dbq')?.value, 0, 7);
-    const leq = clamp(document.getElementById('ush-leq')?.value, 0, 6);
-    // Weighted out of ~150
-    const composite = (mcq/55*60) + (saq/9*30) + (dbq/7*37.5) + (leq/6*22.5);
-    const apScore = composite >= 108 ? 5 : composite >= 90 ? 4 : composite >= 65 ? 3 : composite >= 44 ? 2 : 1;
-    displayScore('ush', apScore);
-    saveScores('ush', { ush_mcq: mcq, ush_saq: saq, ush_dbq: dbq, ush_leq: leq });
+    const mcq = getVal('ush-mcq-1')+getVal('ush-mcq-2')+getVal('ush-mcq-3');
+    const saq = getVal('ush-saq-1')+getVal('ush-saq-2')+getVal('ush-saq-3');
+    const dbq = getVal('ush-dbq-thesis')+getVal('ush-dbq-context')+getVal('ush-dbq-evidence')+
+                getVal('ush-dbq-outside')+getVal('ush-dbq-sourcing')+getVal('ush-dbq-complex');
+    const leq = getVal('ush-leq-thesis')+getVal('ush-leq-context')+
+                getVal('ush-leq-evidence')+getVal('ush-leq-analysis');
+    const composite = (mcq/55*60)+(saq/9*30)+(dbq/7*37.5)+(leq/6*22.5);
+    const score = composite>=108?5:composite>=90?4:composite>=65?3:composite>=44?2:1;
+    display('ush', score, Math.round(composite), 150);
+    saveScores('ush', {
+      ush_mcq_1:getVal('ush-mcq-1'), ush_mcq_2:getVal('ush-mcq-2'), ush_mcq_3:getVal('ush-mcq-3'),
+      ush_saq_1:getVal('ush-saq-1'), ush_saq_2:getVal('ush-saq-2'), ush_saq_3:getVal('ush-saq-3'),
+      ush_dbq_thesis:getVal('ush-dbq-thesis'), ush_dbq_context:getVal('ush-dbq-context'),
+      ush_dbq_evidence:getVal('ush-dbq-evidence'), ush_dbq_outside:getVal('ush-dbq-outside'),
+      ush_dbq_sourcing:getVal('ush-dbq-sourcing'), ush_dbq_complex:getVal('ush-dbq-complex'),
+      ush_leq_thesis:getVal('ush-leq-thesis'), ush_leq_context:getVal('ush-leq-context'),
+      ush_leq_evidence:getVal('ush-leq-evidence'), ush_leq_analysis:getVal('ush-leq-analysis'),
+    });
   };
 
-  // ── BIOLOGY ──
   window.bioScore = function() {
-    const mcq  = clamp(document.getElementById('bio-mcq')?.value, 0, 50);
-    const grid = clamp(document.getElementById('bio-grid')?.value, 0, 6);
-    const frq1 = clamp(document.getElementById('bio-frq1')?.value, 0, 10);
-    const frq2 = clamp(document.getElementById('bio-frq2')?.value, 0, 10);
-    const sfrq = clamp(document.getElementById('bio-sfrq')?.value, 0, 16);
-    const composite = ((mcq + grid) / 56 * 69) + ((frq1 + frq2 + sfrq) / 36 * 69);
-    const apScore = composite >= 109 ? 5 : composite >= 90 ? 4 : composite >= 65 ? 3 : composite >= 44 ? 2 : 1;
-    displayScore('bio', apScore);
-    saveScores('bio', { bio_mcq: mcq, bio_grid: grid, bio_frq1: frq1, bio_frq2: frq2, bio_sfrq: sfrq });
+    const mcq  = getVal('bio-mcq-a')+getVal('bio-mcq-b')+getVal('bio-gridin');
+    const frq  = getVal('bio-frq1')+getVal('bio-frq2')+
+                 getVal('bio-sfrq1')+getVal('bio-sfrq2')+getVal('bio-sfrq3')+getVal('bio-sfrq4');
+    const composite = (mcq/56*69)+(frq/36*69);
+    const score = composite>=109?5:composite>=90?4:composite>=65?3:composite>=44?2:1;
+    display('bio', score, Math.round(composite), 138);
+    saveScores('bio', {
+      bio_mcq_a:getVal('bio-mcq-a'), bio_mcq_b:getVal('bio-mcq-b'), bio_gridin:getVal('bio-gridin'),
+      bio_frq1:getVal('bio-frq1'), bio_frq2:getVal('bio-frq2'),
+      bio_sfrq1:getVal('bio-sfrq1'), bio_sfrq2:getVal('bio-sfrq2'),
+      bio_sfrq3:getVal('bio-sfrq3'), bio_sfrq4:getVal('bio-sfrq4'),
+    });
   };
 
-  // ── PSYCHOLOGY ──
   window.psychScore = function() {
-    const mcq  = clamp(document.getElementById('psych-mcq')?.value, 0, 100);
-    const frq1 = clamp(document.getElementById('psych-frq1')?.value, 0, 7);
-    const frq2 = clamp(document.getElementById('psych-frq2')?.value, 0, 8);
-    const composite = (mcq / 100 * 100) + ((frq1 + frq2) / 15 * 50);
-    const apScore = composite >= 113 ? 5 : composite >= 93 ? 4 : composite >= 72 ? 3 : composite >= 52 ? 2 : 1;
-    displayScore('psych', apScore);
-    saveScores('psych', { psych_mcq: mcq, psych_frq1: frq1, psych_frq2: frq2 });
+    const mcq  = getVal('psych-mcq-1')+getVal('psych-mcq-2')+getVal('psych-mcq-3');
+    const frq  = getVal('psych-frq1')+getVal('psych-frq2');
+    const composite = (mcq/100*100)+((frq/15)*50);
+    const score = composite>=113?5:composite>=93?4:composite>=72?3:composite>=52?2:1;
+    display('psych', score, Math.round(composite), 150);
+    saveScores('psych', {
+      psych_mcq_1:getVal('psych-mcq-1'), psych_mcq_2:getVal('psych-mcq-2'),
+      psych_mcq_3:getVal('psych-mcq-3'),
+      psych_frq1:getVal('psych-frq1'), psych_frq2:getVal('psych-frq2'),
+    });
   };
 
-  // ── NAV ──
+  // ── NAV / SUBJECT SWITCHING ──
   window.showCalc = function(key) {
-    const validKeys = ['calc','eng','ush','bio','psych'];
-    if (!validKeys.includes(key)) key = 'calc';
+    const keys = ['calc','eng','ush','bio','psych'];
+    if (!keys.includes(key)) key = 'calc';
     document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.subject-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`panel-${key}`).classList.add('active');
     document.getElementById(`nav-${key}`).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top:0, behavior:'smooth' });
   };
 
-  // Read ?subject= URL param from homepage subject card links
+  // Read ?subject= URL param
   (function() {
-    const params  = new URLSearchParams(window.location.search);
-    const subject = params.get('subject');
-    if (subject) window.showCalc(subject);
+    const p = new URLSearchParams(window.location.search).get('subject');
+    if (p) window.showCalc(p);
   })();
+
+  // Run initial calculations (sliders start at 50%)
+  calcScore(); engScore(); ushScore(); bioScore(); psychScore();
 </script>
 
 </body>

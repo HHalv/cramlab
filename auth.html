@@ -263,8 +263,8 @@
     // ─────────────────────────────────────────────────────────────
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-             GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail,
-             updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+             GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult,
+             sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, serverTimestamp }
              from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { firebaseConfig } from "./firebase-config.js";
@@ -366,14 +366,37 @@
       }
     };
 
+    // Handle redirect result when returning from Google sign-in
+    getRedirectResult(auth).then(async (result) => {
+      if (result && result.user) {
+        await createUserDoc(result.user, result.user.displayName);
+        onSuccess();
+      }
+    }).catch((e) => {
+      if (e.code && e.code !== 'auth/no-current-user') {
+        showError('Google sign-in failed. Please try again.');
+      }
+    });
+
     window.signInGoogle = async function() {
       clearError();
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
       try {
+        // Try popup first (works in most browsers on desktop)
         const result = await signInWithPopup(auth, googleProvider);
         await createUserDoc(result.user, result.user.displayName);
         onSuccess();
       } catch(e) {
-        if (e.code !== 'auth/popup-closed-by-user') {
+        if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user' ||
+            e.code === 'auth/cancelled-popup-request') {
+          // Popup was blocked (common on mobile/GitHub Pages) — fall back to redirect
+          try {
+            await signInWithRedirect(auth, googleProvider);
+            // Page will redirect to Google then come back — result handled by getRedirectResult above
+          } catch(redirectErr) {
+            showError('Google sign-in failed. Please try again or use email/password.');
+          }
+        } else if (e.code !== 'auth/popup-closed-by-user') {
           showError('Google sign-in failed. Please try again.');
         }
       }
