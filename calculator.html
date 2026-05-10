@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — Score Calculators</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-50:#EFF6FF; --blue-100:#DBEAFE; --blue-200:#BFDBFE;
+      --blue-500:#3B82F6; --blue-600:#2563EB; --blue-700:#1D4ED8;
+      --gray-50:#F9FAFB; --gray-100:#F3F4F6; --gray-200:#E5E7EB;
+      --gray-300:#D1D5DB; --gray-400:#9CA3AF; --gray-500:#6B7280;
+      --gray-700:#374151; --gray-900:#111827; --white:#FFFFFF;
+      --green-50:#F0FDF4; --green-200:#BBF7D0; --green-700:#15803D;
+      --amber-50:#FFFBEB; --amber-200:#FDE68A; --amber-700:#B45309;
+      --red-50:#FEF2F2; --red-200:#FECACA; --red-700:#B91C1C;
+      --radius:12px; --radius-sm:8px;
+      --shadow-sm:0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md:0 4px 16px rgba(0,0,0,0.08);
+    }
+    body { font-family:'DM Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); -webkit-font-smoothing:antialiased; }
+
+    /* NAV */
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(255,255,255,0.92); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--gray-200);
+      padding:0 5%; height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
+    .logo-icon { width:34px; height:34px; background:var(--blue-600); border-radius:9px; display:flex; align-items:center; justify-content:center; }
+    .logo-icon svg { width:18px; height:18px; }
+    .logo-text { font-size:18px; font-weight:600; color:var(--gray-900); letter-spacing:-0.3px; }
+    .logo-text span { color:var(--blue-600); }
+    .nav-right { display:flex; align-items:center; gap:16px; }
+    .nav-user { font-size:14px; color:var(--gray-500); }
+    .nav-user strong { color:var(--gray-900); }
+    .btn-nav { font-size:13px; font-weight:500; padding:7px 16px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); cursor:pointer; text-decoration:none; font-family:'DM Sans',sans-serif; transition:background 0.2s; }
+    .btn-nav:hover { background:var(--gray-100); }
+    .btn-nav.primary { background:var(--blue-600); color:var(--white); border-color:var(--blue-600); }
+    .btn-nav.primary:hover { background:var(--blue-700); }
+
+    /* LAYOUT */
+    .page { max-width:1100px; margin:0 auto; padding:48px 5% 80px; display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:start; }
+
+    /* SIDEBAR */
+    .sidebar { position:sticky; top:84px; }
+    .sidebar-title { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--gray-400); padding:0 12px 10px; }
+    .subject-nav { display:flex; flex-direction:column; gap:2px; }
+    .subject-nav-btn {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:var(--radius-sm);
+      border:none; background:none; cursor:pointer;
+      font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
+      color:var(--gray-500); text-align:left; width:100%;
+      transition:background 0.15s, color 0.15s;
+    }
+    .subject-nav-btn:hover { background:var(--gray-100); color:var(--gray-900); }
+    .subject-nav-btn.active { background:var(--blue-50); color:var(--blue-700); }
+    .subject-nav-btn .emoji { font-size:18px; width:28px; text-align:center; }
+    .saved-tag { font-size:10px; background:var(--green-50); color:var(--green-700); border:1px solid var(--green-200); padding:2px 6px; border-radius:100px; margin-left:auto; }
+
+    /* CALCULATOR PANEL */
+    .calc-panel { display:none; }
+    .calc-panel.active { display:block; }
+
+    .calc-header { margin-bottom:32px; }
+    .calc-header-top { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+    .calc-emoji { font-size:32px; }
+    .calc-title { font-family:'Instrument Serif',serif; font-size:32px; font-weight:400; line-height:1.1; }
+    .calc-subtitle { font-size:15px; color:var(--gray-500); line-height:1.6; }
+
+    /* SCORE RESULT */
+    .score-result-bar {
+      background:var(--white); border:1px solid var(--gray-200);
+      border-radius:16px; padding:28px; margin-bottom:28px;
+      display:flex; align-items:center; gap:32px;
+    }
+    .big-score {
+      font-family:'Instrument Serif',serif; font-size:80px; line-height:1;
+      color:var(--blue-600); min-width:80px; text-align:center;
+    }
+    .score-details { flex:1; }
+    .score-label { font-size:13px; color:var(--gray-500); margin-bottom:6px; }
+    .score-progress-wrap { background:var(--gray-100); border-radius:100px; height:10px; margin-bottom:10px; overflow:hidden; }
+    .score-progress-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue-600),var(--blue-400)); transition:width 0.8s cubic-bezier(.16,1,.3,1); }
+    .score-bands { display:flex; justify-content:space-between; font-size:11px; color:var(--gray-400); }
+    .score-verdict {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:13px; font-weight:500; padding:5px 12px;
+      border-radius:100px; margin-top:10px;
+    }
+
+    /* SECTIONS */
+    .sections-grid { display:flex; flex-direction:column; gap:20px; }
+    .section-card {
+      background:var(--white); border:1px solid var(--gray-200);
+      border-radius:var(--radius); overflow:hidden;
+    }
+    .section-card-header {
+      padding:18px 22px 14px;
+      border-bottom:1px solid var(--gray-100);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    }
+    .section-name { font-size:15px; font-weight:600; color:var(--gray-900); margin-bottom:4px; }
+    .section-desc { font-size:13px; color:var(--gray-500); line-height:1.5; max-width:480px; }
+    .section-weight {
+      font-size:12px; font-weight:500; padding:4px 10px;
+      background:var(--blue-50); color:var(--blue-700);
+      border:1px solid var(--blue-100); border-radius:100px; white-space:nowrap; flex-shrink:0;
+    }
+    .section-card-body { padding:18px 22px; }
+
+    .input-row { display:flex; align-items:center; gap:16px; margin-bottom:14px; }
+    .input-label { font-size:13px; color:var(--gray-700); font-weight:500; min-width:160px; }
+    .input-wrap { display:flex; align-items:center; gap:10px; flex:1; }
+    input[type="number"] {
+      width:80px; padding:8px 12px;
+      border:1px solid var(--gray-300); border-radius:var(--radius-sm);
+      font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
+      color:var(--gray-900); text-align:center; outline:none;
+      transition:border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="number"]:focus { border-color:var(--blue-500); box-shadow:0 0 0 3px rgba(59,130,246,0.12); }
+    .input-max { font-size:12px; color:var(--gray-400); }
+
+    input[type="range"] {
+      flex:1; accent-color:var(--blue-600); cursor:pointer;
+    }
+    .subscore-display {
+      font-size:13px; font-weight:600; color:var(--blue-600);
+      min-width:60px; text-align:right;
+    }
+
+    .tip-box {
+      background:var(--blue-50); border-left:3px solid var(--blue-500);
+      border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+      padding:12px 16px; margin-top:14px;
+      font-size:13px; color:var(--blue-700); line-height:1.6;
+    }
+    .tip-box strong { font-weight:600; }
+
+    .calc-actions { display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
+    .btn-calc {
+      padding:12px 24px; border-radius:var(--radius-sm);
+      font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
+      cursor:pointer; border:none; transition:background 0.2s, transform 0.15s;
+    }
+    .btn-calc:hover { transform:translateY(-1px); }
+    .btn-calc.primary { background:var(--blue-600); color:var(--white); }
+    .btn-calc.primary:hover { background:var(--blue-700); }
+    .btn-calc.secondary { background:var(--white); color:var(--gray-700); border:1px solid var(--gray-200); }
+    .btn-calc.secondary:hover { border-color:var(--gray-400); }
+    .save-status { font-size:13px; color:var(--green-700); display:flex; align-items:center; gap:6px; }
+
+    /* SCORING INFO TABLE */
+    .scoring-table { width:100%; border-collapse:collapse; margin-top:20px; font-size:13px; }
+    .scoring-table th { background:var(--gray-50); padding:10px 14px; text-align:left; font-weight:600; color:var(--gray-700); border-bottom:2px solid var(--gray-200); }
+    .scoring-table td { padding:10px 14px; border-bottom:1px solid var(--gray-100); color:var(--gray-600); }
+    .scoring-table tr:last-child td { border-bottom:none; }
+    .score-pill-5 { background:#F0FDF4; color:#166534; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
+    .score-pill-4 { background:#EFF6FF; color:#1D4ED8; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
+    .score-pill-3 { background:#FFFBEB; color:#92400E; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
+    .score-pill-2 { background:#FFF7ED; color:#9A3412; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
+    .score-pill-1 { background:#FEF2F2; color:#991B1B; padding:2px 10px; border-radius:100px; font-weight:600; font-size:12px; }
+
+    @media(max-width:768px){
+      .page { grid-template-columns:1fr; }
+      .sidebar { position:static; }
+      .subject-nav { flex-direction:row; flex-wrap:wrap; }
+      .score-result-bar { flex-direction:column; gap:16px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity="0.9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg>
+    </div>
+    <span class="logo-text">Cram<span>Lab</span></span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-user-display"></span>
+    <a href="auth.html" class="btn-nav primary" id="nav-login-btn">Sign In</a>
+    <button class="btn-nav" id="nav-logout-btn" style="display:none" onclick="signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">AP Subjects</div>
+    <div class="subject-nav">
+      <button class="subject-nav-btn active" onclick="showCalc('calc')" id="nav-calc">
+        <span class="emoji">📐</span> Calculus AB
+      </button>
+      <button class="subject-nav-btn" onclick="showCalc('eng')" id="nav-eng">
+        <span class="emoji">✍️</span> English Lang
+      </button>
+      <button class="subject-nav-btn" onclick="showCalc('ush')" id="nav-ush">
+        <span class="emoji">🏛️</span> US History
+      </button>
+      <button class="subject-nav-btn" onclick="showCalc('bio')" id="nav-bio">
+        <span class="emoji">🧬</span> Biology
+      </button>
+      <button class="subject-nav-btn" onclick="showCalc('psych')" id="nav-psych">
+        <span class="emoji">🧠</span> Psychology
+      </button>
+    </div>
+
+    <div style="margin-top:28px; padding:16px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-sm);">
+      <div style="font-size:12px; font-weight:600; color:var(--gray-700); margin-bottom:6px;">How scores work</div>
+      <div style="font-size:12px; color:var(--gray-500); line-height:1.6;">AP scores range from 1–5. A 3 is considered passing. Many colleges accept scores of 4 or 5 for credit.</div>
+      <table class="scoring-table" style="margin-top:12px;">
+        <tr><td><span class="score-pill-5">5</span></td><td>Extremely well qualified</td></tr>
+        <tr><td><span class="score-pill-4">4</span></td><td>Well qualified</td></tr>
+        <tr><td><span class="score-pill-3">3</span></td><td>Qualified</td></tr>
+        <tr><td><span class="score-pill-2">2</span></td><td>Possibly qualified</td></tr>
+        <tr><td><span class="score-pill-1">1</span></td><td>No recommendation</td></tr>
+      </table>
+    </div>
+  </aside>
+
+  <!-- CALCULATORS -->
+  <main>
+
+    <!-- ── AP CALCULUS AB ── -->
+    <div class="calc-panel active" id="panel-calc">
+      <div class="calc-header">
+        <div class="calc-header-top">
+          <div class="calc-emoji">📐</div>
+          <div class="calc-title">AP Calculus AB</div>
+        </div>
+        <div class="calc-subtitle">Enter your scores for each section below. The calculator uses real College Board composite scoring to predict your final 1–5 score.</div>
+      </div>
+
+      <div class="score-result-bar">
+        <div class="big-score" id="calc-score">–</div>
+        <div class="score-details">
+          <div class="score-label">Predicted AP Score</div>
+          <div class="score-progress-wrap"><div class="score-progress-fill" id="calc-bar" style="width:0%"></div></div>
+          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="score-verdict" id="calc-verdict"></div>
+        </div>
+      </div>
+
+      <div class="sections-grid">
+        <!-- Section 1: MCQ -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section I — Multiple Choice (MCQ)</div>
+              <div class="section-desc">45 questions, 105 minutes. Part A (30 questions, no calculator) and Part B (15 questions, graphing calculator required). Tests limits, derivatives, integrals, and applications.</div>
+            </div>
+            <div class="section-weight">50% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Questions correct</div>
+              <div class="input-wrap">
+                <input type="number" id="calc-mcq" min="0" max="45" value="0" oninput="calcScore()">
+                <input type="range" min="0" max="45" value="0" oninput="sync('calc-mcq',this.value);calcScore()">
+                <div class="input-max">/ 45</div>
+              </div>
+            </div>
+            <div class="tip-box">
+              <strong>Tip:</strong> Each correct answer is worth 1 point. There is no penalty for wrong answers on the MCQ — always guess if unsure. Part A counts for 33% and Part B for 17% of your total score.
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: FRQ -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section II — Free Response (FRQ)</div>
+              <div class="section-desc">6 questions, 90 minutes. Part A (2 problems, graphing calculator required) and Part B (4 problems, no calculator). Graded on a 0–9 scale per question.</div>
+            </div>
+            <div class="section-weight">50% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div id="calc-frq-inputs"></div>
+            <div class="tip-box">
+              <strong>Tip:</strong> Each FRQ is worth 9 points. Show all work clearly — partial credit is awarded even if your final answer is wrong. Graders look for correct setup, correct calculus, and correct answer with units.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn-calc primary" onclick="calcScore()">Calculate My Score</button>
+        <button class="btn-calc secondary" onclick="resetCalc('calc')">Reset</button>
+        <span class="save-status" id="calc-save-status"></span>
+      </div>
+    </div>
+
+    <!-- ── AP ENGLISH LANGUAGE ── -->
+    <div class="calc-panel" id="panel-eng">
+      <div class="calc-header">
+        <div class="calc-header-top">
+          <div class="calc-emoji">✍️</div>
+          <div class="calc-title">AP English Language & Composition</div>
+        </div>
+        <div class="calc-subtitle">The exam tests rhetorical analysis, argument writing, and synthesis. Enter your scores for each section to predict your final 1–5 score.</div>
+      </div>
+
+      <div class="score-result-bar">
+        <div class="big-score" id="eng-score">–</div>
+        <div class="score-details">
+          <div class="score-label">Predicted AP Score</div>
+          <div class="score-progress-wrap"><div class="score-progress-fill" id="eng-bar" style="width:0%"></div></div>
+          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="score-verdict" id="eng-verdict"></div>
+        </div>
+      </div>
+
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section I — Multiple Choice</div>
+              <div class="section-desc">45 questions, 60 minutes. Tests your ability to read and analyze nonfiction prose passages for rhetorical strategies, purpose, and argumentation.</div>
+            </div>
+            <div class="section-weight">45% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Questions correct</div>
+              <div class="input-wrap">
+                <input type="number" id="eng-mcq" min="0" max="45" value="0" oninput="engScore()">
+                <input type="range" min="0" max="45" value="0" oninput="sync('eng-mcq',this.value);engScore()">
+                <div class="input-max">/ 45</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> Focus on identifying the author's rhetorical choices and their effects. Questions often ask about tone, diction, structure, and purpose. No penalty for guessing.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Essay 1 — Synthesis</div>
+              <div class="section-desc">45 minutes. Read 6–7 sources and write an argument that synthesizes at least 3 of them. Tests your ability to use evidence from multiple sources to support a position.</div>
+            </div>
+            <div class="section-weight">~18% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Essay score (0–6)</div>
+              <div class="input-wrap">
+                <input type="number" id="eng-synth" min="0" max="6" value="0" oninput="engScore()">
+                <input type="range" min="0" max="6" value="0" oninput="sync('eng-synth',this.value);engScore()">
+                <div class="input-max">/ 6</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Scoring rubric:</strong> 6 = effective argument with skillful use of sources; 5 = generally effective; 4 = adequate; 3 = inadequate but shows some skill; 2 = little success; 1 = little or no skill.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Essay 2 — Rhetorical Analysis</div>
+              <div class="section-desc">40 minutes. Read a non-fiction passage and write an essay analyzing how the author's rhetorical choices contribute to their argument or purpose.</div>
+            </div>
+            <div class="section-weight">~18% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Essay score (0–6)</div>
+              <div class="input-wrap">
+                <input type="number" id="eng-rheto" min="0" max="6" value="0" oninput="engScore()">
+                <input type="range" min="0" max="6" value="0" oninput="sync('eng-rheto',this.value);engScore()">
+                <div class="input-max">/ 6</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> Name specific rhetorical devices (ethos, pathos, logos, anaphora, etc.) and always connect them back to the author's purpose. Don't just identify — explain the effect.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Essay 3 — Argument</div>
+              <div class="section-desc">40 minutes. Develop and support your own argument in response to a provided prompt. You may draw on any appropriate evidence — no sources are given.</div>
+            </div>
+            <div class="section-weight">~18% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Essay score (0–6)</div>
+              <div class="input-wrap">
+                <input type="number" id="eng-arg" min="0" max="6" value="0" oninput="engScore()">
+                <input type="range" min="0" max="6" value="0" oninput="sync('eng-arg',this.value);engScore()">
+                <div class="input-max">/ 6</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> A strong argument essay has a clear, defensible thesis, specific and relevant evidence, and clear reasoning connecting evidence to your claim. Complexity (acknowledging counterarguments) earns you the top score.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn-calc primary" onclick="engScore()">Calculate My Score</button>
+        <button class="btn-calc secondary" onclick="resetCalc('eng')">Reset</button>
+        <span class="save-status" id="eng-save-status"></span>
+      </div>
+    </div>
+
+    <!-- ── AP US HISTORY ── -->
+    <div class="calc-panel" id="panel-ush">
+      <div class="calc-header">
+        <div class="calc-header-top">
+          <div class="calc-emoji">🏛️</div>
+          <div class="calc-title">AP US History (APUSH)</div>
+        </div>
+        <div class="calc-subtitle">APUSH tests historical thinking skills across four time periods. Enter your scores below to predict your final 1–5 score.</div>
+      </div>
+
+      <div class="score-result-bar">
+        <div class="big-score" id="ush-score">–</div>
+        <div class="score-details">
+          <div class="score-label">Predicted AP Score</div>
+          <div class="score-progress-wrap"><div class="score-progress-fill" id="ush-bar" style="width:0%"></div></div>
+          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="score-verdict" id="ush-verdict"></div>
+        </div>
+      </div>
+
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section I Part A — Multiple Choice</div>
+              <div class="section-desc">55 questions, 55 minutes. Questions are grouped in sets of 3–4 around primary/secondary source excerpts, images, maps, or charts.</div>
+            </div>
+            <div class="section-weight">40% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Questions correct</div>
+              <div class="input-wrap">
+                <input type="number" id="ush-mcq" min="0" max="55" value="0" oninput="ushScore()">
+                <input type="range" min="0" max="55" value="0" oninput="sync('ush-mcq',this.value);ushScore()">
+                <div class="input-max">/ 55</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> Questions are based on historical thinking skills: causation, continuity, comparison, and contextualization. Practice reading primary sources critically. No penalty for wrong answers.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section I Part B — Short Answer (SAQ)</div>
+              <div class="section-desc">3 of 4 questions answered, 40 minutes. Each SAQ has 3 parts (a, b, c) worth 1 point each. You describe, explain, or evaluate historical events and arguments.</div>
+            </div>
+            <div class="section-weight">20% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">SAQ total points</div>
+              <div class="input-wrap">
+                <input type="number" id="ush-saq" min="0" max="9" value="0" oninput="ushScore()">
+                <input type="range" min="0" max="9" value="0" oninput="sync('ush-saq',this.value);ushScore()">
+                <div class="input-max">/ 9</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> SAQs do NOT require a thesis. Answer each part (a, b, c) directly and specifically. Use concrete historical evidence. Aim for 3–5 sentences per part.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section II Part A — DBQ (Document-Based Question)</div>
+              <div class="section-desc">60 minutes (includes 15-min reading). Analyze 7 documents and write a historically defensible essay. Tests sourcing, contextualization, and argument complexity.</div>
+            </div>
+            <div class="section-weight">25% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">DBQ score (0–7)</div>
+              <div class="input-wrap">
+                <input type="number" id="ush-dbq" min="0" max="7" value="0" oninput="ushScore()">
+                <input type="range" min="0" max="7" value="0" oninput="sync('ush-dbq',this.value);ushScore()">
+                <div class="input-max">/ 7</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>DBQ rubric breakdown:</strong> Thesis (1pt) + Contextualization (1pt) + Evidence — document use (2pts) + Evidence — outside evidence (1pt) + Analysis & Reasoning — sourcing (1pt) + Complexity (1pt). Don't skip contextualization — it's an easy point students miss.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section II Part B — LEQ (Long Essay Question)</div>
+              <div class="section-desc">40 minutes. Choose 1 of 3 prompts and write a historical argument essay using specific evidence. Tests causation, continuity and change, or comparison.</div>
+            </div>
+            <div class="section-weight">15% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">LEQ score (0–6)</div>
+              <div class="input-wrap">
+                <input type="number" id="ush-leq" min="0" max="6" value="0" oninput="ushScore()">
+                <input type="range" min="0" max="6" value="0" oninput="sync('ush-leq',this.value);ushScore()">
+                <div class="input-max">/ 6</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>LEQ rubric:</strong> Thesis (1pt) + Contextualization (1pt) + Evidence (2pts) + Analysis & Reasoning (2pts). Your thesis must make a historically defensible claim and establish a line of reasoning — not just restate the prompt.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn-calc primary" onclick="ushScore()">Calculate My Score</button>
+        <button class="btn-calc secondary" onclick="resetCalc('ush')">Reset</button>
+        <span class="save-status" id="ush-save-status"></span>
+      </div>
+    </div>
+
+    <!-- ── AP BIOLOGY ── -->
+    <div class="calc-panel" id="panel-bio">
+      <div class="calc-header">
+        <div class="calc-header-top">
+          <div class="calc-emoji">🧬</div>
+          <div class="calc-title">AP Biology</div>
+        </div>
+        <div class="calc-subtitle">AP Bio covers four Big Ideas: evolution, cellular processes, genetics, and ecology. Enter your scores to predict your final 1–5.</div>
+      </div>
+
+      <div class="score-result-bar">
+        <div class="big-score" id="bio-score">–</div>
+        <div class="score-details">
+          <div class="score-label">Predicted AP Score</div>
+          <div class="score-progress-wrap"><div class="score-progress-fill" id="bio-bar" style="width:0%"></div></div>
+          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="score-verdict" id="bio-verdict"></div>
+        </div>
+      </div>
+
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section I — Multiple Choice & Grid-In</div>
+              <div class="section-desc">60 questions, 90 minutes. Includes 50 MCQs (many grouped around data/graphs) and 6 grid-in math questions requiring calculations without answer choices.</div>
+            </div>
+            <div class="section-weight">50% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">MCQ correct (0–50)</div>
+              <div class="input-wrap">
+                <input type="number" id="bio-mcq" min="0" max="50" value="0" oninput="bioScore()">
+                <input type="range" min="0" max="50" value="0" oninput="sync('bio-mcq',this.value);bioScore()">
+                <div class="input-max">/ 50</div>
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-label">Grid-in correct (0–6)</div>
+              <div class="input-wrap">
+                <input type="number" id="bio-grid" min="0" max="6" value="0" oninput="bioScore()">
+                <input type="range" min="0" max="6" value="0" oninput="sync('bio-grid',this.value);bioScore()">
+                <div class="input-max">/ 6</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> Grid-in questions often involve Hardy-Weinberg calculations, chi-square, or energy flow percentages. Practice these math problems — they require exact answers with no multiple choice to guide you.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section II — Free Response</div>
+              <div class="section-desc">6 questions, 90 minutes. Includes 2 long FRQs (8–10 pts each) and 4 short FRQs (4 pts each). Tests ability to design experiments, analyze data, and explain biological concepts.</div>
+            </div>
+            <div class="section-weight">50% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Long FRQ 1 (0–10)</div>
+              <div class="input-wrap">
+                <input type="number" id="bio-frq1" min="0" max="10" value="0" oninput="bioScore()">
+                <input type="range" min="0" max="10" value="0" oninput="sync('bio-frq1',this.value);bioScore()">
+                <div class="input-max">/ 10</div>
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-label">Long FRQ 2 (0–10)</div>
+              <div class="input-wrap">
+                <input type="number" id="bio-frq2" min="0" max="10" value="0" oninput="bioScore()">
+                <input type="range" min="0" max="10" value="0" oninput="sync('bio-frq2',this.value);bioScore()">
+                <div class="input-max">/ 10</div>
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-label">Short FRQs total (0–16)</div>
+              <div class="input-wrap">
+                <input type="number" id="bio-sfrq" min="0" max="16" value="0" oninput="bioScore()">
+                <input type="range" min="0" max="16" value="0" oninput="sync('bio-sfrq',this.value);bioScore()">
+                <div class="input-max">/ 16</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> Long FRQs often ask you to design an experiment. Include: hypothesis, independent/dependent variables, control group, sample size, and how you'd measure results. For data analysis, always describe trends AND explain the biological mechanism behind them.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn-calc primary" onclick="bioScore()">Calculate My Score</button>
+        <button class="btn-calc secondary" onclick="resetCalc('bio')">Reset</button>
+        <span class="save-status" id="bio-save-status"></span>
+      </div>
+    </div>
+
+    <!-- ── AP PSYCHOLOGY ── -->
+    <div class="calc-panel" id="panel-psych">
+      <div class="calc-header">
+        <div class="calc-header-top">
+          <div class="calc-emoji">🧠</div>
+          <div class="calc-title">AP Psychology</div>
+        </div>
+        <div class="calc-subtitle">AP Psych covers behavior, cognition, development, social psychology, and disorders. One of the most straightforward AP exams to score well on with good preparation.</div>
+      </div>
+
+      <div class="score-result-bar">
+        <div class="big-score" id="psych-score">–</div>
+        <div class="score-details">
+          <div class="score-label">Predicted AP Score</div>
+          <div class="score-progress-wrap"><div class="score-progress-fill" id="psych-bar" style="width:0%"></div></div>
+          <div class="score-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div class="score-verdict" id="psych-verdict"></div>
+        </div>
+      </div>
+
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section I — Multiple Choice</div>
+              <div class="section-desc">100 questions, 70 minutes. The largest MCQ section of any AP exam. Tests vocabulary and concept recall across all 9 units of the course.</div>
+            </div>
+            <div class="section-weight">66.7% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">Questions correct</div>
+              <div class="input-wrap">
+                <input type="number" id="psych-mcq" min="0" max="100" value="0" oninput="psychScore()">
+                <input type="range" min="0" max="100" value="0" oninput="sync('psych-mcq',this.value);psychScore()">
+                <div class="input-max">/ 100</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> AP Psych is vocabulary-heavy. Flashcards for key terms (especially researchers and their studies) are essential. Know Pavlov, Skinner, Piaget, Freud, Erikson, and Bandura inside out. With 100 questions, pacing matters — don't spend more than 40 seconds per question.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div>
+              <div class="section-name">Section II — Free Response</div>
+              <div class="section-desc">2 questions, 50 minutes. Question 1 is a concept application scenario (7 pts). Question 2 is a research design question (8 pts). Both test your ability to apply psychological concepts to real situations.</div>
+            </div>
+            <div class="section-weight">33.3% of score</div>
+          </div>
+          <div class="section-card-body">
+            <div class="input-row">
+              <div class="input-label">FRQ 1 — Application (0–7)</div>
+              <div class="input-wrap">
+                <input type="number" id="psych-frq1" min="0" max="7" value="0" oninput="psychScore()">
+                <input type="range" min="0" max="7" value="0" oninput="sync('psych-frq1',this.value);psychScore()">
+                <div class="input-max">/ 7</div>
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-label">FRQ 2 — Research (0–8)</div>
+              <div class="input-wrap">
+                <input type="number" id="psych-frq2" min="0" max="8" value="0" oninput="psychScore()">
+                <input type="range" min="0" max="8" value="0" oninput="sync('psych-frq2',this.value);psychScore()">
+                <div class="input-max">/ 8</div>
+              </div>
+            </div>
+            <div class="tip-box"><strong>Tip:</strong> FRQ answers are graded by whether you correctly define and apply each psychological term — not by essay quality. Label each answer clearly (e.g. "Operant Conditioning: In the scenario, the teacher giving stickers is a positive reinforcer because..."). You don't need paragraphs — clear, direct answers earn full points.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn-calc primary" onclick="psychScore()">Calculate My Score</button>
+        <button class="btn-calc secondary" onclick="resetCalc('psych')">Reset</button>
+        <span class="save-status" id="psych-save-status"></span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Firebase + Scoring Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut as fbSignOut }
+           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
+           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { firebaseConfig } from "./firebase-config.js";
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+  let currentUser = null;
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      document.getElementById('nav-user-display').innerHTML = `Welcome, <strong>${user.displayName || user.email.split('@')[0]}</strong>`;
+      document.getElementById('nav-login-btn').style.display = 'none';
+      document.getElementById('nav-logout-btn').style.display = 'block';
+      // Load saved scores
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.scores) loadSavedScores(data.scores);
+      }
+    } else {
+      document.getElementById('nav-login-btn').style.display = 'block';
+      document.getElementById('nav-logout-btn').style.display = 'none';
+    }
+  });
+
+  function loadSavedScores(scores) {
+    const fields = {
+      'calc-mcq': scores.calc_mcq,
+      'eng-mcq': scores.eng_mcq, 'eng-synth': scores.eng_synth,
+      'eng-rheto': scores.eng_rheto, 'eng-arg': scores.eng_arg,
+      'ush-mcq': scores.ush_mcq, 'ush-saq': scores.ush_saq,
+      'ush-dbq': scores.ush_dbq, 'ush-leq': scores.ush_leq,
+      'bio-mcq': scores.bio_mcq, 'bio-grid': scores.bio_grid,
+      'bio-frq1': scores.bio_frq1, 'bio-frq2': scores.bio_frq2, 'bio-sfrq': scores.bio_sfrq,
+      'psych-mcq': scores.psych_mcq, 'psych-frq1': scores.psych_frq1, 'psych-frq2': scores.psych_frq2
+    };
+    // Also load FRQ inputs for calc
+    if (scores.calc_frq) {
+      scores.calc_frq.forEach((v, i) => {
+        const el = document.getElementById(`calc-frq-${i}`);
+        if (el) { el.value = v; syncRange(`calc-frq-${i}`, v); }
+      });
+    }
+    Object.entries(fields).forEach(([id, val]) => {
+      if (val !== undefined) {
+        const el = document.getElementById(id);
+        if (el) { el.value = val; syncRange(id, val); }
+      }
+    });
+    calcScore(); engScore(); ushScore(); bioScore(); psychScore();
+  }
+
+  function syncRange(inputId, val) {
+    // sync corresponding range input
+    const inputs = document.querySelectorAll('input[type="range"]');
+    inputs.forEach(r => {
+      const next = r.previousElementSibling;
+      if (next && next.id === inputId) r.value = val;
+    });
+  }
+
+  async function saveScores(subject, data) {
+    if (!currentUser) return;
+    const statusEl = document.getElementById(`${subject}-save-status`);
+    try {
+      const update = {};
+      Object.entries(data).forEach(([k,v]) => { update[`scores.${k}`] = v; });
+      update['scores.updatedAt'] = serverTimestamp();
+      await setDoc(doc(db, 'users', currentUser.uid), update, { merge: true });
+      if (statusEl) { statusEl.textContent = '✓ Saved'; setTimeout(() => { statusEl.textContent = ''; }, 3000); }
+    } catch(e) {
+      if (statusEl) statusEl.textContent = 'Save failed';
+    }
+  }
+
+  window.signOut = async () => {
+    await fbSignOut(auth);
+    window.location.href = 'index.html';
+  };
+
+  // ── HELPERS ──
+  window.sync = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  };
+
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, Number(v) || 0)); }
+
+  function verdict(score) {
+    const map = {
+      5: { text:'Extremely well qualified 🎉', bg:'#F0FDF4', border:'#BBF7D0', color:'#166534' },
+      4: { text:'Well qualified ✓', bg:'#EFF6FF', border:'#BFDBFE', color:'#1D4ED8' },
+      3: { text:'Qualified — passing score', bg:'#FFFBEB', border:'#FDE68A', color:'#92400E' },
+      2: { text:'Possibly qualified', bg:'#FFF7ED', border:'#FED7AA', color:'#9A3412' },
+      1: { text:'No recommendation', bg:'#FEF2F2', border:'#FECACA', color:'#991B1B' },
+    };
+    return map[score] || { text:'Enter your scores above', bg:'#F3F4F6', border:'#E5E7EB', color:'#6B7280' };
+  }
+
+  function displayScore(prefix, apScore) {
+    const scoreEl = document.getElementById(`${prefix}-score`);
+    const barEl   = document.getElementById(`${prefix}-bar`);
+    const verdEl  = document.getElementById(`${prefix}-verdict`);
+    if (!scoreEl) return;
+    scoreEl.textContent = apScore || '–';
+    barEl.style.width = apScore ? `${(apScore / 5) * 100}%` : '0%';
+    if (apScore) {
+      const v = verdict(apScore);
+      verdEl.textContent = v.text;
+      verdEl.style.background = v.bg;
+      verdEl.style.border = `1px solid ${v.border}`;
+      verdEl.style.color = v.color;
+    } else {
+      verdEl.textContent = '';
+      verdEl.style.background = '';
+    }
+  }
+
+  // ── CALCULUS AB ──
+  // Build FRQ inputs dynamically
+  (function buildCalcFRQ() {
+    const container = document.getElementById('calc-frq-inputs');
+    if (!container) return;
+    for (let i = 0; i < 6; i++) {
+      container.innerHTML += `
+        <div class="input-row">
+          <div class="input-label">FRQ ${i+1} score (0–9)</div>
+          <div class="input-wrap">
+            <input type="number" id="calc-frq-${i}" min="0" max="9" value="0" oninput="calcScore()">
+            <input type="range" min="0" max="9" value="0" oninput="sync('calc-frq-${i}',this.value);calcScore()">
+            <div class="input-max">/ 9</div>
+          </div>
+        </div>`;
+    }
+  })();
+
+  window.calcScore = function() {
+    const mcq = clamp(document.getElementById('calc-mcq')?.value, 0, 45);
+    let frqTotal = 0;
+    for (let i = 0; i < 6; i++) {
+      frqTotal += clamp(document.getElementById(`calc-frq-${i}`)?.value, 0, 9);
+    }
+    // Composite: MCQ (1.0000 × correct) + FRQ (1.0000 × points), max ~45+54=99
+    const composite = (mcq * 1.0) + (frqTotal * 1.0);
+    const apScore = composite >= 76 ? 5 : composite >= 58 ? 4 : composite >= 40 ? 3 : composite >= 27 ? 2 : 1;
+    displayScore('calc', apScore);
+    const frqArr = Array.from({length:6}, (_,i) => clamp(document.getElementById(`calc-frq-${i}`)?.value,0,9));
+    saveScores('calc', { calc_mcq: mcq, calc_frq: frqArr });
+  };
+  window.resetCalc = function(prefix) {
+    document.querySelectorAll(`#panel-${prefix} input`).forEach(el => { el.value = 0; });
+    displayScore(prefix, null);
+  };
+
+  // ── ENGLISH LANGUAGE ──
+  window.engScore = function() {
+    const mcq   = clamp(document.getElementById('eng-mcq')?.value, 0, 45);
+    const synth = clamp(document.getElementById('eng-synth')?.value, 0, 6);
+    const rheto = clamp(document.getElementById('eng-rheto')?.value, 0, 6);
+    const arg   = clamp(document.getElementById('eng-arg')?.value, 0, 6);
+    // Weighted composite out of ~150
+    const composite = (mcq / 45 * 67.5) + (synth / 6 * 27.5) + (rheto / 6 * 27.5) + (arg / 6 * 27.5);
+    const apScore = composite >= 114 ? 5 : composite >= 98 ? 4 : composite >= 81 ? 3 : composite >= 58 ? 2 : 1;
+    displayScore('eng', apScore);
+    saveScores('eng', { eng_mcq: mcq, eng_synth: synth, eng_rheto: rheto, eng_arg: arg });
+  };
+
+  // ── US HISTORY ──
+  window.ushScore = function() {
+    const mcq = clamp(document.getElementById('ush-mcq')?.value, 0, 55);
+    const saq = clamp(document.getElementById('ush-saq')?.value, 0, 9);
+    const dbq = clamp(document.getElementById('ush-dbq')?.value, 0, 7);
+    const leq = clamp(document.getElementById('ush-leq')?.value, 0, 6);
+    // Weighted out of ~150
+    const composite = (mcq/55*60) + (saq/9*30) + (dbq/7*37.5) + (leq/6*22.5);
+    const apScore = composite >= 108 ? 5 : composite >= 90 ? 4 : composite >= 65 ? 3 : composite >= 44 ? 2 : 1;
+    displayScore('ush', apScore);
+    saveScores('ush', { ush_mcq: mcq, ush_saq: saq, ush_dbq: dbq, ush_leq: leq });
+  };
+
+  // ── BIOLOGY ──
+  window.bioScore = function() {
+    const mcq  = clamp(document.getElementById('bio-mcq')?.value, 0, 50);
+    const grid = clamp(document.getElementById('bio-grid')?.value, 0, 6);
+    const frq1 = clamp(document.getElementById('bio-frq1')?.value, 0, 10);
+    const frq2 = clamp(document.getElementById('bio-frq2')?.value, 0, 10);
+    const sfrq = clamp(document.getElementById('bio-sfrq')?.value, 0, 16);
+    const composite = ((mcq + grid) / 56 * 69) + ((frq1 + frq2 + sfrq) / 36 * 69);
+    const apScore = composite >= 109 ? 5 : composite >= 90 ? 4 : composite >= 65 ? 3 : composite >= 44 ? 2 : 1;
+    displayScore('bio', apScore);
+    saveScores('bio', { bio_mcq: mcq, bio_grid: grid, bio_frq1: frq1, bio_frq2: frq2, bio_sfrq: sfrq });
+  };
+
+  // ── PSYCHOLOGY ──
+  window.psychScore = function() {
+    const mcq  = clamp(document.getElementById('psych-mcq')?.value, 0, 100);
+    const frq1 = clamp(document.getElementById('psych-frq1')?.value, 0, 7);
+    const frq2 = clamp(document.getElementById('psych-frq2')?.value, 0, 8);
+    const composite = (mcq / 100 * 100) + ((frq1 + frq2) / 15 * 50);
+    const apScore = composite >= 113 ? 5 : composite >= 93 ? 4 : composite >= 72 ? 3 : composite >= 52 ? 2 : 1;
+    displayScore('psych', apScore);
+    saveScores('psych', { psych_mcq: mcq, psych_frq1: frq1, psych_frq2: frq2 });
+  };
+
+  // ── NAV ──
+  window.showCalc = function(key) {
+    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.subject-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`panel-${key}`).classList.add('active');
+    document.getElementById(`nav-${key}`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+</script>
+
+</body>
+</html>

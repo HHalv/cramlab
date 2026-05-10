@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-50: #EFF6FF; --blue-100: #DBEAFE; --blue-200: #BFDBFE;
+      --blue-500: #3B82F6; --blue-600: #2563EB; --blue-700: #1D4ED8;
+      --gray-100: #F3F4F6; --gray-200: #E5E7EB; --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF; --gray-500: #6B7280; --gray-700: #374151;
+      --gray-900: #111827; --white: #FFFFFF;
+      --red-50: #FEF2F2; --red-500: #EF4444; --red-700: #B91C1C;
+      --radius: 12px; --radius-sm: 8px;
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 5%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo-icon {
+      width: 34px; height: 34px; background: var(--blue-600);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 18px; height: 18px; }
+    .logo-text { font-size: 18px; font-weight: 600; color: var(--gray-900); letter-spacing: -0.3px; }
+    .logo-text span { color: var(--blue-600); }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+    .auth-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 440px;
+    }
+    .auth-header { text-align: center; margin-bottom: 32px; }
+    .auth-header h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px; font-weight: 400;
+      color: var(--gray-900); margin-bottom: 8px;
+    }
+    .auth-header p { font-size: 14px; color: var(--gray-500); }
+
+    .tabs {
+      display: flex;
+      background: var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1; padding: 9px; border: none; background: none;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      color: var(--gray-500); border-radius: 6px; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn.active { background: var(--white); color: var(--gray-900); box-shadow: var(--shadow-md); }
+
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: var(--gray-700); margin-bottom: 6px; }
+    input[type="email"], input[type="password"], input[type="text"] {
+      width: 100%; padding: 11px 14px;
+      border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--gray-900);
+      background: var(--white); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+    input.error { border-color: var(--red-500); }
+
+    .error-msg {
+      background: var(--red-50); border: 1px solid #FECACA;
+      color: var(--red-700); font-size: 13px; padding: 10px 14px;
+      border-radius: var(--radius-sm); margin-bottom: 18px; display: none;
+    }
+    .error-msg.show { display: block; }
+
+    .btn-primary {
+      width: 100%; padding: 13px;
+      background: var(--blue-600); color: var(--white);
+      border: none; border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+      cursor: pointer; transition: background 0.2s;
+      margin-bottom: 14px;
+    }
+    .btn-primary:hover { background: var(--blue-700); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 12px; color: var(--gray-400); margin-bottom: 14px;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--gray-200);
+    }
+
+    .btn-google {
+      width: 100%; padding: 12px;
+      background: var(--white); color: var(--gray-700);
+      border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: background 0.2s, border-color 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-google:hover { background: var(--gray-100); border-color: var(--gray-400); }
+
+    .google-icon { width: 18px; height: 18px; }
+
+    .forgot-link {
+      text-align: right; margin-bottom: 18px;
+    }
+    .forgot-link a { font-size: 13px; color: var(--blue-600); text-decoration: none; }
+    .forgot-link a:hover { text-decoration: underline; }
+
+    .form-panel { display: none; }
+    .form-panel.active { display: block; }
+
+    .success-state {
+      text-align: center; padding: 20px 0; display: none;
+    }
+    .success-state.show { display: block; }
+    .success-icon {
+      width: 56px; height: 56px; background: #ECFDF5; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 16px;
+    }
+    .success-state h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .success-state p { font-size: 14px; color: var(--gray-500); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .auth-card { animation: fadeUp 0.5s ease forwards; }
+
+    /* Setup notice */
+    .setup-notice {
+      background: var(--blue-50); border: 1px solid var(--blue-200);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      font-size: 13px; color: var(--blue-700); margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .setup-notice strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity="0.9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg>
+      </div>
+      <span class="logo-text">Cram<span>Lab</span></span>
+    </a>
+  </nav>
+
+  <main>
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>Welcome to CramLab</h1>
+        <p>Sign in to save your progress and track your scores</p>
+      </div>
+
+      <!-- Setup notice — remove once Firebase is configured -->
+      <div class="setup-notice" id="setup-notice">
+        <strong>🔧 Developer setup required:</strong> Replace the Firebase config in this file's &lt;script&gt; section with your own Firebase project credentials to enable authentication. See the comment in the code.
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('signin')">Sign In</button>
+        <button class="tab-btn" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <div id="error-msg" class="error-msg"></div>
+
+      <!-- SIGN IN -->
+      <div id="panel-signin" class="form-panel active">
+        <div class="form-group">
+          <label for="signin-email">Email address</label>
+          <input type="email" id="signin-email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input type="password" id="signin-password" placeholder="••••••••">
+        </div>
+        <div class="forgot-link"><a href="#" onclick="sendReset()">Forgot password?</a></div>
+        <button class="btn-primary" id="signin-btn" onclick="signIn()">Sign In</button>
+        <div class="divider">or</div>
+        <button class="btn-google" onclick="signInGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <!-- SIGN UP -->
+      <div id="panel-signup" class="form-panel">
+        <div class="form-group">
+          <label for="signup-name">Full name</label>
+          <input type="text" id="signup-name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email address</label>
+          <input type="email" id="signup-email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters">
+        </div>
+        <button class="btn-primary" id="signup-btn" onclick="signUp()">Create Account</button>
+        <div class="divider">or</div>
+        <button class="btn-google" onclick="signInGoogle()">
+          <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-state" id="success-state">
+        <div class="success-icon">✓</div>
+        <h3>You're signed in!</h3>
+        <p>Redirecting you to CramLab...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // ─────────────────────────────────────────────────────────────
+    // SETUP INSTRUCTIONS:
+    // 1. Go to https://console.firebase.google.com
+    // 2. Create a new project called "cramlab"
+    // 3. Click "Add app" → Web
+    // 4. Copy your config object and paste it below, replacing the placeholder
+    // 5. In Firebase console: Authentication → Sign-in method → enable Email/Password and Google
+    // ─────────────────────────────────────────────────────────────
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+             GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail,
+             updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp }
+             from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { firebaseConfig } from "./firebase-config.js";
+    // ─────────────────────────────────────────────────────────────
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.classList.add('show');
+    }
+    function clearError() {
+      document.getElementById('error-msg').classList.remove('show');
+    }
+
+    async function createUserDoc(user, name) {
+      await setDoc(doc(db, 'users', user.uid), {
+        name: name || user.displayName || '',
+        email: user.email,
+        createdAt: serverTimestamp(),
+        scores: {},
+        progress: {}
+      }, { merge: true });
+    }
+
+    function onSuccess() {
+      document.getElementById('panel-signin').style.display = 'none';
+      document.getElementById('panel-signup').style.display = 'none';
+      document.querySelector('.tabs').style.display = 'none';
+      document.querySelector('.auth-header p').textContent = '';
+      document.getElementById('setup-notice').style.display = 'none';
+      document.getElementById('success-state').classList.add('show');
+      setTimeout(() => { window.location.href = 'calculator.html'; }, 1500);
+    }
+
+    // Expose to global scope for onclick handlers
+    window.switchTab = function(tab) {
+      clearError();
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && tab === 'signin') || (i === 1 && tab === 'signup'));
+      });
+      document.getElementById('panel-signin').classList.toggle('active', tab === 'signin');
+      document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+    };
+
+    window.signIn = async function() {
+      clearError();
+      const email = document.getElementById('signin-email').value.trim();
+      const pass  = document.getElementById('signin-password').value;
+      if (!email || !pass) return showError('Please fill in all fields.');
+      const btn = document.getElementById('signin-btn');
+      btn.disabled = true; btn.textContent = 'Signing in…';
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        onSuccess();
+      } catch(e) {
+        btn.disabled = false; btn.textContent = 'Sign In';
+        const msgs = {
+          'auth/user-not-found': 'No account found with that email.',
+          'auth/wrong-password': 'Incorrect password. Try again.',
+          'auth/invalid-email': 'Please enter a valid email address.',
+          'auth/too-many-requests': 'Too many attempts. Please wait a moment.'
+        };
+        showError(msgs[e.code] || 'Sign in failed. Please try again.');
+      }
+    };
+
+    window.signUp = async function() {
+      clearError();
+      const name  = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const pass  = document.getElementById('signup-password').value;
+      if (!name || !email || !pass) return showError('Please fill in all fields.');
+      if (pass.length < 6) return showError('Password must be at least 6 characters.');
+      const btn = document.getElementById('signup-btn');
+      btn.disabled = true; btn.textContent = 'Creating account…';
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+        await createUserDoc(cred.user, name);
+        onSuccess();
+      } catch(e) {
+        btn.disabled = false; btn.textContent = 'Create Account';
+        const msgs = {
+          'auth/email-already-in-use': 'An account with that email already exists.',
+          'auth/invalid-email': 'Please enter a valid email address.',
+          'auth/weak-password': 'Password is too weak. Use at least 6 characters.'
+        };
+        showError(msgs[e.code] || 'Sign up failed. Please try again.');
+      }
+    };
+
+    window.signInGoogle = async function() {
+      clearError();
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        await createUserDoc(result.user, result.user.displayName);
+        onSuccess();
+      } catch(e) {
+        if (e.code !== 'auth/popup-closed-by-user') {
+          showError('Google sign-in failed. Please try again.');
+        }
+      }
+    };
+
+    window.sendReset = async function() {
+      const email = document.getElementById('signin-email').value.trim();
+      if (!email) return showError('Enter your email address above first.');
+      try {
+        await sendPasswordResetEmail(auth, email);
+        clearError();
+        alert('Password reset email sent! Check your inbox.');
+      } catch(e) {
+        showError('Could not send reset email. Check the address and try again.');
+      }
+    };
+  </script>
+
+</body>
+</html>

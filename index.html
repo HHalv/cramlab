@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — Study Smarter. Score Higher.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-50:  #EFF6FF;
+      --blue-100: #DBEAFE;
+      --blue-200: #BFDBFE;
+      --blue-400: #60A5FA;
+      --blue-500: #3B82F6;
+      --blue-600: #2563EB;
+      --blue-700: #1D4ED8;
+      --blue-900: #1E3A8A;
+      --gray-50:  #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --white: #FFFFFF;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--gray-900);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-100);
+      padding: 0 5%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--blue-600);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg { width: 18px; height: 18px; }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray-900);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text span { color: var(--blue-600); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-500);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gray-900); }
+
+    .nav-cta {
+      background: var(--blue-600);
+      color: var(--white) !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--blue-700) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 100px 5% 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-50);
+      border: 1px solid var(--blue-200);
+      color: var(--blue-700);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 22px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--blue-500);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 4.5vw, 52px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      color: var(--gray-900);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--blue-600);
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--gray-500);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 440px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--blue-600);
+      color: var(--white);
+      padding: 13px 26px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-primary:hover { background: var(--blue-700); transform: translateY(-1px); }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--gray-700);
+      padding: 13px 26px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--gray-200);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-secondary:hover { border-color: var(--gray-400); transform: translateY(-1px); }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative;
+    }
+
+    .score-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .score-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .score-card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--blue-50);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .score-card-title { font-size: 15px; font-weight: 600; color: var(--gray-900); }
+    .score-card-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+    .score-display {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .score-number {
+      font-family: 'Instrument Serif', serif;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--blue-600);
+    }
+
+    .score-max { font-size: 22px; color: var(--gray-400); margin-bottom: 8px; }
+
+    .score-bar-wrap {
+      background: var(--gray-100);
+      border-radius: 100px;
+      height: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--blue-500), var(--blue-400));
+      width: 0%;
+      transition: width 1.4s cubic-bezier(.16,1,.3,1);
+    }
+
+    .score-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .predicted-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-top: 16px;
+    }
+
+    .float-card {
+      position: absolute;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow-md);
+      font-size: 13px;
+    }
+
+    .float-card-1 {
+      bottom: -18px;
+      left: -24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .float-card-2 {
+      top: -16px;
+      right: -16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .float-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      background: var(--blue-600);
+      padding: 48px 5%;
+    }
+
+    .stats-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Instrument Serif', serif;
+      font-size: 42px;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label { font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 400; }
+
+    /* ── SUBJECTS ── */
+    .subjects {
+      padding: 90px 5%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-600);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(28px, 3vw, 38px);
+      font-weight: 400;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--gray-500);
+      margin-bottom: 48px;
+      max-width: 480px;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .subject-card {
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-decoration: none;
+      background: var(--white);
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      cursor: pointer;
+    }
+
+    .subject-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--blue-200);
+    }
+
+    .subject-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .subject-emoji {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .subject-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      font-size: 14px;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .subject-card:hover .subject-arrow {
+      background: var(--blue-600);
+      border-color: var(--blue-600);
+      color: var(--white);
+    }
+
+    .subject-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+
+    .subject-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.5;
+    }
+
+    .subject-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: var(--blue-50);
+      color: var(--blue-700);
+      border: 1px solid var(--blue-100);
+    }
+
+    .pill.green { background: #F0FDF4; color: #166534; border-color: #BBF7D0; }
+    .pill.orange { background: #FFF7ED; color: #9A3412; border-color: #FED7AA; }
+
+    /* ── FEATURES ── */
+    .features {
+      background: var(--gray-50);
+      padding: 90px 5%;
+    }
+
+    .features-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--blue-50);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 18px;
+    }
+
+    .feature-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      padding: 90px 5%;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-box {
+      background: var(--blue-600);
+      border-radius: 20px;
+      padding: 64px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .cta-box::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -60px;
+      width: 350px;
+      height: 350px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .cta-box h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .cta-box p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 32px;
+    }
+
+    .btn-white {
+      background: var(--white);
+      color: var(--blue-600);
+      padding: 13px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-white:hover { transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--gray-200);
+      padding: 40px 5%;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gray-700); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-content > * {
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+    .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+    .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+
+    .hero-visual {
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.35s forwards;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 60px 5% 48px;
+        gap: 40px;
+      }
+      .hero-visual { display: none; }
+      .stats-inner { grid-template-columns: 1fr; gap: 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity="0.9"/>
+          <circle cx="13.5" cy="4.5" r="1.5" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-text">Cram<span>Lab</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#subjects">Subjects</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#" class="nav-cta">Start Studying</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section style="max-width:1100px; margin:0 auto; padding: 0 5%;">
+    <div class="hero" style="padding-left:0; padding-right:0; max-width:100%;">
+      <div class="hero-content">
+        <div class="hero-badge">Free study tools for every AP exam</div>
+        <h1>Study smarter.<br><em>Score higher.</em></h1>
+        <p>CramLab gives you everything you need to ace your AP exams — free score calculators, practice questions, and personalized study tools.</p>
+        <div class="hero-actions">
+          <a href="#subjects" class="btn-primary">Pick a Subject</a>
+          <a href="#features" class="btn-secondary">See How It Works</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="score-card">
+          <div class="score-card-header">
+            <div class="score-card-icon">📐</div>
+            <div>
+              <div class="score-card-title">AP Calculus AB</div>
+              <div class="score-card-sub">Score Prediction</div>
+            </div>
+          </div>
+          <div class="score-display">
+            <div class="score-number" id="hero-score">4</div>
+            <div class="score-max">/ 5</div>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-fill" id="hero-bar"></div>
+          </div>
+          <div class="score-labels">
+            <span>0</span><span>Score range</span><span>5</span>
+          </div>
+          <div class="predicted-badge">
+            ✓ Predicted score based on your answers
+          </div>
+        </div>
+        <div class="float-card float-card-1">
+          <div class="float-dot" style="background:#3B82F6;"></div>
+          <div>
+            <div style="font-weight:600; color:#111827; font-size:13px;">68% complete</div>
+            <div style="color:#9CA3AF; font-size:11px;">Practice exam</div>
+          </div>
+        </div>
+        <div class="float-card float-card-2">
+          <div class="float-dot" style="background:#10B981;"></div>
+          <div>
+            <div style="font-weight:600; color:#111827; font-size:13px;">5 subjects</div>
+            <div style="color:#9CA3AF; font-size:11px;">Available now</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div>
+        <div class="stat-number">5</div>
+        <div class="stat-label">AP subjects covered</div>
+      </div>
+      <div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Free to use</div>
+      </div>
+      <div>
+        <div class="stat-number">5-min</div>
+        <div class="stat-label">Score prediction</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBJECTS -->
+  <section class="subjects" id="subjects">
+    <div class="section-tag">Subjects</div>
+    <h2 class="section-title">Choose your exam</h2>
+    <p class="section-sub">Pick a subject to access your score calculator and study tools.</p>
+
+    <div class="subjects-grid">
+
+      <div class="subject-card" onclick="alert('AP Calculus AB — coming soon!')">
+        <div class="subject-card-top">
+          <div class="subject-emoji" style="background:#EFF6FF;">📐</div>
+          <div class="subject-arrow">→</div>
+        </div>
+        <div>
+          <div class="subject-name">AP Calculus AB</div>
+          <div class="subject-desc">Limits, derivatives, integrals, and the fundamental theorem of calculus.</div>
+        </div>
+        <div class="subject-pills">
+          <span class="pill">Score Calculator</span>
+          <span class="pill green">Practice Questions</span>
+        </div>
+      </div>
+
+      <div class="subject-card" onclick="alert('AP English Language — coming soon!')">
+        <div class="subject-card-top">
+          <div class="subject-emoji" style="background:#FFF7ED;">✍️</div>
+          <div class="subject-arrow">→</div>
+        </div>
+        <div>
+          <div class="subject-name">AP English Language</div>
+          <div class="subject-desc">Rhetorical analysis, synthesis essays, and argument writing.</div>
+        </div>
+        <div class="subject-pills">
+          <span class="pill">Score Calculator</span>
+          <span class="pill orange">Essay Tips</span>
+        </div>
+      </div>
+
+      <div class="subject-card" onclick="alert('AP US History — coming soon!')">
+        <div class="subject-card-top">
+          <div class="subject-emoji" style="background:#F0FDF4;">🏛️</div>
+          <div class="subject-arrow">→</div>
+        </div>
+        <div>
+          <div class="subject-name">AP US History</div>
+          <div class="subject-desc">From colonial America through modern times. DBQs, SAQs, and LEQs.</div>
+        </div>
+        <div class="subject-pills">
+          <span class="pill">Score Calculator</span>
+          <span class="pill green">Practice Questions</span>
+        </div>
+      </div>
+
+      <div class="subject-card" onclick="alert('AP Biology — coming soon!')">
+        <div class="subject-card-top">
+          <div class="subject-emoji" style="background:#F0FDF4;">🧬</div>
+          <div class="subject-arrow">→</div>
+        </div>
+        <div>
+          <div class="subject-name">AP Biology</div>
+          <div class="subject-desc">Cells, genetics, evolution, ecology, and the chemistry of life.</div>
+        </div>
+        <div class="subject-pills">
+          <span class="pill">Score Calculator</span>
+          <span class="pill green">Practice Questions</span>
+        </div>
+      </div>
+
+      <div class="subject-card" onclick="alert('AP Psychology — coming soon!')">
+        <div class="subject-card-top">
+          <div class="subject-emoji" style="background:#FAF5FF;">🧠</div>
+          <div class="subject-arrow">→</div>
+        </div>
+        <div>
+          <div class="subject-name">AP Psychology</div>
+          <div class="subject-desc">Behavior, cognition, development, and psychological disorders.</div>
+        </div>
+        <div class="subject-pills">
+          <span class="pill">Score Calculator</span>
+          <span class="pill green">Practice Questions</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="features-inner">
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-title">Everything you need to prepare</h2>
+      <p class="section-sub">Built for students who want real results, not just flashcards.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-title">Score Calculator</div>
+          <div class="feature-desc">Enter your raw scores from each section and instantly see your predicted AP score — using real scoring formulas.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <div class="feature-title">Practice Questions</div>
+          <div class="feature-desc">Hundreds of multiple choice and free response questions modeled after the real exam format.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Progress Tracking</div>
+          <div class="feature-desc">See your score improve over time. Identify your weak areas and focus your study time where it counts most.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="cta-box">
+      <h2>Ready to hit a 5?</h2>
+      <p>Start with a free score prediction — no account required.</p>
+      <a href="#subjects" class="btn-white">Start Studying Free</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board.</div>
+      <ul class="footer-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    // Animate score bar on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const bar = document.getElementById('hero-bar');
+        if (bar) bar.style.width = '80%';
+      }, 800);
+    });
+  </script>
+
+</body>
+</html>
