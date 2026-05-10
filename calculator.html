@@ -917,12 +917,21 @@
 
   // ── NAV ──
   window.showCalc = function(key) {
+    const validKeys = ['calc','eng','ush','bio','psych'];
+    if (!validKeys.includes(key)) key = 'calc';
     document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.subject-nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`panel-${key}`).classList.add('active');
     document.getElementById(`nav-${key}`).classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Read ?subject= URL param from homepage subject card links
+  (function() {
+    const params  = new URLSearchParams(window.location.search);
+    const subject = params.get('subject');
+    if (subject) window.showCalc(subject);
+  })();
 </script>
 
 </body>

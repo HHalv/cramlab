@@ -262,7 +262,7 @@
     // 5. In Firebase console: Authentication → Sign-in method → enable Email/Password and Google
     // ─────────────────────────────────────────────────────────────
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
              GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail,
              updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, serverTimestamp }
@@ -274,6 +274,11 @@
     const auth = getAuth(app);
     const db   = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
+
+    // If already logged in, skip the auth page entirely
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = 'calculator.html';
+    });
 
     function showError(msg) {
       const el = document.getElementById('error-msg');
