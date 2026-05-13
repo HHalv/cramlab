@@ -306,7 +306,9 @@
       document.querySelector('.auth-header p').textContent = '';
       document.getElementById('setup-notice').style.display = 'none';
       document.getElementById('success-state').classList.add('show');
-      setTimeout(() => { window.location.href = 'calculator.html'; }, 1500);
+      // Go back to wherever they came from, or calculator by default
+      const returnTo = new URLSearchParams(window.location.search).get('return') || 'calculator.html';
+      setTimeout(() => { window.location.href = returnTo; }, 1500);
     }
 
     // Expose to global scope for onclick handlers

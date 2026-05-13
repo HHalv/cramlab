@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — My Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-50:#EFF6FF; --blue-100:#DBEAFE; --blue-200:#BFDBFE;
+      --blue-600:#2563EB; --blue-700:#1D4ED8;
+      --gray-50:#F9FAFB; --gray-100:#F3F4F6; --gray-200:#E5E7EB;
+      --gray-300:#D1D5DB; --gray-400:#9CA3AF; --gray-500:#6B7280;
+      --gray-700:#374151; --gray-900:#111827; --white:#FFFFFF;
+      --red-50:#FEF2F2; --red-200:#FECACA; --red-600:#DC2626; --red-700:#B91C1C;
+      --green-50:#F0FDF4; --green-200:#BBF7D0; --green-700:#15803D;
+      --radius:12px; --radius-sm:8px;
+      --shadow-md:0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg:0 12px 40px rgba(0,0,0,0.10);
+    }
+    body { font-family:'DM Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); -webkit-font-smoothing:antialiased; min-height:100vh; }
+
+    /* NAV */
+    nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray-200); padding:0 5%; height:64px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
+    .logo-icon { width:34px; height:34px; background:var(--blue-600); border-radius:9px; display:flex; align-items:center; justify-content:center; }
+    .logo-icon svg { width:18px; height:18px; }
+    .logo-text { font-size:18px; font-weight:600; color:var(--gray-900); letter-spacing:-0.3px; }
+    .logo-text span { color:var(--blue-600); }
+    .nav-right { display:flex; align-items:center; gap:8px; }
+    .btn-nav { font-size:13px; font-weight:500; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); cursor:pointer; text-decoration:none; font-family:'DM Sans',sans-serif; transition:background 0.2s; }
+    .btn-nav:hover { background:var(--gray-100); }
+
+    /* PAGE */
+    .page { max-width:680px; margin:0 auto; padding:40px 5% 80px; display:flex; flex-direction:column; gap:20px; }
+
+    /* PAGE HEADER */
+    .page-header { margin-bottom:4px; }
+    .page-header h1 { font-family:'Instrument Serif',serif; font-size:32px; font-weight:400; color:var(--gray-900); margin-bottom:4px; }
+    .page-header p { font-size:14px; color:var(--gray-500); }
+
+    /* LOADING */
+    .loading-state { text-align:center; padding:60px 20px; color:var(--gray-400); font-size:14px; }
+
+    /* CARD */
+    .card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); overflow:hidden; }
+    .card-header { padding:18px 24px; border-bottom:1px solid var(--gray-100); }
+    .card-title { font-size:15px; font-weight:600; color:var(--gray-900); margin-bottom:2px; }
+    .card-desc { font-size:13px; color:var(--gray-500); }
+    .card-body { padding:20px 24px; display:flex; flex-direction:column; gap:16px; }
+
+    /* AVATAR SECTION */
+    .profile-row { display:flex; align-items:center; gap:16px; }
+    .big-avatar { width:64px; height:64px; border-radius:50%; background:var(--blue-600); color:var(--white); font-family:'Instrument Serif',serif; font-size:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .profile-info { flex:1; }
+    .profile-name { font-size:18px; font-weight:600; color:var(--gray-900); }
+    .profile-email { font-size:13px; color:var(--gray-500); margin-top:2px; }
+    .profile-since { font-size:12px; color:var(--gray-400); margin-top:4px; }
+
+    /* FORM */
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    label { font-size:13px; font-weight:500; color:var(--gray-700); }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width:100%; padding:10px 13px; border:1px solid var(--gray-300); border-radius:var(--radius-sm);
+      font-family:'DM Sans',sans-serif; font-size:14px; color:var(--gray-900); background:var(--white);
+      outline:none; transition:border-color .2s,box-shadow .2s;
+    }
+    input:focus { border-color:var(--blue-600); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+    input:disabled { background:var(--gray-50); color:var(--gray-400); cursor:not-allowed; }
+    .input-hint { font-size:12px; color:var(--gray-400); }
+
+    /* BUTTONS */
+    .btn { padding:10px 20px; border-radius:var(--radius-sm); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:none; transition:background .2s,opacity .2s; display:inline-flex; align-items:center; gap:6px; }
+    .btn:disabled { opacity:.5; cursor:not-allowed; }
+    .btn-primary { background:var(--blue-600); color:var(--white); }
+    .btn-primary:hover:not(:disabled) { background:var(--blue-700); }
+    .btn-outline { background:var(--white); color:var(--gray-700); border:1px solid var(--gray-200); }
+    .btn-outline:hover:not(:disabled) { background:var(--gray-100); }
+    .btn-danger { background:var(--red-600); color:var(--white); }
+    .btn-danger:hover:not(:disabled) { background:var(--red-700); }
+    .btn-danger-outline { background:var(--white); color:var(--red-600); border:1px solid var(--red-200); }
+    .btn-danger-outline:hover:not(:disabled) { background:var(--red-50); }
+    .btn-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+    /* ALERT */
+    .alert { font-size:13px; padding:10px 14px; border-radius:var(--radius-sm); display:none; }
+    .alert.success { background:var(--green-50); border:1px solid var(--green-200); color:var(--green-700); }
+    .alert.error   { background:var(--red-50); border:1px solid var(--red-200); color:var(--red-700); }
+    .alert.show    { display:block; }
+
+    /* DANGER ZONE */
+    .danger-card { border-color:var(--red-200); }
+    .danger-card .card-header { background:var(--red-50); border-bottom-color:var(--red-200); }
+    .danger-card .card-title { color:var(--red-700); }
+
+    /* SIGN OUT ROW */
+    .signout-row { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .signout-row p { font-size:13px; color:var(--gray-500); }
+
+    /* DIVIDER */
+    .divider { height:1px; background:var(--gray-100); margin:4px 0; }
+
+    /* Google badge */
+    .google-badge { display:inline-flex; align-items:center; gap:6px; font-size:12px; background:var(--gray-100); color:var(--gray-600); padding:4px 10px; border-radius:100px; border:1px solid var(--gray-200); }
+
+    @media(max-width:480px){ .btn-row { flex-direction:column; align-items:stretch; } .btn { justify-content:center; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity=".9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg></div>
+    <span class="logo-text">Cram<span>Lab</span></span>
+  </a>
+  <div class="nav-right">
+    <a href="calculator.html" class="btn-nav">← Calculators</a>
+    <a href="index.html" class="btn-nav">Home</a>
+  </div>
+</nav>
+
+<div class="page" id="page-content" style="display:none;">
+
+  <div class="page-header">
+    <h1>My Account</h1>
+    <p>Manage your CramLab profile and account settings.</p>
+  </div>
+
+  <!-- PROFILE CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Profile</div>
+      <div class="card-desc">Your name and account info</div>
+    </div>
+    <div class="card-body">
+      <div class="profile-row">
+        <div class="big-avatar" id="profile-avatar">?</div>
+        <div class="profile-info">
+          <div class="profile-name" id="profile-name">—</div>
+          <div class="profile-email" id="profile-email">—</div>
+          <div class="profile-since" id="profile-since"></div>
+        </div>
+      </div>
+      <div id="google-sign-badge" style="display:none;">
+        <span class="google-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Signed in with Google
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT NAME CARD -->
+  <div class="card" id="card-edit-name">
+    <div class="card-header">
+      <div class="card-title">Display Name</div>
+      <div class="card-desc">Update the name shown on your account</div>
+    </div>
+    <div class="card-body">
+      <div id="alert-name" class="alert"></div>
+      <div class="form-group">
+        <label for="input-name">Display name</label>
+        <input type="text" id="input-name" placeholder="Your name">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-save-name" onclick="saveName()">Save Name</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGE EMAIL CARD -->
+  <div class="card" id="card-edit-email">
+    <div class="card-header">
+      <div class="card-title">Email Address</div>
+      <div class="card-desc">Update the email used to sign in</div>
+    </div>
+    <div class="card-body">
+      <div id="alert-email" class="alert"></div>
+      <div class="form-group">
+        <label for="input-new-email">New email address</label>
+        <input type="email" id="input-new-email" placeholder="new@example.com">
+      </div>
+      <div class="form-group">
+        <label for="input-email-password">Current password (required)</label>
+        <input type="password" id="input-email-password" placeholder="Confirm your password">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-save-email" onclick="saveEmail()">Update Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGE PASSWORD CARD -->
+  <div class="card" id="card-edit-password">
+    <div class="card-header">
+      <div class="card-title">Password</div>
+      <div class="card-desc">Change your sign-in password</div>
+    </div>
+    <div class="card-body">
+      <div id="alert-password" class="alert"></div>
+      <div class="form-group">
+        <label for="input-current-password">Current password</label>
+        <input type="password" id="input-current-password" placeholder="Current password">
+      </div>
+      <div class="form-group">
+        <label for="input-new-password">New password</label>
+        <input type="password" id="input-new-password" placeholder="At least 6 characters">
+      </div>
+      <div class="form-group">
+        <label for="input-confirm-password">Confirm new password</label>
+        <input type="password" id="input-confirm-password" placeholder="Repeat new password">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-save-password" onclick="savePassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN OUT CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Sign Out</div>
+      <div class="card-desc">Sign out of CramLab on this device</div>
+    </div>
+    <div class="card-body">
+      <div class="signout-row">
+        <p>You'll be taken back to the homepage.</p>
+        <button class="btn btn-outline" onclick="doSignOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANGER ZONE -->
+  <div class="card danger-card">
+    <div class="card-header">
+      <div class="card-title">⚠ Danger Zone</div>
+      <div class="card-desc">These actions are permanent and cannot be undone</div>
+    </div>
+    <div class="card-body">
+      <div id="alert-delete" class="alert"></div>
+      <div class="signout-row">
+        <div>
+          <div style="font-size:14px;font-weight:500;color:var(--gray-900);margin-bottom:3px;">Delete account</div>
+          <div style="font-size:13px;color:var(--gray-500);">Permanently deletes your account and all saved data.</div>
+        </div>
+        <button class="btn btn-danger-outline" onclick="confirmDelete()">Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Not signed in state -->
+<div id="not-signed-in" style="display:none; max-width:400px; margin:80px auto; padding:0 5%; text-align:center;">
+  <div style="font-size:40px; margin-bottom:16px;">🔒</div>
+  <div style="font-family:'Instrument Serif',serif; font-size:24px; margin-bottom:8px;">Sign in to manage your account</div>
+  <div style="font-size:14px; color:var(--gray-500); margin-bottom:24px;">You need to be signed in to view account settings.</div>
+  <a href="auth.html" style="background:var(--blue-600);color:var(--white);padding:12px 28px;border-radius:var(--radius-sm);font-size:15px;font-weight:500;text-decoration:none;">Sign In</a>
+</div>
+
+<div class="loading-state" id="loading-state">Loading your account…</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut, updateProfile,
+           updateEmail, updatePassword, reauthenticateWithCredential,
+           EmailAuthProvider, deleteUser, GoogleAuthProvider,
+           reauthenticateWithPopup }
+           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, deleteDoc }
+           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { firebaseConfig } from "./firebase-config.js";
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+  let currentUser = null;
+
+  onAuthStateChanged(auth, (user) => {
+    document.getElementById('loading-state').style.display = 'none';
+    if (!user) {
+      document.getElementById('not-signed-in').style.display = 'block';
+      return;
+    }
+    currentUser = user;
+    document.getElementById('page-content').style.display  = 'flex';
+
+    // Populate profile
+    const name  = user.displayName || user.email.split('@')[0];
+    const initial = name.charAt(0).toUpperCase();
+    document.getElementById('profile-avatar').textContent = initial;
+    document.getElementById('profile-name').textContent   = name;
+    document.getElementById('profile-email').textContent  = user.email;
+    document.getElementById('input-name').value           = name;
+
+    // Created date (approximated from metadata)
+    if (user.metadata?.creationTime) {
+      const d = new Date(user.metadata.creationTime);
+      document.getElementById('profile-since').textContent =
+        `Member since ${d.toLocaleDateString('en-US', {month:'long', year:'numeric'})}`;
+    }
+
+    // Detect Google sign-in — hide password/email change sections
+    const isGoogle = user.providerData.some(p => p.providerId === 'google.com');
+    if (isGoogle) {
+      document.getElementById('google-sign-badge').style.display = 'block';
+      document.getElementById('card-edit-email').style.display    = 'none';
+      document.getElementById('card-edit-password').style.display = 'none';
+    }
+  });
+
+  // ── HELPERS ──
+  function showAlert(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = `alert ${type} show`;
+    el.textContent = msg;
+    if (type === 'success') setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  async function reauth(password) {
+    const credential = EmailAuthProvider.credential(currentUser.email, password);
+    await reauthenticateWithCredential(currentUser, credential);
+  }
+
+  // ── SAVE NAME ──
+  window.saveName = async function() {
+    const name = document.getElementById('input-name').value.trim();
+    if (!name) return showAlert('alert-name', 'error', 'Please enter a display name.');
+    const btn = document.getElementById('btn-save-name');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      await updateProfile(currentUser, { displayName: name });
+      document.getElementById('profile-name').textContent = name;
+      document.getElementById('profile-avatar').textContent = name.charAt(0).toUpperCase();
+      showAlert('alert-name', 'success', 'Name updated successfully!');
+    } catch(e) {
+      showAlert('alert-name', 'error', 'Failed to update name. Please try again.');
+    }
+    btn.disabled = false; btn.textContent = 'Save Name';
+  };
+
+  // ── SAVE EMAIL ──
+  window.saveEmail = async function() {
+    const newEmail = document.getElementById('input-new-email').value.trim();
+    const pass     = document.getElementById('input-email-password').value;
+    if (!newEmail || !pass) return showAlert('alert-email', 'error', 'Please fill in all fields.');
+    const btn = document.getElementById('btn-save-email');
+    btn.disabled = true; btn.textContent = 'Updating…';
+    try {
+      await reauth(pass);
+      await updateEmail(currentUser, newEmail);
+      document.getElementById('profile-email').textContent = newEmail;
+      document.getElementById('input-new-email').value = '';
+      document.getElementById('input-email-password').value = '';
+      showAlert('alert-email', 'success', 'Email updated! You may need to verify your new address.');
+    } catch(e) {
+      const msgs = {
+        'auth/wrong-password': 'Incorrect password.',
+        'auth/email-already-in-use': 'That email is already in use.',
+        'auth/invalid-email': 'Please enter a valid email address.',
+        'auth/requires-recent-login': 'Please sign out and sign back in, then try again.',
+      };
+      showAlert('alert-email', 'error', msgs[e.code] || 'Update failed. Please try again.');
+    }
+    btn.disabled = false; btn.textContent = 'Update Email';
+  };
+
+  // ── SAVE PASSWORD ──
+  window.savePassword = async function() {
+    const current  = document.getElementById('input-current-password').value;
+    const newPass  = document.getElementById('input-new-password').value;
+    const confirm  = document.getElementById('input-confirm-password').value;
+    if (!current || !newPass || !confirm) return showAlert('alert-password', 'error', 'Please fill in all fields.');
+    if (newPass !== confirm) return showAlert('alert-password', 'error', 'New passwords do not match.');
+    if (newPass.length < 6) return showAlert('alert-password', 'error', 'Password must be at least 6 characters.');
+    const btn = document.getElementById('btn-save-password');
+    btn.disabled = true; btn.textContent = 'Updating…';
+    try {
+      await reauth(current);
+      await updatePassword(currentUser, newPass);
+      document.getElementById('input-current-password').value = '';
+      document.getElementById('input-new-password').value = '';
+      document.getElementById('input-confirm-password').value = '';
+      showAlert('alert-password', 'success', 'Password updated successfully!');
+    } catch(e) {
+      const msgs = {
+        'auth/wrong-password': 'Current password is incorrect.',
+        'auth/weak-password': 'New password is too weak.',
+        'auth/requires-recent-login': 'Please sign out and sign back in, then try again.',
+      };
+      showAlert('alert-password', 'error', msgs[e.code] || 'Update failed. Please try again.');
+    }
+    btn.disabled = false; btn.textContent = 'Update Password';
+  };
+
+  // ── SIGN OUT ──
+  window.doSignOut = async function() {
+    await signOut(auth);
+    window.location.href = 'index.html';
+  };
+
+  // ── DELETE ACCOUNT ──
+  window.confirmDelete = async function() {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete your account?\n\nThis will permanently delete your account and all saved data. This cannot be undone.'
+    );
+    if (!confirmed) return;
+    try {
+      const isGoogle = currentUser.providerData.some(p => p.providerId === 'google.com');
+      if (isGoogle) {
+        // Re-auth with Google popup before deleting
+        await reauthenticateWithPopup(currentUser, new GoogleAuthProvider());
+      } else {
+        const pass = window.prompt('Enter your password to confirm deletion:');
+        if (!pass) return;
+        await reauth(pass);
+      }
+      // Delete Firestore data then auth account
+      try { await deleteDoc(doc(db, 'users', currentUser.uid)); } catch(e) {}
+      await deleteUser(currentUser);
+      window.location.href = 'index.html';
+    } catch(e) {
+      const msgs = {
+        'auth/wrong-password': 'Incorrect password.',
+        'auth/requires-recent-login': 'Please sign out and sign back in, then try again.',
+      };
+      showAlert('alert-delete', 'error', msgs[e.code] || 'Deletion failed. Please try again.');
+    }
+  };
+</script>
+
+</body>
+</html>
