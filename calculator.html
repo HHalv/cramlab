@@ -3,838 +3,808 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CramLab — Score Calculators</title>
+  <title>CramLab — AP Score Calculators</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue-50:#EFF6FF; --blue-100:#DBEAFE; --blue-200:#BFDBFE;
-      --blue-500:#3B82F6; --blue-600:#2563EB; --blue-700:#1D4ED8;
+      --green:#22C55E; --green-dark:#16A34A; --green-light:#DCFCE7;
+      --blue-600:#2563EB; --blue-700:#1D4ED8; --blue-50:#EFF6FF;
       --gray-50:#F9FAFB; --gray-100:#F3F4F6; --gray-200:#E5E7EB;
       --gray-300:#D1D5DB; --gray-400:#9CA3AF; --gray-500:#6B7280;
       --gray-700:#374151; --gray-900:#111827; --white:#FFFFFF;
-      --green-700:#15803D;
-      --radius:12px; --radius-sm:8px;
-      --shadow-md:0 4px 16px rgba(0,0,0,0.08);
-      --shadow-lg:0 12px 40px rgba(0,0,0,0.10);
+      --orange:#F97316; --purple:#8B5CF6; --teal:#14B8A6;
+      --red-50:#FEF2F2; --red-200:#FECACA; --red-700:#B91C1C;
+      --shadow-sm:0 1px 3px rgba(0,0,0,.07);
+      --shadow-md:0 4px 12px rgba(0,0,0,.09);
     }
     body { font-family:'DM Sans',sans-serif; background:var(--gray-50); color:var(--gray-900); -webkit-font-smoothing:antialiased; min-height:100vh; }
 
     /* ── NAV ── */
-    nav { position:sticky; top:0; z-index:200; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray-200); padding:0 5%; height:64px; display:flex; align-items:center; justify-content:space-between; }
-    .nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
-    .logo-icon { width:34px; height:34px; background:var(--blue-600); border-radius:9px; display:flex; align-items:center; justify-content:center; }
-    .logo-icon svg { width:18px; height:18px; }
-    .logo-text { font-size:18px; font-weight:600; color:var(--gray-900); letter-spacing:-0.3px; }
-    .logo-text span { color:var(--blue-600); }
-    .nav-right { display:flex; align-items:center; gap:8px; }
-    .btn-nav { font-size:13px; font-weight:500; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); cursor:pointer; text-decoration:none; font-family:'DM Sans',sans-serif; transition:background 0.2s; white-space:nowrap; }
-    .btn-nav:hover { background:var(--gray-100); }
-    .btn-nav.primary { background:var(--blue-600); color:var(--white); border-color:var(--blue-600); }
-    .btn-nav.primary:hover { background:var(--blue-700); }
-    .nav-avatar { width:32px; height:32px; border-radius:50%; background:var(--blue-600); color:var(--white); font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; }
-    .nav-logged-out { display:flex; align-items:center; gap:8px; }
-    .nav-logged-in  { display:none; align-items:center; gap:8px; }
+    nav { position:sticky; top:0; z-index:999; background:#fff; border-bottom:1px solid var(--gray-200); height:58px; padding:0 28px; display:flex; align-items:center; justify-content:space-between; box-shadow:var(--shadow-sm); }
+    .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .logo-mark { width:30px; height:30px; background:var(--blue-600); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+    .logo-mark svg { width:16px; height:16px; }
+    .logo-name { font-size:16px; font-weight:700; color:var(--gray-900); }
+    .logo-name span { color:var(--blue-600); }
+    .nav-r { display:flex; align-items:center; gap:8px; }
+    .nav-a { font-size:13px; font-weight:500; color:var(--gray-600); text-decoration:none; padding:5px 10px; border-radius:6px; }
+    .nav-a:hover { background:var(--gray-100); }
+    .btn-signin { font-size:13px; font-weight:600; padding:6px 14px; border-radius:20px; border:1.5px solid var(--gray-300); background:#fff; color:var(--gray-700); text-decoration:none; cursor:pointer; font-family:inherit; }
+    .btn-signup { font-size:13px; font-weight:600; padding:6px 14px; border-radius:20px; background:var(--blue-600); color:#fff; text-decoration:none; }
+    .btn-signup:hover { background:var(--blue-700); }
+    .nav-avatar { width:30px; height:30px; border-radius:50%; background:var(--blue-600); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; text-decoration:none; }
+    .nav-lo { display:flex; align-items:center; gap:6px; }
+    .nav-li { display:none; align-items:center; gap:8px; }
 
-    /* ── PAGE ── */
-    .page { max-width:860px; margin:0 auto; padding:32px 5% 80px; display:grid; grid-template-columns:180px 1fr; gap:24px; align-items:start; }
+    /* ── PAGE WRAPPER ── */
+    .page { max-width:1080px; margin:0 auto; padding:28px 24px 80px; display:grid; grid-template-columns:200px 1fr; gap:28px; align-items:start; }
 
-    /* ── SIDEBAR ── */
-    .sidebar { position:sticky; top:84px; }
-    .sidebar-label { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--gray-400); padding:0 10px 10px; }
-    .subject-btn { display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:var(--radius-sm); border:none; background:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:var(--gray-500); text-align:left; width:100%; transition:background 0.15s,color 0.15s; margin-bottom:2px; }
-    .subject-btn:hover { background:var(--gray-100); color:var(--gray-900); }
-    .subject-btn.active { background:var(--blue-50); color:var(--blue-700); font-weight:600; }
-    .s-emoji { font-size:16px; width:20px; text-align:center; }
-    .score-ref { margin-top:20px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:12px; }
-    .score-ref-title { font-size:11px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; color:var(--gray-400); margin-bottom:8px; }
-    .score-ref-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-bottom:1px solid var(--gray-100); font-size:12px; }
-    .score-ref-row:last-child { border-bottom:none; }
-    .s5{color:#166534;font-weight:700} .s4{color:#1D4ED8;font-weight:700} .s3{color:#92400E;font-weight:700} .s2{color:#9A3412;font-weight:700} .s1{color:#991B1B;font-weight:700}
-    .score-ref-desc { color:var(--gray-500); font-size:12px; }
+    /* ── SUBJECT SIDEBAR ── */
+    .sub-sidebar { position:sticky; top:70px; }
+    .sub-group-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--gray-400); padding:0 8px; margin-bottom:4px; }
+    .sub-group { margin-bottom:18px; }
+    .sub-btn { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; border:none; background:none; font-family:inherit; font-size:13px; font-weight:500; color:var(--gray-500); border-radius:7px; cursor:pointer; text-align:left; transition:background .12s,color .12s; }
+    .sub-btn:hover { background:var(--gray-100); color:var(--gray-900); }
+    .sub-btn.active { background:#ECFDF5; color:var(--green-dark); font-weight:700; }
+    .sub-btn:disabled { opacity:.4; cursor:default; }
+    .sub-em { font-size:15px; flex-shrink:0; }
+    .soon { margin-left:auto; font-size:9px; font-weight:700; color:var(--gray-400); background:var(--gray-100); padding:2px 5px; border-radius:4px; text-transform:uppercase; }
 
-    /* ── MAIN ── */
-    main { min-width:0; display:flex; flex-direction:column; gap:16px; }
-    .calc-panel { display:none; flex-direction:column; gap:16px; }
-    .calc-panel.active { display:flex; }
+    /* ── MAIN AREA ── */
+    .main { min-width:0; }
 
-    /* Result card */
-    .result-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:22px 26px; display:flex; align-items:center; gap:24px; }
-    .big-score { font-family:'Instrument Serif',serif; font-size:68px; line-height:1; color:var(--blue-600); min-width:60px; text-align:center; }
-    .result-meta { flex:1; min-width:0; }
-    .result-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--gray-400); margin-bottom:8px; }
-    .result-bar-wrap { background:var(--gray-100); border-radius:100px; height:10px; margin-bottom:8px; overflow:hidden; }
-    .result-bar-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue-600),var(--blue-400)); transition:width .6s cubic-bezier(.16,1,.3,1); width:50%; }
-    .result-bands { display:flex; justify-content:space-between; font-size:11px; color:var(--gray-400); margin-bottom:8px; }
-    .result-verdict { display:inline-flex; align-items:center; font-size:13px; font-weight:500; padding:4px 12px; border-radius:100px; }
-    .result-raw { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    /* Panel */
+    .panel { display:none; }
+    .panel.active { display:block; }
 
-    /* Section card */
-    .section-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); overflow:visible; }
-    .section-header { padding:14px 20px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .section-header-left { display:flex; align-items:center; gap:8px; min-width:0; }
-    .section-title { font-size:14px; font-weight:600; color:var(--gray-900); }
-    .section-weight { font-size:11px; font-weight:500; padding:3px 9px; background:var(--blue-50); color:var(--blue-700); border:1px solid var(--blue-100); border-radius:100px; white-space:nowrap; flex-shrink:0; }
+    /* Panel header */
+    .p-head { margin-bottom:20px; }
+    .p-title { font-family:'Instrument Serif',serif; font-size:24px; font-weight:400; color:var(--gray-900); margin-bottom:4px; line-height:1.2; }
+    .p-note { font-size:12px; color:var(--gray-400); line-height:1.5; margin-bottom:10px; }
+    .p-chips { display:flex; gap:6px; flex-wrap:wrap; }
+    .chip { font-size:11px; font-weight:600; padding:3px 9px; border-radius:100px; }
+    .chip-blue  { background:var(--blue-50); color:var(--blue-600); border:1px solid #BFDBFE; }
+    .chip-green { background:#ECFDF5; color:var(--green-dark); border:1px solid #A7F3D0; }
 
-    /* ── TOOLTIP ── */
-    .tip-wrap { position:relative; display:inline-flex; flex-shrink:0; }
-    .tip-icon { width:17px; height:17px; border-radius:50%; background:var(--gray-100); color:var(--gray-400); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:help; border:1px solid var(--gray-200); transition:background .15s; user-select:none; }
-    .tip-icon:hover { background:var(--blue-50); color:var(--blue-600); border-color:var(--blue-200); }
-    /* Tooltip bubble — always positioned BELOW the icon, contained within viewport */
-    .tip-popup {
-      display:none;
-      position:fixed; /* fixed so it can't clip the card edge */
-      width:240px;
-      background:var(--gray-900); color:var(--white);
-      font-size:12px; font-weight:400; line-height:1.55;
-      padding:10px 13px; border-radius:var(--radius-sm);
-      z-index:500; pointer-events:none;
-      box-shadow:var(--shadow-md);
-    }
-    .tip-wrap:hover .tip-popup { display:block; }
+    /* ── TWO-COLUMN CALC LAYOUT (Albert.io style) ── */
+    .calc-layout { display:grid; grid-template-columns:1fr 260px; gap:20px; align-items:start; }
 
-    /* ── SLIDER ROW ── */
-    .slider-row { padding:14px 20px; border-bottom:1px solid var(--gray-100); display:grid; grid-template-columns:1fr auto; align-items:center; gap:16px; }
-    .slider-row:last-child { border-bottom:none; }
-    .slider-left { display:flex; flex-direction:column; gap:8px; min-width:0; }
-    .slider-name { font-size:13px; font-weight:500; color:var(--gray-700); display:flex; align-items:center; gap:6px; }
-    .slider-sub { font-size:12px; color:var(--gray-400); line-height:1.4; }
-    .slider-controls { display:flex; align-items:center; gap:6px; }
-    .adj-btn { width:30px; height:30px; border-radius:7px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:17px; font-weight:300; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .15s,border-color .15s; line-height:1; user-select:none; -webkit-user-select:none; }
-    .adj-btn:hover { background:var(--blue-50); border-color:var(--blue-200); color:var(--blue-600); }
-    .adj-btn:active { background:var(--blue-100); }
-    input[type="range"] { flex:1; height:5px; -webkit-appearance:none; appearance:none; border-radius:100px; background:var(--gray-200); outline:none; cursor:pointer; min-width:60px; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--blue-600); cursor:pointer; box-shadow:0 1px 4px rgba(37,99,235,.25); transition:transform .1s; }
-    input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
-    input[type="range"]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:var(--blue-600); border:none; cursor:pointer; }
-    .val-display { text-align:center; min-width:46px; }
-    .val-num { font-size:15px; font-weight:600; color:var(--blue-600); display:block; }
-    .val-max { font-size:11px; color:var(--gray-400); }
+    /* ── SECTION GROUP LABEL (colored, uppercase — like Albert's "MCQ SCORE") ── */
+    .group-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; margin-top:16px; }
+    .group-label:first-child { margin-top:0; }
+    .group-label.mcq   { color:var(--blue-600); }
+    .group-label.frq   { color:var(--orange); }
+    .group-label.essay { color:var(--purple); }
+    .group-label.saq   { color:var(--teal); }
+    .group-label.dbq   { color:var(--orange); }
+    .group-label.leq   { color:var(--purple); }
 
-    /* Actions */
-    .calc-actions { display:flex; align-items:center; gap:10px; }
-    .btn-reset { padding:9px 20px; border-radius:var(--radius-sm); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-700); transition:background .2s; }
-    .btn-reset:hover { background:var(--gray-100); }
+    /* ── SLIDER CARD (Albert.io: white card, label, slider with − + buttons) ── */
+    .s-card { background:#fff; border:1px solid var(--gray-200); border-radius:10px; padding:16px 18px; margin-bottom:10px; box-shadow:var(--shadow-sm); }
+    .s-card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; gap:12px; }
+    .s-card-label { font-size:14px; font-weight:600; color:var(--gray-800); line-height:1.3; display:flex; align-items:flex-start; gap:6px; flex:1; }
+    .s-card-desc { font-size:11px; color:var(--gray-400); margin-top:3px; }
+
+    /* Tip icon */
+    .tip { position:relative; display:inline-flex; flex-shrink:0; margin-top:2px; }
+    .tip-i { width:15px; height:15px; border-radius:50%; border:1.5px solid var(--gray-300); color:var(--gray-400); font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:help; flex-shrink:0; }
+    .tip-i:hover { border-color:var(--blue-600); color:var(--blue-600); }
+    .tip-pop { display:none; position:fixed; width:220px; background:var(--gray-900); color:#fff; font-size:12px; line-height:1.5; padding:9px 12px; border-radius:8px; z-index:9999; pointer-events:none; box-shadow:var(--shadow-md); }
+    .tip:hover .tip-pop { display:block; }
+
+    /* Slider with − number + layout */
+    .s-controls { display:flex; align-items:center; gap:10px; }
+    .pm-btn { width:30px; height:30px; border-radius:8px; border:1.5px solid var(--gray-200); background:#fff; color:var(--gray-500); font-size:20px; font-weight:300; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .12s; user-select:none; }
+    .pm-btn:hover { border-color:var(--green); color:var(--green-dark); background:#ECFDF5; }
+
+    /* The range slider — green, Albert.io style */
+    input[type=range] { flex:1; height:6px; -webkit-appearance:none; appearance:none; border-radius:100px; background:var(--gray-200); outline:none; cursor:pointer; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--green); cursor:pointer; box-shadow:0 1px 4px rgba(34,197,94,.3); border:2.5px solid #fff; transition:transform .1s; }
+    input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.1); }
+    input[type=range]::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:var(--green); border:2.5px solid #fff; cursor:pointer; }
+
+    /* Score readout next to slider */
+    .s-val { font-size:15px; font-weight:700; color:var(--gray-700); white-space:nowrap; flex-shrink:0; min-width:42px; text-align:right; }
+    .s-val span { color:var(--gray-400); font-weight:400; font-size:13px; }
+
+    /* ── RIGHT RESULTS PANEL ── */
+    .results-panel { position:sticky; top:70px; background:#fff; border:1px solid var(--gray-200); border-radius:12px; box-shadow:var(--shadow-md); overflow:hidden; }
+    .res-head { background:var(--gray-50); border-bottom:1px solid var(--gray-200); padding:14px 20px; text-align:center; }
+    .res-head-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gray-500); }
+    .res-rows { padding:16px 20px; display:flex; flex-direction:column; gap:10px; border-bottom:1px solid var(--gray-100); }
+    .res-row { display:flex; align-items:center; justify-content:space-between; }
+    .res-row-label { font-size:13px; color:var(--gray-600); }
+    .res-row-val { font-size:14px; font-weight:700; color:var(--gray-900); background:var(--gray-100); padding:3px 10px; border-radius:6px; min-width:36px; text-align:center; }
+
+    /* Big circle score */
+    .res-circle-wrap { padding:20px 20px 4px; text-align:center; }
+    .res-circle-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--gray-400); margin-bottom:12px; }
+    .res-circle { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; box-shadow:0 4px 16px rgba(34,197,94,.3); transition:background .4s; }
+    .res-circle.s1 { background:linear-gradient(135deg,#EF4444,#B91C1C); box-shadow:0 4px 16px rgba(239,68,68,.3); }
+    .res-circle.s2 { background:linear-gradient(135deg,#F97316,#C2410C); box-shadow:0 4px 16px rgba(249,115,22,.3); }
+    .res-circle.s3 { background:linear-gradient(135deg,#EAB308,#A16207); box-shadow:0 4px 16px rgba(234,179,8,.3); }
+    .res-circle.s4 { background:linear-gradient(135deg,#3B82F6,#1D4ED8); box-shadow:0 4px 16px rgba(59,130,246,.3); }
+    .res-circle.s5 { background:linear-gradient(135deg,#22C55E,#15803D); box-shadow:0 4px 16px rgba(34,197,94,.3); }
+    .res-circle-num { font-family:'Instrument Serif',serif; font-size:40px; color:#fff; line-height:1; }
+    .res-verdict { font-size:12px; font-weight:600; color:var(--gray-700); margin-bottom:6px; }
+    .res-pct { font-size:11px; color:var(--gray-400); line-height:1.5; text-align:center; padding:0 8px; }
+    .res-pct strong { color:var(--gray-700); }
+
+    /* Distribution inside results */
+    .res-dist { padding:14px 20px 18px; border-top:1px solid var(--gray-100); margin-top:8px; }
+    .res-dist-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--gray-400); margin-bottom:8px; }
+    .dist-bar { display:flex; height:18px; border-radius:5px; overflow:hidden; gap:1px; margin-bottom:6px; }
+    .db1{background:#FCA5A5;} .db2{background:#FCD34D;} .db3{background:#6EE7B7;} .db4{background:#93C5FD;} .db5{background:#22C55E;}
+    .ds { height:100%; min-width:2px; border-radius:3px; }
+    .dist-nums { display:flex; }
+    .dn { flex:1; text-align:center; font-size:10px; color:var(--gray-400); }
+    .dn strong { display:block; font-size:11px; font-weight:700; color:var(--gray-600); }
+
+    /* Reset button */
+    .reset-link { display:flex; align-items:center; justify-content:center; gap:4px; padding:10px 20px; font-size:12px; color:var(--gray-400); cursor:pointer; border:none; background:none; font-family:inherit; width:100%; border-top:1px solid var(--gray-100); transition:color .15s; }
+    .reset-link:hover { color:var(--gray-700); }
 
     /* ── RESPONSIVE ── */
-    @media(max-width:640px){
-      .page { grid-template-columns:1fr; padding:20px 4% 60px; }
-      .sidebar { position:static; display:flex; flex-direction:column; }
-      .subject-btns-wrap { display:flex; flex-wrap:wrap; gap:4px; }
-      .subject-btn { flex:1; min-width:110px; justify-content:center; }
-      .result-card { flex-direction:column; text-align:center; }
-      .slider-row { grid-template-columns:1fr; gap:8px; }
-      .val-display { display:none; }
-    }
+    @media(max-width:860px){ .calc-layout { grid-template-columns:1fr; } .results-panel { position:static; } }
+    @media(max-width:680px){ .page { grid-template-columns:1fr; padding:16px 14px 60px; } .sub-sidebar { position:static; } .sub-group { display:flex; flex-wrap:wrap; gap:4px; } .sub-btn { flex:1; min-width:100px; justify-content:center; } }
   </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity=".9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg></div>
-    <span class="logo-text">Cram<span>Lab</span></span>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity=".9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg></div>
+    <span class="logo-name">Cram<span>Lab</span></span>
   </a>
-  <div class="nav-right">
-    <a href="index.html" class="btn-nav">← Home</a>
-    <div class="nav-logged-out" id="nav-logged-out">
-      <a href="auth.html" class="btn-nav primary">Sign In</a>
+  <div class="nav-r">
+    <a href="index.html" class="nav-a">Home</a>
+    <div class="nav-lo" id="nav-lo">
+      <a href="auth.html" class="btn-signin">Sign In</a>
+      <a href="auth.html#signup" class="btn-signup">Sign Up Free</a>
     </div>
-    <div class="nav-logged-in" id="nav-logged-in">
-      <a href="account.html" class="nav-avatar" id="nav-avatar" title="My Account">?</a>
-      <a href="account.html" class="btn-nav">My Account</a>
+    <div class="nav-li" id="nav-li">
+      <a href="account.html" class="nav-avatar" id="nav-av" title="My Account">?</a>
+      <a href="account.html" class="nav-a">My Account</a>
     </div>
   </div>
 </nav>
 
 <div class="page">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-label">AP Subjects</div>
-    <div class="subject-btns-wrap">
-      <button class="subject-btn active" id="nav-calc"  onclick="showCalc('calc')"><span class="s-emoji">📐</span>Calculus AB</button>
-      <button class="subject-btn"        id="nav-eng"   onclick="showCalc('eng')"><span class="s-emoji">✍️</span>English Lang</button>
-      <button class="subject-btn"        id="nav-ush"   onclick="showCalc('ush')"><span class="s-emoji">🏛️</span>US History</button>
-      <button class="subject-btn"        id="nav-bio"   onclick="showCalc('bio')"><span class="s-emoji">🧬</span>Biology</button>
-      <button class="subject-btn"        id="nav-psych" onclick="showCalc('psych')"><span class="s-emoji">🧠</span>Psychology</button>
+  <!-- SUBJECT SIDEBAR -->
+  <aside class="sub-sidebar">
+    <div class="sub-group">
+      <div class="sub-group-label">Live Now</div>
+      <button class="sub-btn active" id="sb-calc"  onclick="goPanel('calc')"><span class="sub-em">📐</span>Calculus AB</button>
+      <button class="sub-btn"        id="sb-eng"   onclick="goPanel('eng')"><span class="sub-em">✍️</span>English Lang</button>
+      <button class="sub-btn"        id="sb-ush"   onclick="goPanel('ush')"><span class="sub-em">🏛️</span>US History</button>
+      <button class="sub-btn"        id="sb-bio"   onclick="goPanel('bio')"><span class="sub-em">🧬</span>Biology</button>
+      <button class="sub-btn"        id="sb-psych" onclick="goPanel('psych')"><span class="sub-em">🧠</span>Psychology</button>
     </div>
-    <div class="score-ref">
-      <div class="score-ref-title">AP Score Guide</div>
-      <div class="score-ref-row"><span class="s5">5</span><span class="score-ref-desc">Extremely well qualified</span></div>
-      <div class="score-ref-row"><span class="s4">4</span><span class="score-ref-desc">Well qualified</span></div>
-      <div class="score-ref-row"><span class="s3">3</span><span class="score-ref-desc">Qualified (passing)</span></div>
-      <div class="score-ref-row"><span class="s2">2</span><span class="score-ref-desc">Possibly qualified</span></div>
-      <div class="score-ref-row"><span class="s1">1</span><span class="score-ref-desc">No recommendation</span></div>
+    <div class="sub-group">
+      <div class="sub-group-label">Coming Soon</div>
+      <button class="sub-btn" disabled><span class="sub-em">🧮</span>Calculus BC<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">⚗️</span>Chemistry<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">📊</span>Statistics<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🌍</span>World History<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">💻</span>CS Principles<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🏛️</span>Gov & Politics<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">📖</span>English Lit<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">⚡</span>Physics 1<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">💹</span>Macro/Micro Econ<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🗺️</span>Human Geography<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🌐</span>Spanish Lang<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🇫🇷</span>French Lang<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🔬</span>Physics C<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">💻</span>Computer Sci A<span class="soon">Soon</span></button>
+      <button class="sub-btn" disabled><span class="sub-em">🎨</span>Art History<span class="soon">Soon</span></button>
     </div>
   </aside>
 
-  <main>
+  <!-- PANELS -->
+  <div class="main">
 
-    <!-- ════════════════════════════
-         AP CALCULUS AB
-         Sections: MCQ Part A, MCQ Part B, FRQ Part A (calc), FRQ Part B (no calc)
-    ════════════════════════════ -->
-    <div class="calc-panel active" id="panel-calc">
-
-      <div class="result-card">
-        <div class="big-score" id="calc-score">–</div>
-        <div class="result-meta">
-          <div class="result-label">Predicted AP Score</div>
-          <div class="result-bar-wrap"><div class="result-bar-fill" id="calc-bar"></div></div>
-          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="result-verdict" id="calc-verdict"></div>
-          <div class="result-raw" id="calc-raw"></div>
+    <!-- ═══════════ AP CALCULUS AB ═══════════ -->
+    <div class="panel active" id="panel-calc">
+      <div class="p-head">
+        <div class="p-title">AP® Calculus AB Score Calculator</div>
+        <div class="p-note">Based on the most recent Exam Scoring Guidelines — scores may not be 100% accurate.</div>
+        <div class="p-chips">
+          <span class="chip chip-blue">2024 Pass Rate: 58.4%</span>
+          <span class="chip chip-blue">Mean Score: 3.22</span>
+          <span class="chip chip-green">✓ Real scoring weights</span>
         </div>
       </div>
 
-      <!-- Section I: MCQ -->
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section I — Multiple Choice</div>
-            <div class="tip-wrap">
-              <div class="tip-icon">ⓘ</div>
-              <div class="tip-popup" id="tip-calc-mcq">45 questions, 105 minutes total. No penalty for wrong answers — always guess. Worth 50% of your total score.</div>
+      <div class="calc-layout">
+        <div class="calc-left">
+
+          <div class="group-label mcq">MCQ Score</div>
+
+          <div class="s-card">
+            <div class="s-card-top">
+              <div>
+                <div class="s-card-label">Section I: Part A – Multiple Choice (No Calc)
+                  <div class="tip"><div class="tip-i">i</div><div class="tip-pop">30 questions, 60 min. Tests limits, derivatives, and integrals without a calculator. No penalty for guessing.</div></div>
+                </div>
+                <div class="s-card-desc">Q1–30 · 30 pts</div>
+              </div>
+            </div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('ca','calc',-1)">−</button>
+              <input type="range" id="ca" min="0" max="30" value="15" oninput="upd('ca','calc')">
+              <button class="pm-btn" onclick="bump('ca','calc',1)">+</button>
+              <div class="s-val" id="ca-v">15 <span>/ 30</span></div>
             </div>
           </div>
-          <div class="section-weight">50%</div>
+
+          <div class="s-card">
+            <div class="s-card-top">
+              <div>
+                <div class="s-card-label">Section I: Part B – Multiple Choice (Calc)
+                  <div class="tip"><div class="tip-i">i</div><div class="tip-pop">15 questions, 45 min. Graphing calculator required. Tests applied calculus: motion, area, accumulated change.</div></div>
+                </div>
+                <div class="s-card-desc">Q31–45 · 15 pts</div>
+              </div>
+            </div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('cb','calc',-1)">−</button>
+              <input type="range" id="cb" min="0" max="15" value="8" oninput="upd('cb','calc')">
+              <button class="pm-btn" onclick="bump('cb','calc',1)">+</button>
+              <div class="s-val" id="cb-v">8 <span>/ 15</span></div>
+            </div>
+          </div>
+
+          <div class="group-label frq">FRQ Score</div>
+
+          <div class="s-card">
+            <div class="s-card-top">
+              <div>
+                <div class="s-card-label">Section II: Part A – FRQ (Calculator Allowed)
+                  <div class="tip"><div class="tip-i">i</div><div class="tip-pop">2 problems (FRQ 1 & 2), 30 min. 9 pts each = 18 pts. Show all work — partial credit awarded. Always include units.</div></div>
+                </div>
+                <div class="s-card-desc">FRQ 1 & 2 · 18 pts total</div>
+              </div>
+            </div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('cc','calc',-1)">−</button>
+              <input type="range" id="cc" min="0" max="18" value="9" oninput="upd('cc','calc')">
+              <button class="pm-btn" onclick="bump('cc','calc',1)">+</button>
+              <div class="s-val" id="cc-v">9 <span>/ 18</span></div>
+            </div>
+          </div>
+
+          <div class="s-card">
+            <div class="s-card-top">
+              <div>
+                <div class="s-card-label">Section II: Part B – FRQ (No Calculator)
+                  <div class="tip"><div class="tip-i">i</div><div class="tip-pop">4 problems (FRQ 3–6), 60 min. 9 pts each = 36 pts. Tests derivatives, integrals, FTC, and differential equations. Write every step clearly.</div></div>
+                </div>
+                <div class="s-card-desc">FRQ 3, 4, 5 & 6 · 36 pts total</div>
+              </div>
+            </div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('cd','calc',-1)">−</button>
+              <input type="range" id="cd" min="0" max="36" value="18" oninput="upd('cd','calc')">
+              <button class="pm-btn" onclick="bump('cd','calc',1)">+</button>
+              <div class="s-val" id="cd-v">18 <span>/ 36</span></div>
+            </div>
+          </div>
+
         </div>
-        <!-- Part A -->
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Part A — No Calculator
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-calc-mcq-a">30 questions, 60 min. Tests limits, derivatives, and integrals. Calculator not allowed.</div></div>
+        <div class="calc-right">
+          <div class="results-panel" id="res-calc">
+            <div class="res-head"><div class="res-head-title">Results</div></div>
+            <div class="res-rows">
+              <div class="res-row"><span class="res-row-label">MCQ Score</span><span class="res-row-val" id="calc-mcq-disp">23</span></div>
+              <div class="res-row"><span class="res-row-label">FRQ Score</span><span class="res-row-val" id="calc-frq-disp">27</span></div>
+              <div class="res-row"><span class="res-row-label">Weighted Score</span><span class="res-row-val" id="calc-w-disp">50 / 99</span></div>
             </div>
-            <div class="slider-sub">Questions 1–30</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('calc-mcq-a',-1)">−</button>
-              <input type="range" id="calc-mcq-a" min="0" max="30" value="15" oninput="syncDisplay(this,'calc-mcq-a-val');calcScore()">
-              <button class="adj-btn" onclick="adj('calc-mcq-a',1)">+</button>
+            <div class="res-circle-wrap">
+              <div class="res-circle-label">Predicted AP Score</div>
+              <div class="res-circle s3" id="calc-circle"><span class="res-circle-num" id="calc-big">3</span></div>
+              <div class="res-verdict" id="calc-verd">Qualified — passing</div>
+              <div class="res-pct">Based on 2024 data, a score of <strong id="calc-pct-score">3</strong> puts you in approximately the <strong id="calc-pct">39th</strong> percentile of AP Calculus AB students.</div>
             </div>
+            <div class="res-dist">
+              <div class="res-dist-label">2024 Score Distribution</div>
+              <div class="dist-bar"><div class="ds db1" style="flex:19.3"></div><div class="ds db2" style="flex:22.3"></div><div class="ds db3" style="flex:20.3"></div><div class="ds db4" style="flex:17.2"></div><div class="ds db5" style="flex:20.9"></div></div>
+              <div class="dist-nums">
+                <div class="dn"><strong>1</strong>19.3%</div>
+                <div class="dn"><strong>2</strong>22.3%</div>
+                <div class="dn"><strong>3</strong>20.3%</div>
+                <div class="dn"><strong>4</strong>17.2%</div>
+                <div class="dn"><strong>5</strong>20.9%</div>
+              </div>
+            </div>
+            <button class="reset-link" onclick="resetPanel('calc')">↺ Reset</button>
           </div>
-          <div class="val-display"><span class="val-num" id="calc-mcq-a-val">15</span><span class="val-max">/ 30</span></div>
-        </div>
-        <!-- Part B -->
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Part B — Graphing Calculator
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-calc-mcq-b">15 questions, 45 min. Calculator required. Tests applications: motion, area, rates of change.</div></div>
-            </div>
-            <div class="slider-sub">Questions 31–45</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('calc-mcq-b',-1)">−</button>
-              <input type="range" id="calc-mcq-b" min="0" max="15" value="8" oninput="syncDisplay(this,'calc-mcq-b-val');calcScore()">
-              <button class="adj-btn" onclick="adj('calc-mcq-b',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="calc-mcq-b-val">8</span><span class="val-max">/ 15</span></div>
         </div>
       </div>
-
-      <!-- Section II: FRQ -->
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section II — Free Response</div>
-            <div class="tip-wrap">
-              <div class="tip-icon">ⓘ</div>
-              <div class="tip-popup" id="tip-calc-frq">6 problems, 90 minutes. Each worth 9 points. Show all work — partial credit is awarded even when the final answer is wrong. Worth 50% of your total score.</div>
-            </div>
-          </div>
-          <div class="section-weight">50%</div>
-        </div>
-        <!-- Part A -->
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Part A — Calculator Allowed
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-calc-frq-a">2 problems (FRQ 1 & 2), worth 9 pts each = 18 pts total. Involves functions from graphs/tables. Always include units.</div></div>
-            </div>
-            <div class="slider-sub">FRQ 1 & 2 — 18 points total</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('calc-frq-a',-1)">−</button>
-              <input type="range" id="calc-frq-a" min="0" max="18" value="9" oninput="syncDisplay(this,'calc-frq-a-val');calcScore()">
-              <button class="adj-btn" onclick="adj('calc-frq-a',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="calc-frq-a-val">9</span><span class="val-max">/ 18</span></div>
-        </div>
-        <!-- Part B -->
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Part B — No Calculator
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-calc-frq-b">4 problems (FRQ 3–6), worth 9 pts each = 36 pts total. Tests derivatives, integrals, FTC, and differential equations. Write out every step clearly.</div></div>
-            </div>
-            <div class="slider-sub">FRQ 3, 4, 5 & 6 — 36 points total</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('calc-frq-b',-1)">−</button>
-              <input type="range" id="calc-frq-b" min="0" max="36" value="18" oninput="syncDisplay(this,'calc-frq-b-val');calcScore()">
-              <button class="adj-btn" onclick="adj('calc-frq-b',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="calc-frq-b-val">18</span><span class="val-max">/ 36</span></div>
-        </div>
-      </div>
-
-      <div class="calc-actions"><button class="btn-reset" onclick="resetPanel('calc')">Reset</button></div>
     </div>
 
-    <!-- ════════════════════════════
-         AP ENGLISH LANGUAGE
-         Sections: MCQ, Synthesis Essay, Rhetorical Analysis Essay, Argument Essay
-    ════════════════════════════ -->
-    <div class="calc-panel" id="panel-eng">
-
-      <div class="result-card">
-        <div class="big-score" id="eng-score">–</div>
-        <div class="result-meta">
-          <div class="result-label">Predicted AP Score</div>
-          <div class="result-bar-wrap"><div class="result-bar-fill" id="eng-bar"></div></div>
-          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="result-verdict" id="eng-verdict"></div>
-          <div class="result-raw" id="eng-raw"></div>
+    <!-- ═══════════ AP ENGLISH LANGUAGE ═══════════ -->
+    <div class="panel" id="panel-eng">
+      <div class="p-head">
+        <div class="p-title">AP® English Language Score Calculator</div>
+        <div class="p-note">Based on the most recent Exam Scoring Guidelines — scores may not be 100% accurate.</div>
+        <div class="p-chips">
+          <span class="chip chip-blue">2024 Pass Rate: 54.6%</span>
+          <span class="chip chip-blue">Mean Score: 2.79</span>
+          <span class="chip chip-green">✓ Real scoring weights</span>
         </div>
       </div>
-
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section I — Multiple Choice</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-eng-mcq">45 questions, 60 minutes. 4–5 nonfiction passages. Tests rhetorical analysis: purpose, tone, diction, structure. No penalty for wrong answers.</div></div>
-          </div>
-          <div class="section-weight">45%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Questions Correct</div>
-            <div class="slider-sub">45 questions across 4–5 passages</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('eng-mcq',-1)">−</button>
-              <input type="range" id="eng-mcq" min="0" max="45" value="23" oninput="syncDisplay(this,'eng-mcq-val');engScore()">
-              <button class="adj-btn" onclick="adj('eng-mcq',1)">+</button>
+      <div class="calc-layout">
+        <div class="calc-left">
+          <div class="group-label mcq">MCQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part A – Multiple Choice<div class="tip"><div class="tip-i">i</div><div class="tip-pop">45 questions, 60 min. 4–5 nonfiction passages. Tests rhetorical analysis: purpose, tone, diction, structure. No penalty for wrong answers.</div></div></div>
+              <div class="s-card-desc">45 questions across 4–5 nonfiction passages</div>
+            </div></div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('ea','eng',-1)">−</button>
+              <input type="range" id="ea" min="0" max="45" value="23" oninput="upd('ea','eng')">
+              <button class="pm-btn" onclick="bump('ea','eng',1)">+</button>
+              <div class="s-val" id="ea-v">23 <span>/ 45</span></div>
             </div>
           </div>
-          <div class="val-display"><span class="val-num" id="eng-mcq-val">23</span><span class="val-max">/ 45</span></div>
+
+          <div class="group-label essay">Essay Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part A – Synthesis Essay<div class="tip"><div class="tip-i">i</div><div class="tip-pop">45 min. Read 6–7 sources, write an argument using at least 3. Use sources as evidence for your position — don't just summarize them.</div></div></div>
+              <div class="s-card-desc">Build an argument incorporating at least 3 provided sources · 0–6 pts</div>
+            </div></div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('eb','eng',-1)">−</button>
+              <input type="range" id="eb" min="0" max="6" value="3" oninput="upd('eb','eng')">
+              <button class="pm-btn" onclick="bump('eb','eng',1)">+</button>
+              <div class="s-val" id="eb-v">3 <span>/ 6</span></div>
+            </div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Rhetorical Analysis Essay<div class="tip"><div class="tip-i">i</div><div class="tip-pop">40 min. Analyze how the author's rhetorical choices serve their purpose. Name the device AND explain its effect on the audience.</div></div></div>
+              <div class="s-card-desc">Analyze an author's rhetorical choices and their effect · 0–6 pts</div>
+            </div></div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('ec','eng',-1)">−</button>
+              <input type="range" id="ec" min="0" max="6" value="3" oninput="upd('ec','eng')">
+              <button class="pm-btn" onclick="bump('ec','eng',1)">+</button>
+              <div class="s-val" id="ec-v">3 <span>/ 6</span></div>
+            </div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part C – Argument Essay<div class="tip"><div class="tip-i">i</div><div class="tip-pop">40 min. Defend your own position on a given topic using evidence of your choosing. Thesis + specific evidence + clear reasoning = top score.</div></div></div>
+              <div class="s-card-desc">Defend a position using evidence of your choosing · 0–6 pts</div>
+            </div></div>
+            <div class="s-controls">
+              <button class="pm-btn" onclick="bump('ed','eng',-1)">−</button>
+              <input type="range" id="ed" min="0" max="6" value="3" oninput="upd('ed','eng')">
+              <button class="pm-btn" onclick="bump('ed','eng',1)">+</button>
+              <div class="s-val" id="ed-v">3 <span>/ 6</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="calc-right">
+          <div class="results-panel">
+            <div class="res-head"><div class="res-head-title">Results</div></div>
+            <div class="res-rows">
+              <div class="res-row"><span class="res-row-label">MCQ Score</span><span class="res-row-val" id="eng-mcq-disp">23</span></div>
+              <div class="res-row"><span class="res-row-label">Essay Score</span><span class="res-row-val" id="eng-frq-disp">9</span></div>
+              <div class="res-row"><span class="res-row-label">Weighted Score</span><span class="res-row-val" id="eng-w-disp">75 / 150</span></div>
+            </div>
+            <div class="res-circle-wrap">
+              <div class="res-circle-label">Predicted AP Score</div>
+              <div class="res-circle s3" id="eng-circle"><span class="res-circle-num" id="eng-big">3</span></div>
+              <div class="res-verdict" id="eng-verd">Qualified — passing</div>
+              <div class="res-pct">A score of <strong id="eng-pct-score">3</strong> puts you in approximately the <strong id="eng-pct">34th</strong> percentile of AP English Language students.</div>
+            </div>
+            <div class="res-dist">
+              <div class="res-dist-label">2024 Score Distribution</div>
+              <div class="dist-bar"><div class="ds db1" style="flex:21.0"></div><div class="ds db2" style="flex:24.4"></div><div class="ds db3" style="flex:28.2"></div><div class="ds db4" style="flex:16.6"></div><div class="ds db5" style="flex:9.8"></div></div>
+              <div class="dist-nums"><div class="dn"><strong>1</strong>21%</div><div class="dn"><strong>2</strong>24.4%</div><div class="dn"><strong>3</strong>28.2%</div><div class="dn"><strong>4</strong>16.6%</div><div class="dn"><strong>5</strong>9.8%</div></div>
+            </div>
+            <button class="reset-link" onclick="resetPanel('eng')">↺ Reset</button>
+          </div>
         </div>
       </div>
-
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section II — Free Response (Essays)</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-eng-frq">3 essays, ~125 minutes total. Each scored 0–6. A score of 4+ requires a clear thesis, specific evidence, and logical reasoning connecting the two.</div></div>
-          </div>
-          <div class="section-weight">55%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Essay 1 — Synthesis
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-eng-synth">45 min. Read 6–7 sources, write an argument using at least 3. Don't just summarize — use sources as evidence to support YOUR position.</div></div>
-            </div>
-            <div class="slider-sub">Read sources, build an argument incorporating at least 3</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('eng-synth',-1)">−</button>
-              <input type="range" id="eng-synth" min="0" max="6" value="3" oninput="syncDisplay(this,'eng-synth-val');engScore()">
-              <button class="adj-btn" onclick="adj('eng-synth',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="eng-synth-val">3</span><span class="val-max">/ 6</span></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Essay 2 — Rhetorical Analysis
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-eng-rheto">40 min. Analyze how the author's rhetorical choices serve their purpose. Name a device + explain its effect. Don't just identify — analyze.</div></div>
-            </div>
-            <div class="slider-sub">Analyze an author's rhetorical choices and their effect</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('eng-rheto',-1)">−</button>
-              <input type="range" id="eng-rheto" min="0" max="6" value="3" oninput="syncDisplay(this,'eng-rheto-val');engScore()">
-              <button class="adj-btn" onclick="adj('eng-rheto',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="eng-rheto-val">3</span><span class="val-max">/ 6</span></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Essay 3 — Argument
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-eng-arg">40 min. Develop your own argument using any evidence you choose. A defensible thesis + specific evidence + clear reasoning = top score. Address counterarguments for complexity.</div></div>
-            </div>
-            <div class="slider-sub">Defend a position using evidence of your choosing</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('eng-arg',-1)">−</button>
-              <input type="range" id="eng-arg" min="0" max="6" value="3" oninput="syncDisplay(this,'eng-arg-val');engScore()">
-              <button class="adj-btn" onclick="adj('eng-arg',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="eng-arg-val">3</span><span class="val-max">/ 6</span></div>
-        </div>
-      </div>
-
-      <div class="calc-actions"><button class="btn-reset" onclick="resetPanel('eng')">Reset</button></div>
     </div>
 
-    <!-- ════════════════════════════
-         AP US HISTORY
-         Sections: MCQ, SAQ, DBQ, LEQ
-    ════════════════════════════ -->
-    <div class="calc-panel" id="panel-ush">
+    <!-- ═══════════ AP US HISTORY ═══════════ -->
+    <div class="panel" id="panel-ush">
+      <div class="p-head">
+        <div class="p-title">AP® US History Score Calculator</div>
+        <div class="p-note">Based on the most recent Exam Scoring Guidelines — scores may not be 100% accurate.</div>
+        <div class="p-chips"><span class="chip chip-blue">2024 Pass Rate: 72.2%</span><span class="chip chip-blue">Mean Score: 3.23</span><span class="chip chip-green">✓ Real scoring weights</span></div>
+      </div>
+      <div class="calc-layout">
+        <div class="calc-left">
+          <div class="group-label mcq">MCQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part A – Multiple Choice<div class="tip"><div class="tip-i">i</div><div class="tip-pop">55 questions, 55 min. Grouped around primary/secondary sources. Tests causation, comparison, contextualization, continuity & change. No penalty for wrong answers.</div></div></div>
+              <div class="s-card-desc">55 stimulus-based questions · 55 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('ua','ush',-1)">−</button><input type="range" id="ua" min="0" max="55" value="28" oninput="upd('ua','ush')"><button class="pm-btn" onclick="bump('ua','ush',1)">+</button><div class="s-val" id="ua-v">28 <span>/ 55</span></div></div>
+          </div>
 
-      <div class="result-card">
-        <div class="big-score" id="ush-score">–</div>
-        <div class="result-meta">
-          <div class="result-label">Predicted AP Score</div>
-          <div class="result-bar-wrap"><div class="result-bar-fill" id="ush-bar"></div></div>
-          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="result-verdict" id="ush-verdict"></div>
-          <div class="result-raw" id="ush-raw"></div>
+          <div class="group-label saq">SAQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part B – Short-Answer Question 1<div class="tip"><div class="tip-i">i</div><div class="tip-pop">Required. Usually based on a secondary source (historian's argument). Answer parts a, b, and c directly — no thesis needed. 3–5 sentences per part.</div></div></div>
+              <div class="s-card-desc">Required · 3 parts (a, b, c) · 3 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('ub','ush',-1)">−</button><input type="range" id="ub" min="0" max="3" value="2" oninput="upd('ub','ush')"><button class="pm-btn" onclick="bump('ub','ush',1)">+</button><div class="s-val" id="ub-v">2 <span>/ 3</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part B – Short-Answer Question 2<div class="tip"><div class="tip-i">i</div><div class="tip-pop">Required. Often based on a primary source image, map, or document. Be specific — vague answers don't earn credit.</div></div></div>
+              <div class="s-card-desc">Required · 3 parts (a, b, c) · 3 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('uc','ush',-1)">−</button><input type="range" id="uc" min="0" max="3" value="2" oninput="upd('uc','ush')"><button class="pm-btn" onclick="bump('uc','ush',1)">+</button><div class="s-val" id="uc-v">2 <span>/ 3</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part B – Short-Answer Question 3 or 4<div class="tip"><div class="tip-i">i</div><div class="tip-pop">Choose ONE: SAQ 3 (periods 1–5, pre-1877) or SAQ 4 (periods 6–9, post-1877). Pick the time period you know better.</div></div></div>
+              <div class="s-card-desc">Your choice: pre-1877 or post-1877 · 3 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('ud','ush',-1)">−</button><input type="range" id="ud" min="0" max="3" value="2" oninput="upd('ud','ush')"><button class="pm-btn" onclick="bump('ud','ush',1)">+</button><div class="s-val" id="ud-v">2 <span>/ 3</span></div></div>
+          </div>
+
+          <div class="group-label dbq">DBQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part A – Document-Based Question (DBQ)<div class="tip"><div class="tip-i">i</div><div class="tip-pop">60 min (15-min reading). Thesis (1) + Contextualization (1) + Evidence from docs (2) + Outside evidence (1) + Sourcing/HAPP (1) + Complexity (1) = 7 pts. Contextualization is the most missed point — write 3+ sentences connecting broader context to your argument.</div></div></div>
+              <div class="s-card-desc">Thesis · Contextualization · Evidence · Sourcing · Complexity</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('ue','ush',-1)">−</button><input type="range" id="ue" min="0" max="7" value="4" oninput="upd('ue','ush')"><button class="pm-btn" onclick="bump('ue','ush',1)">+</button><div class="s-val" id="ue-v">4 <span>/ 7</span></div></div>
+          </div>
+
+          <div class="group-label leq">LEQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Long-Essay Question (LEQ)<div class="tip"><div class="tip-i">i</div><div class="tip-pop">40 min. Choose 1 of 3 prompts. Thesis (1) + Contextualization (1) + Evidence (2) + Analysis & Reasoning (2) = 6 pts. Pick the prompt matching your strongest skill: causation, comparison, or continuity/change.</div></div></div>
+              <div class="s-card-desc">Thesis · Contextualization · Evidence · Analysis & Reasoning</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('uf','ush',-1)">−</button><input type="range" id="uf" min="0" max="6" value="3" oninput="upd('uf','ush')"><button class="pm-btn" onclick="bump('uf','ush',1)">+</button><div class="s-val" id="uf-v">3 <span>/ 6</span></div></div>
+          </div>
+        </div>
+        <div class="calc-right">
+          <div class="results-panel">
+            <div class="res-head"><div class="res-head-title">Results</div></div>
+            <div class="res-rows">
+              <div class="res-row"><span class="res-row-label">MCQ Score</span><span class="res-row-val" id="ush-mcq-disp">28</span></div>
+              <div class="res-row"><span class="res-row-label">SAQ Score</span><span class="res-row-val" id="ush-saq-disp">6</span></div>
+              <div class="res-row"><span class="res-row-label">DBQ Score</span><span class="res-row-val" id="ush-dbq-disp">4</span></div>
+              <div class="res-row"><span class="res-row-label">LEQ Score</span><span class="res-row-val" id="ush-leq-disp">3</span></div>
+              <div class="res-row"><span class="res-row-label">Weighted Score</span><span class="res-row-val" id="ush-w-disp">75 / 150</span></div>
+            </div>
+            <div class="res-circle-wrap">
+              <div class="res-circle-label">Predicted AP Score</div>
+              <div class="res-circle s3" id="ush-circle"><span class="res-circle-num" id="ush-big">3</span></div>
+              <div class="res-verdict" id="ush-verd">Qualified — passing</div>
+              <div class="res-pct">A score of <strong id="ush-pct-score">3</strong> puts you in approximately the <strong id="ush-pct">28th</strong> percentile of AP US History students.</div>
+            </div>
+            <div class="res-dist">
+              <div class="res-dist-label">2024 Score Distribution</div>
+              <div class="dist-bar"><div class="ds db1" style="flex:12.7"></div><div class="ds db2" style="flex:15.1"></div><div class="ds db3" style="flex:30.5"></div><div class="ds db4" style="flex:24.7"></div><div class="ds db5" style="flex:17.0"></div></div>
+              <div class="dist-nums"><div class="dn"><strong>1</strong>12.7%</div><div class="dn"><strong>2</strong>15.1%</div><div class="dn"><strong>3</strong>30.5%</div><div class="dn"><strong>4</strong>24.7%</div><div class="dn"><strong>5</strong>17%</div></div>
+            </div>
+            <button class="reset-link" onclick="resetPanel('ush')">↺ Reset</button>
+          </div>
         </div>
       </div>
-
-      <!-- MCQ -->
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section I Part A — Multiple Choice</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-mcq">55 questions, 55 minutes. Grouped around primary/secondary sources. Tests causation, comparison, contextualization. No penalty for wrong answers.</div></div>
-          </div>
-          <div class="section-weight">40%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Questions Correct</div>
-            <div class="slider-sub">55 stimulus-based questions</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('ush-mcq',-1)">−</button>
-              <input type="range" id="ush-mcq" min="0" max="55" value="28" oninput="syncDisplay(this,'ush-mcq-val');ushScore()">
-              <button class="adj-btn" onclick="adj('ush-mcq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="ush-mcq-val">28</span><span class="val-max">/ 55</span></div>
-        </div>
-      </div>
-
-      <!-- SAQ -->
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section I Part B — Short Answer (SAQ)</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-saq">3 of 4 questions, 40 minutes. Each SAQ has 3 parts (a, b, c) worth 1 pt each. No thesis required — answer each part directly and specifically.</div></div>
-          </div>
-          <div class="section-weight">20%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Total SAQ Points
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-saq-pts">SAQ 1 and 2 are required. You choose either SAQ 3 (pre-1877) or SAQ 4 (post-1877). 3 pts per question × 3 questions = 9 pts max.</div></div>
-            </div>
-            <div class="slider-sub">3 questions × 3 parts each = 9 pts max</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('ush-saq',-1)">−</button>
-              <input type="range" id="ush-saq" min="0" max="9" value="5" oninput="syncDisplay(this,'ush-saq-val');ushScore()">
-              <button class="adj-btn" onclick="adj('ush-saq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="ush-saq-val">5</span><span class="val-max">/ 9</span></div>
-        </div>
-      </div>
-
-      <!-- DBQ -->
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section II Part A — DBQ</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-dbq">60 min (includes 15-min reading). Analyze 7 documents, write a historical argument. Scored on: Thesis (1), Contextualization (1), Evidence (2), Sourcing (1), Complexity (1), Outside Evidence (1) = 7 pts max.</div></div>
-          </div>
-          <div class="section-weight">25%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">DBQ Score
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-dbq-pts">Key tip: Contextualization is the most missed point — write 3+ sentences connecting broader historical context to your argument. Use at least 6 of 7 documents for full evidence credit.</div></div>
-            </div>
-            <div class="slider-sub">Thesis · Contextualization · Evidence · Sourcing · Complexity</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('ush-dbq',-1)">−</button>
-              <input type="range" id="ush-dbq" min="0" max="7" value="4" oninput="syncDisplay(this,'ush-dbq-val');ushScore()">
-              <button class="adj-btn" onclick="adj('ush-dbq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="ush-dbq-val">4</span><span class="val-max">/ 7</span></div>
-        </div>
-      </div>
-
-      <!-- LEQ -->
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section II Part B — LEQ</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-leq">40 min. Choose 1 of 3 prompts. Scored on: Thesis (1), Contextualization (1), Evidence (2), Analysis & Reasoning (2) = 6 pts max.</div></div>
-          </div>
-          <div class="section-weight">15%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">LEQ Score
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-ush-leq-pts">Pick the prompt that matches the historical thinking skill you're strongest at — causation, comparison, or continuity and change over time. Your thesis must establish a line of reasoning, not just restate the prompt.</div></div>
-            </div>
-            <div class="slider-sub">Thesis · Contextualization · Evidence · Analysis & Reasoning</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('ush-leq',-1)">−</button>
-              <input type="range" id="ush-leq" min="0" max="6" value="3" oninput="syncDisplay(this,'ush-leq-val');ushScore()">
-              <button class="adj-btn" onclick="adj('ush-leq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="ush-leq-val">3</span><span class="val-max">/ 6</span></div>
-        </div>
-      </div>
-
-      <div class="calc-actions"><button class="btn-reset" onclick="resetPanel('ush')">Reset</button></div>
     </div>
 
-    <!-- ════════════════════════════
-         AP BIOLOGY
-         Sections: MCQ, Grid-In, Long FRQ, Short FRQ
-    ════════════════════════════ -->
-    <div class="calc-panel" id="panel-bio">
+    <!-- ═══════════ AP BIOLOGY ═══════════ -->
+    <div class="panel" id="panel-bio">
+      <div class="p-head">
+        <div class="p-title">AP® Biology Score Calculator</div>
+        <div class="p-note">Based on the most recent Exam Scoring Guidelines — scores may not be 100% accurate.</div>
+        <div class="p-chips"><span class="chip chip-blue">2024 Pass Rate: 67.3%</span><span class="chip chip-blue">Mean Score: 2.96</span><span class="chip chip-green">✓ Real scoring weights</span></div>
+      </div>
+      <div class="calc-layout">
+        <div class="calc-left">
+          <div class="group-label mcq">MCQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part A – Multiple Choice<div class="tip"><div class="tip-i">i</div><div class="tip-pop">50 questions, 90 min. Many grouped around data sets. Practice reading graphs carefully — identify trends AND the biological mechanism behind them.</div></div></div>
+              <div class="s-card-desc">50 questions on data sets and discrete concepts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('ba','bio',-1)">−</button><input type="range" id="ba" min="0" max="50" value="25" oninput="upd('ba','bio')"><button class="pm-btn" onclick="bump('ba','bio',1)">+</button><div class="s-val" id="ba-v">25 <span>/ 50</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part B – Grid-In Questions<div class="tip"><div class="tip-i">i</div><div class="tip-pop">6 math questions with no answer choices. Common: Hardy-Weinberg (p²+2pq+q²=1), chi-square, 10% energy rule. Practice these — exact answers required.</div></div></div>
+              <div class="s-card-desc">6 calculation questions — exact answers, no answer choices</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('bb','bio',-1)">−</button><input type="range" id="bb" min="0" max="6" value="3" oninput="upd('bb','bio')"><button class="pm-btn" onclick="bump('bb','bio',1)">+</button><div class="s-val" id="bb-v">3 <span>/ 6</span></div></div>
+          </div>
 
-      <div class="result-card">
-        <div class="big-score" id="bio-score">–</div>
-        <div class="result-meta">
-          <div class="result-label">Predicted AP Score</div>
-          <div class="result-bar-wrap"><div class="result-bar-fill" id="bio-bar"></div></div>
-          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="result-verdict" id="bio-verdict"></div>
-          <div class="result-raw" id="bio-raw"></div>
+          <div class="group-label frq">FRQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part A – Long FRQ 1<div class="tip"><div class="tip-i">i</div><div class="tip-pop">Usually experiment design. Include: hypothesis, independent variable, dependent variable, control group, sample size, and how results are measured. Partial credit available.</div></div></div>
+              <div class="s-card-desc">Usually experiment design or data analysis · 10 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('bc','bio',-1)">−</button><input type="range" id="bc" min="0" max="10" value="5" oninput="upd('bc','bio')"><button class="pm-btn" onclick="bump('bc','bio',1)">+</button><div class="s-val" id="bc-v">5 <span>/ 10</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part A – Long FRQ 2<div class="tip"><div class="tip-i">i</div><div class="tip-pop">Describe the data trend AND explain the biological mechanism. One without the other won't earn full credit. Labeled diagrams can earn points.</div></div></div>
+              <div class="s-card-desc">Usually biological concept or data interpretation · 10 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('bd','bio',-1)">−</button><input type="range" id="bd" min="0" max="10" value="5" oninput="upd('bd','bio')"><button class="pm-btn" onclick="bump('bd','bio',1)">+</button><div class="s-val" id="bd-v">5 <span>/ 10</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Short FRQ 1<div class="tip"><div class="tip-i">i</div><div class="tip-pop">4 pts. Answer each sub-part directly and specifically. Extra information won't hurt but wastes time. Partial credit available per sub-part.</div></div></div>
+              <div class="s-card-desc">Short answer · 4 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('be','bio',-1)">−</button><input type="range" id="be" min="0" max="4" value="2" oninput="upd('be','bio')"><button class="pm-btn" onclick="bump('be','bio',1)">+</button><div class="s-val" id="be-v">2 <span>/ 4</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Short FRQ 2<div class="tip"><div class="tip-i">i</div><div class="tip-pop">4 pts. Often involves genetics, cell communication, or ecology. Labeled diagrams count as evidence.</div></div></div>
+              <div class="s-card-desc">Short answer · 4 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('bf','bio',-1)">−</button><input type="range" id="bf" min="0" max="4" value="2" oninput="upd('bf','bio')"><button class="pm-btn" onclick="bump('bf','bio',1)">+</button><div class="s-val" id="bf-v">2 <span>/ 4</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Short FRQ 3<div class="tip"><div class="tip-i">i</div><div class="tip-pop">4 pts. Topics vary widely. Use core biology principles (natural selection, homeostasis, energy flow) to reason through unfamiliar scenarios.</div></div></div>
+              <div class="s-card-desc">Short answer · 4 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('bg','bio',-1)">−</button><input type="range" id="bg" min="0" max="4" value="2" oninput="upd('bg','bio')"><button class="pm-btn" onclick="bump('bg','bio',1)">+</button><div class="s-val" id="bg-v">2 <span>/ 4</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Short FRQ 4<div class="tip"><div class="tip-i">i</div><div class="tip-pop">4 pts. Treat each sub-part independently — you can earn partial credit on sub-parts even if you miss others.</div></div></div>
+              <div class="s-card-desc">Short answer · 4 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('bh','bio',-1)">−</button><input type="range" id="bh" min="0" max="4" value="2" oninput="upd('bh','bio')"><button class="pm-btn" onclick="bump('bh','bio',1)">+</button><div class="s-val" id="bh-v">2 <span>/ 4</span></div></div>
+          </div>
+        </div>
+        <div class="calc-right">
+          <div class="results-panel">
+            <div class="res-head"><div class="res-head-title">Results</div></div>
+            <div class="res-rows">
+              <div class="res-row"><span class="res-row-label">MCQ Score</span><span class="res-row-val" id="bio-mcq-disp">28</span></div>
+              <div class="res-row"><span class="res-row-label">FRQ Score</span><span class="res-row-val" id="bio-frq-disp">18</span></div>
+              <div class="res-row"><span class="res-row-label">Weighted Score</span><span class="res-row-val" id="bio-w-disp">69 / 138</span></div>
+            </div>
+            <div class="res-circle-wrap">
+              <div class="res-circle-label">Predicted AP Score</div>
+              <div class="res-circle s3" id="bio-circle"><span class="res-circle-num" id="bio-big">3</span></div>
+              <div class="res-verdict" id="bio-verd">Qualified — passing</div>
+              <div class="res-pct">A score of <strong id="bio-pct-score">3</strong> puts you in approximately the <strong id="bio-pct">33rd</strong> percentile of AP Biology students.</div>
+            </div>
+            <div class="res-dist">
+              <div class="res-dist-label">2024 Score Distribution</div>
+              <div class="dist-bar"><div class="ds db1" style="flex:14.0"></div><div class="ds db2" style="flex:18.7"></div><div class="ds db3" style="flex:33.0"></div><div class="ds db4" style="flex:22.3"></div><div class="ds db5" style="flex:12.0"></div></div>
+              <div class="dist-nums"><div class="dn"><strong>1</strong>14%</div><div class="dn"><strong>2</strong>18.7%</div><div class="dn"><strong>3</strong>33%</div><div class="dn"><strong>4</strong>22.3%</div><div class="dn"><strong>5</strong>12%</div></div>
+            </div>
+            <button class="reset-link" onclick="resetPanel('bio')">↺ Reset</button>
+          </div>
         </div>
       </div>
-
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section I — Multiple Choice</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-bio-mcq">50 MCQs, 90 min. Many grouped around data sets and experimental scenarios. Practice reading graphs carefully — identifying trends and the variable being tested.</div></div>
-          </div>
-          <div class="section-weight">50%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">MCQ — Questions Correct</div>
-            <div class="slider-sub">50 questions across data sets and discrete questions</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('bio-mcq',-1)">−</button>
-              <input type="range" id="bio-mcq" min="0" max="50" value="25" oninput="syncDisplay(this,'bio-mcq-val');bioScore()">
-              <button class="adj-btn" onclick="adj('bio-mcq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="bio-mcq-val">25</span><span class="val-max">/ 50</span></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Grid-In — Questions Correct
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-bio-gridin">6 math questions requiring exact answers. Common topics: Hardy-Weinberg, chi-square, energy flow (10% rule). No answer choices to guide you — practice these calculations.</div></div>
-            </div>
-            <div class="slider-sub">6 calculation-based questions with no answer choices</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('bio-gridin',-1)">−</button>
-              <input type="range" id="bio-gridin" min="0" max="6" value="3" oninput="syncDisplay(this,'bio-gridin-val');bioScore()">
-              <button class="adj-btn" onclick="adj('bio-gridin',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="bio-gridin-val">3</span><span class="val-max">/ 6</span></div>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section II — Free Response</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-bio-frq">6 questions, 90 min. 2 long FRQs (10 pts each) + 4 short FRQs (4 pts each). Partial credit available. Worth 50% of your score.</div></div>
-          </div>
-          <div class="section-weight">50%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Long FRQ 1
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-bio-frq1">Often asks you to design an experiment. Include: hypothesis, independent variable, dependent variable, control group, how results are measured.</div></div>
-            </div>
-            <div class="slider-sub">Usually experiment design or data analysis — 10 pts</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('bio-frq1',-1)">−</button>
-              <input type="range" id="bio-frq1" min="0" max="10" value="5" oninput="syncDisplay(this,'bio-frq1-val');bioScore()">
-              <button class="adj-btn" onclick="adj('bio-frq1',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="bio-frq1-val">5</span><span class="val-max">/ 10</span></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Long FRQ 2
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-bio-frq2">Usually involves analyzing a biological scenario. Describe the trend in data AND explain the biological mechanism behind it — one without the other won't earn full credit.</div></div>
-            </div>
-            <div class="slider-sub">Usually biological scenario or concept application — 10 pts</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('bio-frq2',-1)">−</button>
-              <input type="range" id="bio-frq2" min="0" max="10" value="5" oninput="syncDisplay(this,'bio-frq2-val');bioScore()">
-              <button class="adj-btn" onclick="adj('bio-frq2',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="bio-frq2-val">5</span><span class="val-max">/ 10</span></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Short FRQs Combined
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-bio-sfrq">4 short FRQs, 4 pts each = 16 pts total. Answer each sub-part directly. Labeled diagrams can earn points. Treat each sub-part independently — partial credit available.</div></div>
-            </div>
-            <div class="slider-sub">Short FRQ 1, 2, 3 & 4 — 4 pts each, 16 pts total</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('bio-sfrq',-1)">−</button>
-              <input type="range" id="bio-sfrq" min="0" max="16" value="8" oninput="syncDisplay(this,'bio-sfrq-val');bioScore()">
-              <button class="adj-btn" onclick="adj('bio-sfrq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="bio-sfrq-val">8</span><span class="val-max">/ 16</span></div>
-        </div>
-      </div>
-
-      <div class="calc-actions"><button class="btn-reset" onclick="resetPanel('bio')">Reset</button></div>
     </div>
 
-    <!-- ════════════════════════════
-         AP PSYCHOLOGY
-         Sections: MCQ, FRQ 1, FRQ 2
-    ════════════════════════════ -->
-    <div class="calc-panel" id="panel-psych">
+    <!-- ═══════════ AP PSYCHOLOGY ═══════════ -->
+    <div class="panel" id="panel-psych">
+      <div class="p-head">
+        <div class="p-title">AP® Psychology Score Calculator</div>
+        <div class="p-note">Based on the most recent Exam Scoring Guidelines — scores may not be 100% accurate.</div>
+        <div class="p-chips"><span class="chip chip-blue">2024 Pass Rate: 65.8%</span><span class="chip chip-blue">Mean Score: 3.04</span><span class="chip chip-green">✓ Real scoring weights</span></div>
+      </div>
+      <div class="calc-layout">
+        <div class="calc-left">
+          <div class="group-label mcq">MCQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section I: Part A – Multiple Choice<div class="tip"><div class="tip-i">i</div><div class="tip-pop">100 questions, 70 min. Vocabulary-heavy — know key researchers cold: Pavlov, Skinner, Piaget, Freud, Erikson, Bandura, Milgram, Zimbardo, Asch. ~40 sec per question.</div></div></div>
+              <div class="s-card-desc">100 questions across all 9 AP Psychology units</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('pa','psych',-1)">−</button><input type="range" id="pa" min="0" max="100" value="50" oninput="upd('pa','psych')"><button class="pm-btn" onclick="bump('pa','psych',1)">+</button><div class="s-val" id="pa-v">50 <span>/ 100</span></div></div>
+          </div>
 
-      <div class="result-card">
-        <div class="big-score" id="psych-score">–</div>
-        <div class="result-meta">
-          <div class="result-label">Predicted AP Score</div>
-          <div class="result-bar-wrap"><div class="result-bar-fill" id="psych-bar"></div></div>
-          <div class="result-bands"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div class="result-verdict" id="psych-verdict"></div>
-          <div class="result-raw" id="psych-raw"></div>
+          <div class="group-label frq">FRQ Score</div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part A – Concept Application FRQ<div class="tip"><div class="tip-i">i</div><div class="tip-pop">A real-world scenario is described and you apply 7 psychological concepts to it. Each = 1 pt. You need correct definition AND correct application. Label each: "Term Name: [your answer]".</div></div></div>
+              <div class="s-card-desc">Apply 7 psychological concepts to a real-world scenario · 7 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('pb','psych',-1)">−</button><input type="range" id="pb" min="0" max="7" value="4" oninput="upd('pb','psych')"><button class="pm-btn" onclick="bump('pb','psych',1)">+</button><div class="s-val" id="pb-v">4 <span>/ 7</span></div></div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-top"><div>
+              <div class="s-card-label">Section II: Part B – Research Design FRQ<div class="tip"><div class="tip-i">i</div><div class="tip-pop">Tests research methods: independent vs dependent variables, operational definitions, random assignment, experimental vs control groups, statistical significance.</div></div></div>
+              <div class="s-card-desc">Design or analyze a psychology research study · 8 pts</div>
+            </div></div>
+            <div class="s-controls"><button class="pm-btn" onclick="bump('pc','psych',-1)">−</button><input type="range" id="pc" min="0" max="8" value="4" oninput="upd('pc','psych')"><button class="pm-btn" onclick="bump('pc','psych',1)">+</button><div class="s-val" id="pc-v">4 <span>/ 8</span></div></div>
+          </div>
+        </div>
+        <div class="calc-right">
+          <div class="results-panel">
+            <div class="res-head"><div class="res-head-title">Results</div></div>
+            <div class="res-rows">
+              <div class="res-row"><span class="res-row-label">MCQ Score</span><span class="res-row-val" id="psych-mcq-disp">50</span></div>
+              <div class="res-row"><span class="res-row-label">FRQ Score</span><span class="res-row-val" id="psych-frq-disp">8</span></div>
+              <div class="res-row"><span class="res-row-label">Weighted Score</span><span class="res-row-val" id="psych-w-disp">77 / 150</span></div>
+            </div>
+            <div class="res-circle-wrap">
+              <div class="res-circle-label">Predicted AP Score</div>
+              <div class="res-circle s3" id="psych-circle"><span class="res-circle-num" id="psych-big">3</span></div>
+              <div class="res-verdict" id="psych-verd">Qualified — passing</div>
+              <div class="res-pct">A score of <strong id="psych-pct-score">3</strong> puts you in approximately the <strong id="psych-pct">34th</strong> percentile of AP Psychology students.</div>
+            </div>
+            <div class="res-dist">
+              <div class="res-dist-label">2024 Score Distribution</div>
+              <div class="dist-bar"><div class="ds db1" style="flex:14.5"></div><div class="ds db2" style="flex:19.7"></div><div class="ds db3" style="flex:25.0"></div><div class="ds db4" style="flex:24.6"></div><div class="ds db5" style="flex:16.2"></div></div>
+              <div class="dist-nums"><div class="dn"><strong>1</strong>14.5%</div><div class="dn"><strong>2</strong>19.7%</div><div class="dn"><strong>3</strong>25%</div><div class="dn"><strong>4</strong>24.6%</div><div class="dn"><strong>5</strong>16.2%</div></div>
+            </div>
+            <button class="reset-link" onclick="resetPanel('psych')">↺ Reset</button>
+          </div>
         </div>
       </div>
-
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section I — Multiple Choice</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-psych-mcq">100 questions, 70 minutes. The largest MCQ section of any AP exam. Vocabulary-heavy — know key researchers and their studies cold (Pavlov, Skinner, Piaget, Freud, Erikson, Bandura).</div></div>
-          </div>
-          <div class="section-weight">66.7%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">Questions Correct</div>
-            <div class="slider-sub">100 questions across all 9 units — ~40 sec per question</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('psych-mcq',-1)">−</button>
-              <input type="range" id="psych-mcq" min="0" max="100" value="50" oninput="syncDisplay(this,'psych-mcq-val');psychScore()">
-              <button class="adj-btn" onclick="adj('psych-mcq',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="psych-mcq-val">50</span><span class="val-max">/ 100</span></div>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-header-left">
-            <div class="section-title">Section II — Free Response</div>
-            <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-psych-frq">2 questions, 50 minutes. Graded on whether you correctly define AND apply each term — not on essay quality. Label each answer clearly: "Term Name: [your answer here]".</div></div>
-          </div>
-          <div class="section-weight">33.3%</div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">FRQ 1 — Concept Application
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-psych-frq1">A scenario is given and you apply 7 psychological concepts to it. Each concept = 1 pt. You need the correct definition AND correct application to earn the point.</div></div>
-            </div>
-            <div class="slider-sub">Apply 7 psychological concepts to a real-world scenario</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('psych-frq1',-1)">−</button>
-              <input type="range" id="psych-frq1" min="0" max="7" value="4" oninput="syncDisplay(this,'psych-frq1-val');psychScore()">
-              <button class="adj-btn" onclick="adj('psych-frq1',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="psych-frq1-val">4</span><span class="val-max">/ 7</span></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-left">
-            <div class="slider-name">FRQ 2 — Research Design
-              <div class="tip-wrap"><div class="tip-icon">ⓘ</div><div class="tip-popup" id="tip-psych-frq2">Tests research methods. Know: independent vs dependent variables, operational definitions, random assignment, experimental vs control groups, and interpreting statistical results.</div></div>
-            </div>
-            <div class="slider-sub">Design or analyze a psychology research study</div>
-            <div class="slider-controls">
-              <button class="adj-btn" onclick="adj('psych-frq2',-1)">−</button>
-              <input type="range" id="psych-frq2" min="0" max="8" value="4" oninput="syncDisplay(this,'psych-frq2-val');psychScore()">
-              <button class="adj-btn" onclick="adj('psych-frq2',1)">+</button>
-            </div>
-          </div>
-          <div class="val-display"><span class="val-num" id="psych-frq2-val">4</span><span class="val-max">/ 8</span></div>
-        </div>
-      </div>
-
-      <div class="calc-actions"><button class="btn-reset" onclick="resetPanel('psych')">Reset</button></div>
     </div>
 
-  </main>
-</div>
+  </div><!-- /main -->
+</div><!-- /page -->
 
 <script type="module">
-  import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { firebaseConfig }   from "./firebase-config.js";
+  import { firebaseConfig }  from "./firebase-config.js";
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const name = user.displayName || user.email.split('@')[0];
-      document.getElementById('nav-logged-out').style.display = 'none';
-      document.getElementById('nav-logged-in').style.display  = 'flex';
-      document.getElementById('nav-avatar').textContent = name.charAt(0).toUpperCase();
+  onAuthStateChanged(auth, u => {
+    if (u) {
+      document.getElementById('nav-lo').style.display = 'none';
+      document.getElementById('nav-li').style.display = 'flex';
+      document.getElementById('nav-av').textContent   = (u.displayName||u.email)[0].toUpperCase();
     } else {
-      document.getElementById('nav-logged-out').style.display = 'flex';
-      document.getElementById('nav-logged-in').style.display  = 'none';
+      document.getElementById('nav-lo').style.display = 'flex';
+      document.getElementById('nav-li').style.display = 'none';
     }
   });
 
-  // ── TOOLTIP POSITIONING ──
-  // Position tooltips using fixed coords so they never clip off-screen
-  document.querySelectorAll('.tip-wrap').forEach(wrap => {
-    const icon   = wrap.querySelector('.tip-icon');
-    const popup  = wrap.querySelector('.tip-popup');
-    if (!icon || !popup) return;
+  // ── Tooltip positioning ──
+  document.querySelectorAll('.tip').forEach(w => {
+    const icon = w.querySelector('.tip-i');
+    const pop  = w.querySelector('.tip-pop');
+    if (!icon||!pop) return;
     icon.addEventListener('mouseenter', () => {
-      const rect    = icon.getBoundingClientRect();
-      const popW    = 240;
-      const margin  = 8;
-      // Try right of icon; if it clips, go left
-      let left = rect.right + 6;
-      if (left + popW > window.innerWidth - margin) {
-        left = rect.left - popW - 6;
-      }
-      // Vertically center on icon, clamped to viewport
-      let top = rect.top + rect.height / 2 - 40;
-      top = Math.max(margin, Math.min(top, window.innerHeight - 100 - margin));
-      popup.style.left = `${left}px`;
-      popup.style.top  = `${top}px`;
+      const r = icon.getBoundingClientRect();
+      let left = r.right + 8;
+      if (left + 224 > window.innerWidth - 8) left = r.left - 232;
+      let top = r.top + r.height/2 - 36;
+      top = Math.max(8, Math.min(top, window.innerHeight - 110));
+      pop.style.left = `${left}px`;
+      pop.style.top  = `${top}px`;
     });
   });
 
-  // ── HELPERS ──
-  window.syncDisplay = function(rangeEl, displayId) {
-    const d = document.getElementById(displayId);
-    if (d) d.textContent = rangeEl.value;
+  // ── Helpers ──
+  function g(id) { return +(document.getElementById(id)?.value)||0; }
+
+  window.upd = (id, subject) => {
+    const r = document.getElementById(id);
+    const v = document.getElementById(id+'-v');
+    if (v && r) v.innerHTML = `${r.value} <span>/ ${r.max}</span>`;
+    scores[subject]?.();
   };
 
-  window.adj = function(id, delta) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const newVal = Math.min(Number(el.max), Math.max(Number(el.min), Number(el.value) + delta));
-    el.value = newVal;
-    const displayId = `${id}-val`;
-    const d = document.getElementById(displayId);
-    if (d) d.textContent = newVal;
-    // Trigger score
-    if      (id.startsWith('calc'))  calcScore();
-    else if (id.startsWith('eng'))   engScore();
-    else if (id.startsWith('ush'))   ushScore();
-    else if (id.startsWith('bio'))   bioScore();
-    else if (id.startsWith('psych')) psychScore();
+  window.bump = (id, subject, d) => {
+    const r = document.getElementById(id);
+    if (!r) return;
+    r.value = Math.min(+r.max, Math.max(+r.min, +r.value + d));
+    window.upd(id, subject);
   };
 
-  function g(id) { const el = document.getElementById(id); return el ? Number(el.value) : 0; }
+  // Percentile lookup per score per subject (cumulative from low end)
+  const pct = {
+    calc: {1:'19th',2:'41st',3:'62nd',4:'79th',5:'100th'},
+    eng:  {1:'21st',2:'45th',3:'73rd',4:'90th',5:'100th'},
+    ush:  {1:'13th',2:'28th',3:'58th',4:'83rd',5:'100th'},
+    bio:  {1:'14th',2:'33rd',3:'66th',4:'88th',5:'100th'},
+    psych:{1:'15th',2:'34th',3:'59th',4:'84th',5:'100th'},
+  };
 
-  function showResult(prefix, apScore, raw, maxRaw) {
-    const verdicts = {
-      5:{t:'Extremely well qualified 🎉',bg:'#F0FDF4',b:'#BBF7D0',c:'#166534'},
-      4:{t:'Well qualified ✓',bg:'#EFF6FF',b:'#BFDBFE',c:'#1D4ED8'},
-      3:{t:'Qualified — passing score',bg:'#FFFBEB',b:'#FDE68A',c:'#92400E'},
-      2:{t:'Possibly qualified',bg:'#FFF7ED',b:'#FED7AA',c:'#9A3412'},
-      1:{t:'No recommendation',bg:'#FEF2F2',b:'#FECACA',c:'#991B1B'},
-    };
-    document.getElementById(`${prefix}-score`).textContent = apScore;
-    document.getElementById(`${prefix}-bar`).style.width   = `${(apScore/5)*100}%`;
-    const v = verdicts[apScore] || verdicts[1];
-    const ve = document.getElementById(`${prefix}-verdict`);
-    ve.textContent = v.t;
-    ve.style.cssText = `background:${v.bg};border:1px solid ${v.b};color:${v.c}`;
-    document.getElementById(`${prefix}-raw`).textContent = `Raw composite: ${Math.round(raw)} / ${maxRaw}`;
+  const verdicts = ['','No recommendation','Possibly qualified','Qualified — passing','Well qualified ✓','Extremely well qualified 🎉'];
+
+  function setResult(p, score, mcqRaw, frqRaw, total, maxTotal, subject) {
+    document.getElementById(`${p}-big`).textContent         = score;
+    document.getElementById(`${p}-circle`).className        = `res-circle s${score}`;
+    document.getElementById(`${p}-verd`).textContent        = verdicts[score]||'';
+    document.getElementById(`${p}-pct-score`).textContent   = score;
+    document.getElementById(`${p}-pct`).textContent         = pct[subject][score]||'';
+    document.getElementById(`${p}-w-disp`).textContent      = `${Math.round(total)} / ${maxTotal}`;
+    if (document.getElementById(`${p}-mcq-disp`)) document.getElementById(`${p}-mcq-disp`).textContent = Math.round(mcqRaw);
+    if (document.getElementById(`${p}-frq-disp`)) document.getElementById(`${p}-frq-disp`).textContent = Math.round(frqRaw);
   }
 
-  window.resetPanel = function(prefix) {
-    document.querySelectorAll(`#panel-${prefix} input[type="range"]`).forEach(r => {
-      r.value = Math.round((Number(r.max) + Number(r.min)) / 2);
-      const d = document.getElementById(r.id + '-val');
-      if (d) d.textContent = r.value;
+  // ── Score calculators ──
+  const scores = {
+    calc: () => {
+      const mcq = g('ca')+g('cb'), frq = g('cc')+g('cd'), raw = mcq+frq;
+      const s = raw>=76?5:raw>=58?4:raw>=40?3:raw>=27?2:1;
+      setResult('calc',s,mcq,frq,raw,99,'calc');
+    },
+    eng: () => {
+      const mcq = g('ea'), essays = g('eb')+g('ec')+g('ed');
+      const raw = (mcq/45*67.5)+((essays/18)*82.5);
+      const s = raw>=114?5:raw>=98?4:raw>=81?3:raw>=58?2:1;
+      document.getElementById('eng-mcq-disp').textContent = mcq;
+      document.getElementById('eng-frq-disp').textContent = essays;
+      document.getElementById('eng-w-disp').textContent   = `${Math.round(raw)} / 150`;
+      document.getElementById('eng-big').textContent      = s;
+      document.getElementById('eng-circle').className     = `res-circle s${s}`;
+      document.getElementById('eng-verd').textContent     = verdicts[s];
+      document.getElementById('eng-pct-score').textContent= s;
+      document.getElementById('eng-pct').textContent      = pct.eng[s];
+    },
+    ush: () => {
+      const mcq = g('ua'), saq = g('ub')+g('uc')+g('ud'), dbq = g('ue'), leq = g('uf');
+      const raw = (mcq/55*60)+(saq/9*30)+(dbq/7*37.5)+(leq/6*22.5);
+      const s = raw>=108?5:raw>=90?4:raw>=65?3:raw>=44?2:1;
+      document.getElementById('ush-mcq-disp').textContent = mcq;
+      document.getElementById('ush-saq-disp').textContent = saq;
+      document.getElementById('ush-dbq-disp').textContent = dbq;
+      document.getElementById('ush-leq-disp').textContent = leq;
+      document.getElementById('ush-w-disp').textContent   = `${Math.round(raw)} / 150`;
+      document.getElementById('ush-big').textContent      = s;
+      document.getElementById('ush-circle').className     = `res-circle s${s}`;
+      document.getElementById('ush-verd').textContent     = verdicts[s];
+      document.getElementById('ush-pct-score').textContent= s;
+      document.getElementById('ush-pct').textContent      = pct.ush[s];
+    },
+    bio: () => {
+      const mcq = g('ba')+g('bb'), frq = g('bc')+g('bd')+g('be')+g('bf')+g('bg')+g('bh');
+      const raw = (mcq/56*69)+(frq/36*69);
+      const s = raw>=109?5:raw>=90?4:raw>=65?3:raw>=44?2:1;
+      setResult('bio',s,mcq,frq,raw,138,'bio');
+    },
+    psych: () => {
+      const mcq = g('pa'), frq = g('pb')+g('pc');
+      const raw = (mcq/100*100)+(frq/15*50);
+      const s = raw>=113?5:raw>=93?4:raw>=72?3:raw>=52?2:1;
+      setResult('psych',s,mcq,frq,raw,150,'psych');
+    },
+  };
+
+  window.resetPanel = p => {
+    document.querySelectorAll(`#panel-${p} input[type=range]`).forEach(r => {
+      r.value = Math.round((+r.max+r.min)/2);
+      const v = document.getElementById(r.id+'-v');
+      if (v) v.innerHTML = `${r.value} <span>/ ${r.max}</span>`;
     });
-    if      (prefix==='calc')  calcScore();
-    else if (prefix==='eng')   engScore();
-    else if (prefix==='ush')   ushScore();
-    else if (prefix==='bio')   bioScore();
-    else if (prefix==='psych') psychScore();
+    scores[p]?.();
   };
 
-  // ── SCORE CALCULATORS ──
-  window.calcScore = function() {
-    const mcq = g('calc-mcq-a') + g('calc-mcq-b');
-    const frq = g('calc-frq-a') + g('calc-frq-b');
-    const raw = mcq + frq; // max 99
-    const s   = raw>=76?5:raw>=58?4:raw>=40?3:raw>=27?2:1;
-    showResult('calc', s, raw, 99);
+  // ── Panel nav ──
+  window.goPanel = k => {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`panel-${k}`)?.classList.add('active');
+    document.getElementById(`sb-${k}`)?.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
   };
 
-  window.engScore = function() {
-    const mcq    = g('eng-mcq');
-    const essays = g('eng-synth') + g('eng-rheto') + g('eng-arg');
-    const raw    = (mcq/45*67.5) + (essays/18*82.5);
-    const s      = raw>=114?5:raw>=98?4:raw>=81?3:raw>=58?2:1;
-    showResult('eng', s, Math.round(raw), 150);
-  };
+  // URL param
+  const sub = new URLSearchParams(location.search).get('subject');
+  if (sub) goPanel(sub);
 
-  window.ushScore = function() {
-    const raw = (g('ush-mcq')/55*60) + (g('ush-saq')/9*30) + (g('ush-dbq')/7*37.5) + (g('ush-leq')/6*22.5);
-    const s   = raw>=108?5:raw>=90?4:raw>=65?3:raw>=44?2:1;
-    showResult('ush', s, Math.round(raw), 150);
-  };
-
-  window.bioScore = function() {
-    const sec1 = g('bio-mcq') + g('bio-gridin');
-    const sec2 = g('bio-frq1') + g('bio-frq2') + g('bio-sfrq');
-    const raw  = (sec1/56*69) + (sec2/36*69);
-    const s    = raw>=109?5:raw>=90?4:raw>=65?3:raw>=44?2:1;
-    showResult('bio', s, Math.round(raw), 138);
-  };
-
-  window.psychScore = function() {
-    const raw = (g('psych-mcq')/100*100) + ((g('psych-frq1')+g('psych-frq2'))/15*50);
-    const s   = raw>=113?5:raw>=93?4:raw>=72?3:raw>=52?2:1;
-    showResult('psych', s, Math.round(raw), 150);
-  };
-
-  // ── SUBJECT NAV ──
-  window.showCalc = function(key) {
-    const keys = ['calc','eng','ush','bio','psych'];
-    if (!keys.includes(key)) key = 'calc';
-    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(`panel-${key}`).classList.add('active');
-    document.getElementById(`nav-${key}`).classList.add('active');
-    window.scrollTo({ top:0, behavior:'smooth' });
-  };
-
-  // Read ?subject= param
-  const subjectParam = new URLSearchParams(window.location.search).get('subject');
-  if (subjectParam) window.showCalc(subjectParam);
-
-  // Initial calculations
-  calcScore(); engScore(); ushScore(); bioScore(); psychScore();
+  // Run all on load
+  Object.values(scores).forEach(fn => fn());
 </script>
-
 </body>
 </html>
