@@ -5,486 +5,567 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CramLab — Study Smarter. Score Higher.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
+      --green:#22C55E; --green-dark:#16A34A;
       --blue-50:#EFF6FF; --blue-100:#DBEAFE; --blue-200:#BFDBFE;
-      --blue-400:#60A5FA; --blue-500:#3B82F6; --blue-600:#2563EB; --blue-700:#1D4ED8;
+      --blue-500:#3B82F6; --blue-600:#2563EB; --blue-700:#1D4ED8;
       --gray-50:#F9FAFB; --gray-100:#F3F4F6; --gray-200:#E5E7EB;
-      --gray-400:#9CA3AF; --gray-500:#6B7280; --gray-700:#374151; --gray-900:#111827;
+      --gray-300:#D1D5DB; --gray-400:#9CA3AF; --gray-500:#6B7280;
+      --gray-600:#4B5563; --gray-700:#374151; --gray-900:#111827;
       --white:#FFFFFF;
-      --radius:12px; --radius-sm:8px;
-      --shadow-md:0 4px 16px rgba(0,0,0,0.08);
-      --shadow-lg:0 12px 40px rgba(0,0,0,0.10);
+      --shadow-sm:0 1px 3px rgba(0,0,0,.07);
+      --shadow-md:0 4px 14px rgba(0,0,0,.08);
+      --shadow-lg:0 12px 40px rgba(0,0,0,.10);
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior:smooth; }
     body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-900); line-height:1.6; -webkit-font-smoothing:antialiased; }
 
-    /* NAV */
-    nav { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray-100); padding:0 5%; height:64px; display:flex; align-items:center; justify-content:space-between; }
-    .nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
-    .logo-icon { width:34px; height:34px; background:var(--blue-600); border-radius:9px; display:flex; align-items:center; justify-content:center; }
-    .logo-icon svg { width:18px; height:18px; }
-    .logo-text { font-size:18px; font-weight:600; color:var(--gray-900); letter-spacing:-0.3px; }
-    .logo-text span { color:var(--blue-600); }
-    .nav-center { display:flex; align-items:center; gap:28px; list-style:none; }
-    .nav-center a { text-decoration:none; font-size:14px; font-weight:500; color:var(--gray-500); transition:color 0.2s; }
-    .nav-center a:hover { color:var(--gray-900); }
-    .nav-right { display:flex; align-items:center; gap:10px; }
-    .nav-signin { font-size:14px; font-weight:500; color:var(--gray-700); text-decoration:none; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); transition:background 0.2s; }
-    .nav-signin:hover { background:var(--gray-100); }
-    .nav-signup { font-size:14px; font-weight:500; color:var(--white); text-decoration:none; padding:7px 16px; border-radius:var(--radius-sm); background:var(--blue-600); transition:background 0.2s; }
-    .nav-signup:hover { background:var(--blue-700); }
-    .nav-avatar { width:32px; height:32px; border-radius:50%; background:var(--blue-600); color:var(--white); font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center; }
-    .nav-username { font-size:14px; font-weight:500; color:var(--gray-700); }
-    .nav-signout { font-size:13px; color:var(--gray-400); background:none; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; padding:4px 8px; border-radius:6px; transition:background 0.2s,color 0.2s; }
-    .nav-signout:hover { background:var(--gray-100); color:var(--gray-700); }
-    .nav-logged-out { display:flex; align-items:center; gap:10px; }
-    .nav-logged-in  { display:none; align-items:center; gap:10px; }
+    /* ── NAV — matches calculator exactly ── */
+    nav {
+      position:sticky; top:0; z-index:999;
+      background:#fff; border-bottom:1px solid var(--gray-200);
+      height:58px; padding:0 28px;
+      display:flex; align-items:center; justify-content:space-between;
+      box-shadow:var(--shadow-sm);
+    }
+    .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .logo-mark { width:30px; height:30px; background:var(--blue-600); border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .logo-mark svg { width:16px; height:16px; }
+    .logo-name { font-size:16px; font-weight:700; color:var(--gray-900); }
+    .logo-name span { color:var(--blue-600); }
 
-    /* WELCOME / AUTH STRIPS */
-    .welcome-banner { background:var(--blue-50); border-bottom:1px solid var(--blue-100); padding:14px 5%; display:none; }
-    .welcome-banner-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-    .welcome-banner p { font-size:14px; color:var(--blue-700); }
-    .welcome-banner p strong { font-weight:600; }
-    .btn-go-calc { background:var(--blue-600); color:var(--white); padding:8px 18px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; text-decoration:none; transition:background 0.2s; }
-    .btn-go-calc:hover { background:var(--blue-700); }
-    .auth-strip { background:var(--blue-600); padding:18px 5%; display:none; }
-    .auth-strip-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
-    .auth-strip p { color:rgba(255,255,255,0.9); font-size:15px; }
-    .auth-strip p strong { color:var(--white); }
-    .auth-strip-btns { display:flex; gap:10px; }
-    .btn-strip-signup { background:var(--white); color:var(--blue-700); padding:9px 20px; border-radius:var(--radius-sm); font-size:14px; font-weight:600; text-decoration:none; }
-    .btn-strip-signup:hover { opacity:0.9; }
-    .btn-strip-signin { color:rgba(255,255,255,0.8); padding:9px 16px; font-size:14px; font-weight:500; text-decoration:none; transition:color 0.2s; }
-    .btn-strip-signin:hover { color:var(--white); }
+    .nav-links { display:flex; align-items:center; gap:4px; list-style:none; }
+    .nav-links a { font-size:13px; font-weight:500; color:var(--gray-600); text-decoration:none; padding:5px 10px; border-radius:6px; transition:background .12s,color .12s; }
+    .nav-links a:hover { background:var(--gray-100); color:var(--gray-900); }
 
-    /* HERO */
-    .hero { padding:90px 5% 72px; max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-    .hero-badge { display:inline-flex; align-items:center; gap:6px; background:var(--blue-50); border:1px solid var(--blue-200); color:var(--blue-700); font-size:12px; font-weight:500; padding:5px 12px; border-radius:100px; margin-bottom:22px; letter-spacing:0.3px; }
+    .nav-r { display:flex; align-items:center; gap:6px; }
+    /* Logged-out: Sign In ghost + Sign Up pill */
+    .nav-lo { display:flex; align-items:center; gap:6px; }
+    .btn-signin { font-size:13px; font-weight:600; padding:6px 14px; border-radius:20px; border:1.5px solid var(--gray-300); background:#fff; color:var(--gray-700); text-decoration:none; transition:background .12s; }
+    .btn-signin:hover { background:var(--gray-50); }
+    .btn-signup { font-size:13px; font-weight:600; padding:6px 14px; border-radius:20px; background:var(--blue-600); color:#fff; text-decoration:none; transition:background .12s; }
+    .btn-signup:hover { background:var(--blue-700); }
+    /* Logged-in: avatar → account page ONLY, no signout in nav */
+    .nav-li { display:none; align-items:center; gap:8px; }
+    .nav-avatar { width:30px; height:30px; border-radius:50%; background:var(--blue-600); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; text-decoration:none; flex-shrink:0; }
+    .nav-acct-link { font-size:13px; font-weight:500; color:var(--gray-600); text-decoration:none; padding:5px 10px; border-radius:6px; transition:background .12s; }
+    .nav-acct-link:hover { background:var(--gray-100); color:var(--gray-900); }
+
+    /* Mobile nav toggle */
+    .nav-hamburger { display:none; flex-direction:column; gap:4px; cursor:pointer; background:none; border:none; padding:4px; }
+    .nav-hamburger span { display:block; width:20px; height:2px; background:var(--gray-700); border-radius:2px; transition:all .2s; }
+    .mobile-menu { display:none; position:fixed; top:58px; left:0; right:0; background:#fff; border-bottom:1px solid var(--gray-200); padding:12px 20px 20px; z-index:998; box-shadow:var(--shadow-md); flex-direction:column; gap:6px; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-size:14px; font-weight:500; color:var(--gray-700); text-decoration:none; padding:10px 12px; border-radius:8px; transition:background .12s; }
+    .mobile-menu a:hover { background:var(--gray-100); }
+    .mobile-menu .mm-divider { height:1px; background:var(--gray-100); margin:4px 0; }
+    .mobile-menu .mm-signup { background:var(--blue-600); color:#fff; text-align:center; border-radius:8px; }
+    .mobile-menu .mm-signup:hover { background:var(--blue-700); }
+
+    /* ── BANNERS ── */
+    .welcome-banner { background:var(--blue-50); border-bottom:1px solid var(--blue-100); padding:12px 28px; display:none; }
+    .welcome-inner { max-width:1060px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+    .welcome-inner p { font-size:13px; color:var(--blue-700); }
+    .welcome-inner strong { font-weight:700; }
+    .btn-banner { background:var(--blue-600); color:#fff; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; text-decoration:none; transition:background .12s; }
+    .btn-banner:hover { background:var(--blue-700); }
+
+    .auth-strip { background:var(--blue-600); padding:14px 28px; display:none; }
+    .auth-strip-inner { max-width:1060px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+    .auth-strip p { color:rgba(255,255,255,.9); font-size:14px; }
+    .auth-strip strong { color:#fff; }
+    .strip-btns { display:flex; gap:10px; align-items:center; }
+    .strip-signup { background:#fff; color:var(--blue-700); padding:6px 16px; border-radius:20px; font-size:13px; font-weight:700; text-decoration:none; }
+    .strip-signin { color:rgba(255,255,255,.75); font-size:13px; text-decoration:none; transition:color .12s; }
+    .strip-signin:hover { color:#fff; }
+
+    /* ── HERO ── */
+    .hero { padding:72px 28px 60px; max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+    .hero-badge { display:inline-flex; align-items:center; gap:6px; background:var(--blue-50); border:1px solid var(--blue-200); color:var(--blue-700); font-size:11px; font-weight:600; padding:4px 12px; border-radius:100px; margin-bottom:18px; letter-spacing:.3px; }
     .hero-badge::before { content:''; width:6px; height:6px; background:var(--blue-500); border-radius:50%; }
-    .hero h1 { font-family:'Instrument Serif',serif; font-size:clamp(36px,4.5vw,52px); font-weight:400; line-height:1.15; letter-spacing:-0.5px; color:var(--gray-900); margin-bottom:20px; }
+    .hero h1 { font-family:'Instrument Serif',serif; font-size:clamp(32px,4vw,50px); font-weight:400; line-height:1.15; letter-spacing:-.5px; color:var(--gray-900); margin-bottom:16px; }
     .hero h1 em { font-style:italic; color:var(--blue-600); }
-    .hero p { font-size:17px; color:var(--gray-500); line-height:1.7; margin-bottom:36px; max-width:440px; }
-    .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
-    .btn-primary { background:var(--blue-600); color:var(--white); padding:13px 26px; border-radius:var(--radius-sm); font-size:15px; font-weight:500; text-decoration:none; border:none; cursor:pointer; transition:background 0.2s,transform 0.15s; font-family:'DM Sans',sans-serif; display:inline-block; }
-    .btn-primary:hover { background:var(--blue-700); transform:translateY(-1px); }
-    .btn-secondary { background:var(--white); color:var(--gray-700); padding:13px 26px; border-radius:var(--radius-sm); font-size:15px; font-weight:500; text-decoration:none; border:1px solid var(--gray-200); cursor:pointer; transition:border-color 0.2s,transform 0.15s; font-family:'DM Sans',sans-serif; display:inline-block; }
-    .btn-secondary:hover { border-color:var(--gray-400); transform:translateY(-1px); }
+    .hero p { font-size:16px; color:var(--gray-500); line-height:1.7; margin-bottom:28px; max-width:420px; }
+    .hero-actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .btn-hero-primary { background:var(--blue-600); color:#fff; padding:11px 24px; border-radius:20px; font-size:14px; font-weight:600; text-decoration:none; transition:background .12s,transform .12s; display:inline-block; }
+    .btn-hero-primary:hover { background:var(--blue-700); transform:translateY(-1px); }
+    .btn-hero-secondary { background:#fff; color:var(--gray-700); padding:11px 24px; border-radius:20px; font-size:14px; font-weight:600; text-decoration:none; border:1.5px solid var(--gray-300); transition:border-color .12s,transform .12s; display:inline-block; }
+    .btn-hero-secondary:hover { border-color:var(--gray-500); transform:translateY(-1px); }
+
+    /* Hero visual */
     .hero-visual { position:relative; }
-    .score-card { background:var(--white); border:1px solid var(--gray-200); border-radius:16px; padding:28px; box-shadow:var(--shadow-lg); }
-    .score-card-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
-    .score-card-icon { width:40px; height:40px; background:var(--blue-50); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
-    .score-card-title { font-size:15px; font-weight:600; color:var(--gray-900); }
-    .score-card-sub { font-size:12px; color:var(--gray-400); margin-top:2px; }
-    .score-display { display:flex; align-items:flex-end; gap:6px; margin-bottom:20px; }
-    .score-number { font-family:'Instrument Serif',serif; font-size:64px; line-height:1; color:var(--blue-600); }
-    .score-max { font-size:22px; color:var(--gray-400); margin-bottom:8px; }
-    .score-bar-wrap { background:var(--gray-100); border-radius:100px; height:8px; margin-bottom:16px; overflow:hidden; }
-    .score-bar-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue-500),var(--blue-400)); width:0%; transition:width 1.4s cubic-bezier(.16,1,.3,1); }
-    .score-labels { display:flex; justify-content:space-between; font-size:12px; color:var(--gray-400); }
-    .predicted-badge { display:inline-flex; align-items:center; gap:6px; background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; font-size:12px; font-weight:500; padding:5px 12px; border-radius:100px; margin-top:16px; }
-    .float-card { position:absolute; background:var(--white); border:1px solid var(--gray-200); border-radius:12px; padding:12px 16px; box-shadow:var(--shadow-md); font-size:13px; }
-    .float-card-1 { bottom:-18px; left:-24px; display:flex; align-items:center; gap:10px; }
-    .float-card-2 { top:-16px; right:-16px; display:flex; align-items:center; gap:10px; }
-    .float-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .score-card { background:#fff; border:1px solid var(--gray-200); border-radius:14px; padding:24px; box-shadow:var(--shadow-lg); }
+    .sc-head { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .sc-icon { width:36px; height:36px; background:var(--blue-50); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+    .sc-title { font-size:14px; font-weight:600; color:var(--gray-900); }
+    .sc-sub { font-size:11px; color:var(--gray-400); margin-top:1px; }
+    .sc-score-row { display:flex; align-items:flex-end; gap:4px; margin-bottom:14px; }
+    .sc-num { font-family:'Instrument Serif',serif; font-size:60px; line-height:1; color:var(--blue-600); }
+    .sc-of { font-size:20px; color:var(--gray-400); margin-bottom:6px; }
+    .sc-bar { background:var(--gray-100); border-radius:100px; height:7px; margin-bottom:12px; overflow:hidden; }
+    .sc-bar-fill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--blue-600),var(--blue-400)); width:0; transition:width 1.4s cubic-bezier(.16,1,.3,1); }
+    .sc-ticks { display:flex; justify-content:space-between; font-size:11px; color:var(--gray-400); }
+    .sc-badge { display:inline-flex; align-items:center; gap:5px; background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; font-size:11px; font-weight:500; padding:4px 11px; border-radius:100px; margin-top:12px; }
+    .float-pill { position:absolute; background:#fff; border:1px solid var(--gray-200); border-radius:10px; padding:9px 13px; box-shadow:var(--shadow-md); font-size:12px; display:flex; align-items:center; gap:8px; }
+    .float-pill-1 { bottom:-16px; left:-20px; }
+    .float-pill-2 { top:-14px; right:-12px; }
+    .fp-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .fp-label { font-weight:600; color:var(--gray-900); font-size:12px; }
+    .fp-sub { font-size:10px; color:var(--gray-400); }
 
-    /* STATS */
-    .stats { background:var(--gray-900); padding:48px 5%; }
-    .stats-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:32px; text-align:center; }
-    .stat-number { font-family:'Instrument Serif',serif; font-size:42px; color:var(--white); line-height:1; margin-bottom:6px; }
-    .stat-label { font-size:14px; color:rgba(255,255,255,0.5); }
+    /* ── STATS ── */
+    .stats { background:var(--gray-900); padding:44px 28px; }
+    .stats-inner { max-width:1060px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:20px; text-align:center; }
+    .stat-num { font-family:'Instrument Serif',serif; font-size:38px; color:#fff; line-height:1; margin-bottom:5px; }
+    .stat-lbl { font-size:12px; color:rgba(255,255,255,.45); font-weight:500; }
 
-    /* SUBJECTS */
-    .subjects { padding:80px 5%; max-width:1100px; margin:0 auto; }
-    .section-tag { font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--blue-600); margin-bottom:12px; }
-    .section-title { font-family:'Instrument Serif',serif; font-size:clamp(28px,3vw,38px); font-weight:400; color:var(--gray-900); margin-bottom:12px; line-height:1.2; }
-    .section-sub { font-size:16px; color:var(--gray-500); margin-bottom:48px; max-width:480px; }
-    .subjects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; }
-    .subject-card { border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px; text-decoration:none; background:var(--white); transition:box-shadow 0.2s,transform 0.2s,border-color 0.2s; display:flex; flex-direction:column; gap:16px; cursor:pointer; }
-    .subject-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:var(--blue-200); }
-    .subject-card-top { display:flex; align-items:flex-start; justify-content:space-between; }
-    .subject-emoji { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
-    .subject-arrow { width:28px; height:28px; border-radius:50%; border:1px solid var(--gray-200); display:flex; align-items:center; justify-content:center; color:var(--gray-400); font-size:14px; transition:background 0.2s,border-color 0.2s,color 0.2s; }
-    .subject-card:hover .subject-arrow { background:var(--blue-600); border-color:var(--blue-600); color:var(--white); }
-    .subject-name { font-size:16px; font-weight:600; color:var(--gray-900); margin-bottom:4px; }
-    .subject-desc { font-size:13px; color:var(--gray-500); line-height:1.5; }
-    .subject-pills { display:flex; gap:6px; flex-wrap:wrap; }
-    .pill { font-size:11px; font-weight:500; padding:3px 9px; border-radius:100px; background:var(--blue-50); color:var(--blue-700); border:1px solid var(--blue-100); }
-    .pill.green { background:#F0FDF4; color:#166534; border-color:#BBF7D0; }
-    .pill.orange { background:#FFF7ED; color:#9A3412; border-color:#FED7AA; }
+    /* ── SUBJECTS ── */
+    .subjects { padding:72px 28px; max-width:1060px; margin:0 auto; }
+    .sec-tag { font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--blue-600); margin-bottom:8px; }
+    .sec-title { font-family:'Instrument Serif',serif; font-size:clamp(24px,3vw,34px); font-weight:400; color:var(--gray-900); margin-bottom:8px; line-height:1.2; }
+    .sec-sub { font-size:14px; color:var(--gray-500); margin-bottom:36px; max-width:460px; }
+    .subjects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+    .sub-card { border:1px solid var(--gray-200); border-radius:10px; padding:20px; text-decoration:none; background:#fff; transition:box-shadow .15s,transform .15s,border-color .15s; display:flex; flex-direction:column; gap:12px; }
+    .sub-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:var(--blue-200); }
+    .sub-card-dim { opacity:.5; cursor:default; }
+    .sub-card-dim:hover { box-shadow:none; transform:none; border-color:var(--gray-200); }
+    .sub-card-top { display:flex; align-items:flex-start; justify-content:space-between; }
+    .sub-emoji { width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+    .sub-arrow { width:24px; height:24px; border-radius:50%; border:1px solid var(--gray-200); display:flex; align-items:center; justify-content:center; color:var(--gray-400); font-size:12px; transition:background .15s,border-color .15s,color .15s; }
+    .sub-card:not(.sub-card-dim):hover .sub-arrow { background:var(--blue-600); border-color:var(--blue-600); color:#fff; }
+    .sub-name { font-size:14px; font-weight:600; color:var(--gray-900); margin-bottom:2px; }
+    .sub-desc { font-size:12px; color:var(--gray-500); line-height:1.5; }
+    .sub-pills { display:flex; gap:4px; flex-wrap:wrap; }
+    .pill { font-size:10px; font-weight:600; padding:2px 8px; border-radius:100px; }
+    .pill-blue  { background:var(--blue-50);  color:var(--blue-700);  border:1px solid var(--blue-100); }
+    .pill-green { background:#ECFDF5; color:var(--green-dark); border:1px solid #A7F3D0; }
+    .pill-gray  { background:var(--gray-100); color:var(--gray-500); border:1px solid var(--gray-200); }
+    .pill-orange{ background:#FFF7ED; color:#9A3412; border:1px solid #FED7AA; }
 
-    /* HOW IT WORKS */
-    .how { background:var(--gray-50); padding:80px 5%; }
-    .how-inner { max-width:1100px; margin:0 auto; }
-    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:48px; }
-    .step { display:flex; flex-direction:column; gap:14px; }
-    .step-num { width:36px; height:36px; border-radius:50%; background:var(--blue-600); color:var(--white); font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:center; }
-    .step-title { font-size:16px; font-weight:600; color:var(--gray-900); }
-    .step-desc { font-size:14px; color:var(--gray-500); line-height:1.6; }
+    /* ── HOW IT WORKS ── */
+    .how { background:var(--gray-50); padding:72px 28px; }
+    .how-inner { max-width:1060px; margin:0 auto; }
+    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:40px; }
+    .step { display:flex; flex-direction:column; gap:12px; }
+    .step-num { width:34px; height:34px; border-radius:50%; background:var(--blue-600); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-title { font-size:15px; font-weight:600; color:var(--gray-900); }
+    .step-desc { font-size:13px; color:var(--gray-500); line-height:1.6; }
 
-    /* FEATURES */
-    .features { padding:80px 5%; max-width:1100px; margin:0 auto; }
-    .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; }
-    .feature-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px; }
-    .feature-icon { width:44px; height:44px; background:var(--blue-50); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:18px; }
-    .feature-title { font-size:15px; font-weight:600; color:var(--gray-900); margin-bottom:8px; }
-    .feature-desc { font-size:14px; color:var(--gray-500); line-height:1.6; }
+    /* ── FEATURES ── */
+    .features { padding:72px 28px; max-width:1060px; margin:0 auto; }
+    .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+    .feat-card { background:#fff; border:1px solid var(--gray-200); border-radius:10px; padding:22px; box-shadow:var(--shadow-sm); }
+    .feat-icon { width:38px; height:38px; background:var(--blue-50); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:17px; margin-bottom:14px; }
+    .feat-title { font-size:14px; font-weight:600; color:var(--gray-900); margin-bottom:6px; }
+    .feat-desc { font-size:13px; color:var(--gray-500); line-height:1.6; }
 
-    /* CTA */
-    .cta-banner { padding:80px 5%; max-width:1100px; margin:0 auto; }
-    .cta-box { background:var(--blue-600); border-radius:20px; padding:64px 40px; position:relative; overflow:hidden; text-align:center; }
-    .cta-box::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; background:rgba(255,255,255,0.05); border-radius:50%; }
-    .cta-box::after { content:''; position:absolute; bottom:-100px; left:-60px; width:350px; height:350px; background:rgba(255,255,255,0.04); border-radius:50%; }
-    .cta-box h2 { font-family:'Instrument Serif',serif; font-size:clamp(28px,3.5vw,42px); font-weight:400; color:var(--white); margin-bottom:14px; line-height:1.2; }
-    .cta-box p { font-size:16px; color:rgba(255,255,255,0.75); margin-bottom:32px; }
-    .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
-    .btn-white { background:var(--white); color:var(--blue-600); padding:13px 28px; border-radius:var(--radius-sm); font-size:15px; font-weight:600; text-decoration:none; display:inline-block; transition:transform 0.15s; }
-    .btn-white:hover { transform:translateY(-1px); }
-    .btn-outline-white { background:transparent; color:var(--white); padding:13px 28px; border-radius:var(--radius-sm); font-size:15px; font-weight:500; text-decoration:none; border:1px solid rgba(255,255,255,0.4); display:inline-block; transition:border-color 0.2s; }
-    .btn-outline-white:hover { border-color:rgba(255,255,255,0.8); }
+    /* ── CTA ── */
+    .cta-wrap { padding:72px 28px; max-width:1060px; margin:0 auto; }
+    .cta-box { background:var(--blue-600); border-radius:16px; padding:56px 36px; text-align:center; position:relative; overflow:hidden; }
+    .cta-box::before { content:''; position:absolute; top:-60px; right:-60px; width:240px; height:240px; background:rgba(255,255,255,.05); border-radius:50%; }
+    .cta-box::after  { content:''; position:absolute; bottom:-80px; left:-40px; width:280px; height:280px; background:rgba(255,255,255,.04); border-radius:50%; }
+    .cta-box h2 { font-family:'Instrument Serif',serif; font-size:clamp(24px,3vw,38px); font-weight:400; color:#fff; margin-bottom:10px; line-height:1.2; position:relative; z-index:1; }
+    .cta-box p { font-size:14px; color:rgba(255,255,255,.75); margin-bottom:24px; position:relative; z-index:1; }
+    .cta-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+    .btn-cta-white { background:#fff; color:var(--blue-600); padding:11px 24px; border-radius:20px; font-size:14px; font-weight:700; text-decoration:none; display:inline-block; transition:transform .12s; }
+    .btn-cta-white:hover { transform:translateY(-1px); }
+    .btn-cta-outline { background:transparent; color:#fff; padding:11px 24px; border-radius:20px; font-size:14px; font-weight:600; text-decoration:none; border:1.5px solid rgba(255,255,255,.4); display:inline-block; transition:border-color .12s; }
+    .btn-cta-outline:hover { border-color:rgba(255,255,255,.8); }
 
-    /* FOOTER */
-    footer { border-top:1px solid var(--gray-200); padding:40px 5%; }
-    .footer-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
-    .footer-copy { font-size:13px; color:var(--gray-400); }
-    .footer-links { display:flex; gap:24px; list-style:none; }
-    .footer-links a { font-size:13px; color:var(--gray-400); text-decoration:none; transition:color 0.2s; }
+    /* ── FOOTER ── */
+    footer { border-top:1px solid var(--gray-200); padding:32px 28px; }
+    .footer-inner { max-width:1060px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .footer-copy { font-size:12px; color:var(--gray-400); }
+    .footer-links { display:flex; gap:20px; list-style:none; }
+    .footer-links a { font-size:12px; color:var(--gray-400); text-decoration:none; transition:color .12s; }
     .footer-links a:hover { color:var(--gray-700); }
 
-    /* ANIMATIONS */
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .hero-content>* { opacity:0; animation:fadeUp 0.6s ease forwards; }
-    .hero-content>*:nth-child(1){animation-delay:0.1s}
-    .hero-content>*:nth-child(2){animation-delay:0.2s}
-    .hero-content>*:nth-child(3){animation-delay:0.3s}
-    .hero-content>*:nth-child(4){animation-delay:0.4s}
-    .hero-visual { opacity:0; animation:fadeUp 0.7s ease 0.35s forwards; }
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .hero-content>* { opacity:0; animation:fadeUp .55s ease forwards; }
+    .hero-content>*:nth-child(1){animation-delay:.08s}
+    .hero-content>*:nth-child(2){animation-delay:.16s}
+    .hero-content>*:nth-child(3){animation-delay:.24s}
+    .hero-content>*:nth-child(4){animation-delay:.32s}
+    .hero-visual { opacity:0; animation:fadeUp .6s ease .28s forwards; }
 
-    @media(max-width:768px){
-      .hero { grid-template-columns:1fr; padding:60px 5% 48px; gap:40px; }
+    /* ── RESPONSIVE ── */
+    @media(max-width:760px){
+      nav { padding:0 16px; }
+      .nav-links { display:none; }
+      .nav-hamburger { display:flex; }
+      .hero { grid-template-columns:1fr; padding:48px 16px 40px; gap:32px; }
       .hero-visual { display:none; }
-      .stats-inner,.steps,.features-grid { grid-template-columns:1fr; }
-      .nav-center { display:none; }
+      .stats-inner { grid-template-columns:repeat(2,1fr); }
+      .steps,.features-grid { grid-template-columns:1fr; }
+      .subjects,.how-inner,.features,.cta-wrap { padding-left:16px; padding-right:16px; }
+      .auth-strip-inner { flex-direction:column; align-items:flex-start; gap:10px; }
       .cta-btns { flex-direction:column; align-items:center; }
+      .footer-inner { flex-direction:column; gap:10px; }
+    }
+    @media(max-width:480px){
+      .stats-inner { grid-template-columns:1fr 1fr; gap:16px; }
+      .hero-actions { flex-direction:column; }
+      .btn-hero-primary,.btn-hero-secondary { text-align:center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="index.html" class="nav-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity="0.9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg>
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 18 18" fill="none"><path d="M3 14L7 6L11 10L13 7L15 14H3Z" fill="white" opacity=".9"/><circle cx="13.5" cy="4.5" r="1.5" fill="white"/></svg></div>
+    <span class="logo-name">Cram<span>Lab</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#subjects">Subjects</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="calculator.html">Calculators</a></li>
+  </ul>
+
+  <div class="nav-r">
+    <!-- Logged out -->
+    <div class="nav-lo" id="nav-lo">
+      <a href="auth.html" class="btn-signin">Sign In</a>
+      <a href="auth.html#signup" class="btn-signup">Sign Up Free</a>
+    </div>
+    <!-- Logged in: avatar only → account page, NO signout, NO extra links -->
+    <div class="nav-li" id="nav-li">
+      <a href="account.html" class="nav-avatar" id="nav-av" title="My Account">?</a>
+    </div>
+    <!-- Mobile hamburger -->
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#subjects" onclick="closeMobile()">Subjects</a>
+  <a href="#how" onclick="closeMobile()">How It Works</a>
+  <a href="calculator.html">Calculators</a>
+  <div class="mm-divider"></div>
+  <div id="mm-lo">
+    <a href="auth.html">Sign In</a>
+    <a href="auth.html#signup" class="mm-signup">Sign Up Free</a>
+  </div>
+  <div id="mm-li" style="display:none;">
+    <a href="account.html">My Account</a>
+  </div>
+</div>
+
+<!-- WELCOME BANNER (logged in) -->
+<div class="welcome-banner" id="welcome-banner">
+  <div class="welcome-inner">
+    <p>👋 Welcome back, <strong id="banner-name"></strong>! Pick a subject below to get started.</p>
+    <a href="account.html" class="btn-banner">My Account →</a>
+  </div>
+</div>
+
+<!-- AUTH STRIP (logged out) -->
+<div class="auth-strip" id="auth-strip">
+  <div class="auth-strip-inner">
+    <p><strong>Save your progress.</strong> Create a free account to track your scores across all AP exams.</p>
+    <div class="strip-btns">
+      <a href="auth.html#signup" class="strip-signup">Create Free Account</a>
+      <a href="auth.html" class="strip-signin">Sign in →</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section style="background:var(--white);">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Free AP study tools for every student</div>
+      <h1>Study smarter.<br><em>Score higher.</em></h1>
+      <p>CramLab gives you everything you need to ace your AP exams — free score calculators built on real College Board formulas, 2024 score distribution data, and expert study tips.</p>
+      <div class="hero-actions">
+        <a href="calculator.html" class="btn-hero-primary" id="hero-primary">Try the Calculator</a>
+        <a href="auth.html#signup" class="btn-hero-secondary" id="hero-secondary">Create Free Account</a>
       </div>
-      <span class="logo-text">Cram<span>Lab</span></span>
+    </div>
+    <div class="hero-visual">
+      <div class="score-card">
+        <div class="sc-head">
+          <div class="sc-icon">📐</div>
+          <div>
+            <div class="sc-title">AP Calculus AB</div>
+            <div class="sc-sub">Score Prediction</div>
+          </div>
+        </div>
+        <div class="sc-score-row">
+          <div class="sc-num">4</div>
+          <div class="sc-of">/ 5</div>
+        </div>
+        <div class="sc-bar"><div class="sc-bar-fill" id="hero-bar"></div></div>
+        <div class="sc-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+        <div class="sc-badge">✓ Based on real College Board scoring</div>
+      </div>
+      <div class="float-pill float-pill-1">
+        <div class="fp-dot" style="background:var(--blue-500);"></div>
+        <div><div class="fp-label">17 AP subjects</div><div class="fp-sub">Calculators available</div></div>
+      </div>
+      <div class="float-pill float-pill-2">
+        <div class="fp-dot" style="background:var(--green);"></div>
+        <div><div class="fp-label">100% free</div><div class="fp-sub">No credit card needed</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-inner">
+    <div><div class="stat-num">17</div><div class="stat-lbl">AP subjects covered</div></div>
+    <div><div class="stat-num">100%</div><div class="stat-lbl">Free to use</div></div>
+    <div><div class="stat-num">Real</div><div class="stat-lbl">College Board scoring</div></div>
+    <div><div class="stat-num">2024</div><div class="stat-lbl">Score distribution data</div></div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section class="subjects" id="subjects">
+  <div class="sec-tag">Subjects</div>
+  <h2 class="sec-title">Choose your AP exam</h2>
+  <p class="sec-sub">17 AP calculators — all live now. Click any subject to open its full score calculator.</p>
+  <div class="subjects-grid">
+
+    <a href="calculator.html?subject=calc" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#EFF6FF;">📐</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Calculus AB</div><div class="sub-desc">Limits, derivatives, integrals, and the fundamental theorem of calculus.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
     </a>
-    <ul class="nav-center">
-      <li><a href="#subjects">Subjects</a></li>
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="calculator.html">Calculators</a></li>
+
+    <a href="calculator.html?subject=calcbc" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#EFF6FF;">🧮</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Calculus BC</div><div class="sub-desc">Everything in AB plus series, parametric equations, and polar functions.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=eng" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#FFF7ED;">✍️</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP English Language</div><div class="sub-desc">Rhetorical analysis, synthesis essays, and argument writing.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-orange">Essays</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=englit" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#FFF7ED;">📖</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP English Literature</div><div class="sub-desc">Poetry, prose, and drama analysis through close reading and essays.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=ush" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">🏛️</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP US History</div><div class="sub-desc">Colonial America through modern times. DBQs, SAQs, and LEQs.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=euro" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">🇪🇺</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP European History</div><div class="sub-desc">Renaissance through modern Europe. DBQs, SAQs, and LEQs.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=world" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">🌍</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP World History</div><div class="sub-desc">Global history from 1200 CE to the present across all regions.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=gov" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">⚖️</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Gov & Politics</div><div class="sub-desc">U.S. government, constitutional principles, political ideologies, and institutions.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=bio" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">🧬</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Biology</div><div class="sub-desc">Cells, genetics, evolution, ecology, and the chemistry of life.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=chem" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#FEF3C7;">⚗️</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Chemistry</div><div class="sub-desc">Atomic structure, thermodynamics, equilibrium, and electrochemistry.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=phys1" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#FEF3C7;">⚡</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Physics 1</div><div class="sub-desc">Mechanics, waves, electricity, and algebra-based physics concepts.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=psych" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#FAF5FF;">🧠</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Psychology</div><div class="sub-desc">Behavior, cognition, development, social psychology, and disorders.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=stats" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#EFF6FF;">📊</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Statistics</div><div class="sub-desc">Data analysis, probability, inference, and statistical reasoning.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=macro" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">📈</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Macroeconomics</div><div class="sub-desc">National income, economic growth, monetary policy, and international trade.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=micro" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#F0FDF4;">💹</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Microeconomics</div><div class="sub-desc">Supply and demand, market structures, factor markets, and market failures.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=hug" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#EFF6FF;">🗺️</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP Human Geography</div><div class="sub-desc">Population, culture, political geography, urbanization, and globalization.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+    <a href="calculator.html?subject=csp" class="sub-card">
+      <div class="sub-card-top"><div class="sub-emoji" style="background:#EFF6FF;">💻</div><div class="sub-arrow">→</div></div>
+      <div><div class="sub-name">AP CS Principles</div><div class="sub-desc">Programming, data, the internet, algorithms, and the impact of computing.</div></div>
+      <div class="sub-pills"><span class="pill pill-blue">Calculator</span><span class="pill pill-green">Live</span></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="sec-tag">How It Works</div>
+    <h2 class="sec-title">From zero to score in minutes</h2>
+    <p class="sec-sub">No setup. No paywalls. Just pick your subject and go.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Pick your exam</div>
+        <div class="step-desc">Choose from 17 AP subjects. Every calculator uses real College Board scoring formulas and 2024 distribution data.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Enter your scores</div>
+        <div class="step-desc">Type into the number fields or drag sliders for each section. Tips explain what graders look for on every sub-section.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">See your prediction</div>
+        <div class="step-desc">Get your predicted 1–5 score instantly with a percentile ranking compared to 2024 real student data.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="sec-tag">Features</div>
+  <h2 class="sec-title">Built to beat the competition</h2>
+  <p class="sec-sub">Everything Albert.io has — and then some. For free.</p>
+  <div class="features-grid">
+    <div class="feat-card"><div class="feat-icon">🎯</div><div class="feat-title">Real Scoring Formulas</div><div class="feat-desc">Actual College Board composite weights — not approximations. Every MCQ, FRQ, essay, SAQ, DBQ, and LEQ weighted exactly right.</div></div>
+    <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">2024 Score Distribution</div><div class="feat-desc">See exactly how you compare to the real 2024 student population for every exam with accurate percentile data.</div></div>
+    <div class="feat-card"><div class="feat-icon">📱</div><div class="feat-title">Mobile Friendly</div><div class="feat-desc">Tap +/− buttons or type directly into number fields. Designed to work perfectly on your phone wherever you study.</div></div>
+    <div class="feat-card"><div class="feat-icon">💾</div><div class="feat-title">Save Your Progress</div><div class="feat-desc">Create a free account and your scores are remembered automatically every time you update them.</div></div>
+    <div class="feat-card"><div class="feat-icon">📖</div><div class="feat-title">Expert Study Tips</div><div class="feat-desc">Every section has grader-focused tips showing you exactly what earns points — right next to the slider where you need it.</div></div>
+    <div class="feat-card"><div class="feat-icon">🆓</div><div class="feat-title">Always Free</div><div class="feat-desc">No paywalls, no subscriptions, no credit card. Every calculator on CramLab is 100% free forever.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-wrap">
+  <div class="cta-box">
+    <h2>Ready to hit a 5?</h2>
+    <p>Start with a free score prediction — no account required.</p>
+    <div class="cta-btns">
+      <a href="calculator.html" class="btn-cta-white">Try the Calculator</a>
+      <a href="auth.html#signup" class="btn-cta-outline" id="cta-secondary">Create Free Account</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board or AP®.</div>
+    <ul class="footer-links">
+      <li><a href="#">About</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="auth.html">Sign In</a></li>
+      <li><a href="auth.html#signup">Sign Up</a></li>
     </ul>
-    <div class="nav-right">
-      <div class="nav-logged-out" id="nav-logged-out">
-        <a href="auth.html" class="nav-signin">Sign In</a>
-        <a href="auth.html" class="nav-signup">Sign Up Free</a>
-      </div>
-      <div class="nav-logged-in" id="nav-logged-in">
-        <div class="nav-avatar" id="nav-avatar">?</div>
-        <span class="nav-username" id="nav-username"></span>
-        <a href="calculator.html" style="font-size:14px;font-weight:500;color:var(--blue-600);text-decoration:none;padding:7px 14px;background:var(--blue-50);border-radius:var(--radius-sm);">My Calculators</a>
-        <button class="nav-signout" id="nav-signout-btn">Sign out</button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- WELCOME BANNER (logged in) -->
-  <div class="welcome-banner" id="welcome-banner">
-    <div class="welcome-banner-inner">
-      <p>👋 Welcome back, <strong id="banner-name"></strong>! Ready to keep studying?</p>
-      <a href="calculator.html" class="btn-go-calc">Go to My Calculators →</a>
-    </div>
   </div>
+</footer>
 
-  <!-- AUTH STRIP (logged out) -->
-  <div class="auth-strip" id="auth-strip">
-    <div class="auth-strip-inner">
-      <p><strong>Save your progress.</strong> Create a free account to track your scores across all 5 AP exams.</p>
-      <div class="auth-strip-btns">
-        <a href="auth.html" class="btn-strip-signup">Create Free Account</a>
-        <a href="auth.html" class="btn-strip-signin">Sign in →</a>
-      </div>
-    </div>
-  </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { firebaseConfig } from "./firebase-config.js";
 
-  <!-- HERO -->
-  <section style="max-width:1100px;margin:0 auto;padding:0 5%;">
-    <div class="hero" style="padding-left:0;padding-right:0;max-width:100%;">
-      <div class="hero-content">
-        <div class="hero-badge">Free study tools for every AP exam</div>
-        <h1>Study smarter.<br><em>Score higher.</em></h1>
-        <p>CramLab gives you everything you need to ace your AP exams — free score calculators, section-by-section breakdowns, and personalized study tools.</p>
-        <div class="hero-actions">
-          <a href="#subjects" class="btn-primary" id="hero-primary-btn">Pick a Subject</a>
-          <a href="auth.html" class="btn-secondary" id="hero-secondary-btn">Create Free Account</a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="score-card">
-          <div class="score-card-header">
-            <div class="score-card-icon">📐</div>
-            <div>
-              <div class="score-card-title">AP Calculus AB</div>
-              <div class="score-card-sub">Score Prediction</div>
-            </div>
-          </div>
-          <div class="score-display">
-            <div class="score-number">4</div>
-            <div class="score-max">/ 5</div>
-          </div>
-          <div class="score-bar-wrap">
-            <div class="score-bar-fill" id="hero-bar"></div>
-          </div>
-          <div class="score-labels"><span>1</span><span>Score range</span><span>5</span></div>
-          <div class="predicted-badge">✓ Predicted score based on your answers</div>
-        </div>
-        <div class="float-card float-card-1">
-          <div class="float-dot" style="background:#3B82F6;"></div>
-          <div>
-            <div style="font-weight:600;color:#111827;font-size:13px;">5 subjects covered</div>
-            <div style="color:#9CA3AF;font-size:11px;">Score calculators</div>
-          </div>
-        </div>
-        <div class="float-card float-card-2">
-          <div class="float-dot" style="background:#10B981;"></div>
-          <div>
-            <div style="font-weight:600;color:#111827;font-size:13px;">Progress saved</div>
-            <div style="color:#9CA3AF;font-size:11px;">Free account</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-  <!-- STATS -->
-  <section class="stats">
-    <div class="stats-inner">
-      <div><div class="stat-number">5</div><div class="stat-label">AP subjects covered</div></div>
-      <div><div class="stat-number">100%</div><div class="stat-label">Free to use</div></div>
-      <div><div class="stat-number">Full</div><div class="stat-label">Section-by-section breakdown</div></div>
-    </div>
-  </section>
+  onAuthStateChanged(auth, user => {
+    const lo = document.getElementById('nav-lo');
+    const li = document.getElementById('nav-li');
+    const strip  = document.getElementById('auth-strip');
+    const banner = document.getElementById('welcome-banner');
+    const mmLo   = document.getElementById('mm-lo');
+    const mmLi   = document.getElementById('mm-li');
+    const heroSec = document.getElementById('hero-secondary');
+    const ctaSec  = document.getElementById('cta-secondary');
 
-  <!-- SUBJECTS -->
-  <section class="subjects" id="subjects">
-    <div class="section-tag">Subjects</div>
-    <h2 class="section-title">Choose your exam</h2>
-    <p class="section-sub">Click any subject to open the full score calculator with tips for every section.</p>
-    <div class="subjects-grid">
+    if (user) {
+      const name = user.displayName || user.email.split('@')[0];
+      lo.style.display = 'none';
+      li.style.display  = 'flex';
+      document.getElementById('nav-av').textContent = name.charAt(0).toUpperCase();
+      banner.style.display = 'block';
+      document.getElementById('banner-name').textContent = name;
+      strip.style.display  = 'none';
+      mmLo.style.display   = 'none';
+      mmLi.style.display   = 'block';
+      heroSec.textContent  = 'My Account';
+      heroSec.href         = 'account.html';
+      ctaSec.textContent   = 'My Account';
+      ctaSec.href          = 'account.html';
+    } else {
+      lo.style.display = 'flex';
+      li.style.display  = 'none';
+      strip.style.display  = 'block';
+      banner.style.display = 'none';
+    }
+  });
 
-      <a href="calculator.html?subject=calc" class="subject-card">
-        <div class="subject-card-top">
-          <div class="subject-emoji" style="background:#EFF6FF;">📐</div>
-          <div class="subject-arrow">→</div>
-        </div>
-        <div>
-          <div class="subject-name">AP Calculus AB</div>
-          <div class="subject-desc">Limits, derivatives, integrals, and the fundamental theorem of calculus.</div>
-        </div>
-        <div class="subject-pills"><span class="pill">Score Calculator</span><span class="pill green">Study Tips</span></div>
-      </a>
+  // Hero bar animation
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const b = document.getElementById('hero-bar');
+      if (b) b.style.width = '80%';
+    }, 700);
+  });
 
-      <a href="calculator.html?subject=eng" class="subject-card">
-        <div class="subject-card-top">
-          <div class="subject-emoji" style="background:#FFF7ED;">✍️</div>
-          <div class="subject-arrow">→</div>
-        </div>
-        <div>
-          <div class="subject-name">AP English Language</div>
-          <div class="subject-desc">Rhetorical analysis, synthesis essays, and argument writing.</div>
-        </div>
-        <div class="subject-pills"><span class="pill">Score Calculator</span><span class="pill orange">Essay Tips</span></div>
-      </a>
-
-      <a href="calculator.html?subject=ush" class="subject-card">
-        <div class="subject-card-top">
-          <div class="subject-emoji" style="background:#F0FDF4;">🏛️</div>
-          <div class="subject-arrow">→</div>
-        </div>
-        <div>
-          <div class="subject-name">AP US History</div>
-          <div class="subject-desc">From colonial America through modern times. DBQs, SAQs, and LEQs.</div>
-        </div>
-        <div class="subject-pills"><span class="pill">Score Calculator</span><span class="pill green">Study Tips</span></div>
-      </a>
-
-      <a href="calculator.html?subject=bio" class="subject-card">
-        <div class="subject-card-top">
-          <div class="subject-emoji" style="background:#F0FDF4;">🧬</div>
-          <div class="subject-arrow">→</div>
-        </div>
-        <div>
-          <div class="subject-name">AP Biology</div>
-          <div class="subject-desc">Cells, genetics, evolution, ecology, and the chemistry of life.</div>
-        </div>
-        <div class="subject-pills"><span class="pill">Score Calculator</span><span class="pill green">Study Tips</span></div>
-      </a>
-
-      <a href="calculator.html?subject=psych" class="subject-card">
-        <div class="subject-card-top">
-          <div class="subject-emoji" style="background:#FAF5FF;">🧠</div>
-          <div class="subject-arrow">→</div>
-        </div>
-        <div>
-          <div class="subject-name">AP Psychology</div>
-          <div class="subject-desc">Behavior, cognition, development, and psychological disorders.</div>
-        </div>
-        <div class="subject-pills"><span class="pill">Score Calculator</span><span class="pill green">Study Tips</span></div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="how" id="how">
-    <div class="how-inner">
-      <div class="section-tag">How It Works</div>
-      <h2 class="section-title">From zero to score in minutes</h2>
-      <p class="section-sub">No setup. No paywalls. Just pick your subject and go.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-title">Pick your subject</div>
-          <div class="step-desc">Choose from 5 AP exams. Each has its own dedicated calculator built around the real College Board scoring formula.</div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-title">Enter your scores</div>
-          <div class="step-desc">Input your raw scores section by section — MCQ, FRQ, essays, and more. Every field has a built-in tip explaining what graders look for.</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-title">See your predicted score</div>
-          <div class="step-desc">Get your predicted 1–5 AP score instantly. Create a free account and your scores save automatically every time you update them.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="section-tag">Features</div>
-    <h2 class="section-title">Everything you need, nothing you don't</h2>
-    <p class="section-sub">Built for students who want real results.</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <div class="feature-title">Real Scoring Formulas</div>
-        <div class="feature-desc">Our calculators use actual College Board composite scoring weights — not approximations. MCQ, FRQ, and essay scores all weighted correctly per exam.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💾</div>
-        <div class="feature-title">Saved Progress</div>
-        <div class="feature-desc">Create a free account and your scores are automatically saved every time you update them. Pick up right where you left off.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📖</div>
-        <div class="feature-title">Built-in Study Tips</div>
-        <div class="feature-desc">Every section of every calculator includes expert tips on what graders look for, common mistakes, and how to earn more points.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-banner">
-    <div class="cta-box">
-      <h2>Ready to hit a 5?</h2>
-      <p>Start with a free score prediction — no account required. Create an account to save your progress.</p>
-      <div class="cta-btns">
-        <a href="calculator.html" class="btn-white">Try the Calculator</a>
-        <a href="auth.html" class="btn-outline-white" id="cta-account-btn">Create Free Account</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board.</div>
-      <ul class="footer-links">
-        <li><a href="#">About</a></li>
-        <li><a href="#">Privacy</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-  </footer>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { firebaseConfig } from "./firebase-config.js";
-
-    const app  = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-      const loggedOut     = document.getElementById('nav-logged-out');
-      const loggedIn      = document.getElementById('nav-logged-in');
-      const authStrip     = document.getElementById('auth-strip');
-      const welcomeBanner = document.getElementById('welcome-banner');
-      const heroPrimary   = document.getElementById('hero-primary-btn');
-      const heroSecondary = document.getElementById('hero-secondary-btn');
-      const ctaBtn        = document.getElementById('cta-account-btn');
-
-      if (user) {
-        const name    = user.displayName || user.email.split('@')[0];
-        const initial = name.charAt(0).toUpperCase();
-
-        // Nav
-        loggedOut.style.display = 'none';
-        loggedIn.style.display  = 'flex';
-        document.getElementById('nav-avatar').textContent   = initial;
-        document.getElementById('nav-username').textContent = name;
-
-        // Banners
-        welcomeBanner.style.display = 'block';
-        document.getElementById('banner-name').textContent = name;
-        authStrip.style.display = 'none';
-
-        // Hero buttons — swap for logged-in user
-        heroPrimary.textContent = 'Go to My Calculators';
-        heroPrimary.href        = 'calculator.html';
-        heroSecondary.textContent = 'Browse Subjects';
-        heroSecondary.href      = '#subjects';
-
-        // CTA button
-        ctaBtn.textContent = 'Go to My Calculators';
-        ctaBtn.href        = 'calculator.html';
-
-        // Sign out
-        document.getElementById('nav-signout-btn').addEventListener('click', async () => {
-          await signOut(auth);
-          window.location.reload();
-        });
-
-      } else {
-        loggedOut.style.display = 'flex';
-        loggedIn.style.display  = 'none';
-        authStrip.style.display = 'block';
-        welcomeBanner.style.display = 'none';
-      }
-    });
-
-    // Hero bar animation
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const bar = document.getElementById('hero-bar');
-        if (bar) bar.style.width = '80%';
-      }, 800);
-    });
-  </script>
-
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  window.closeMobile = () => mobileMenu.classList.remove('open');
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      mobileMenu.classList.remove('open');
+    }
+  });
+</script>
 </body>
 </html>
