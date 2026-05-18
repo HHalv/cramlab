@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — Privacy Policy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue-50:#EFF6FF;--blue-100:#DBEAFE;--blue-600:#2563EB;--blue-700:#1D4ED8;
+      --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;--gray-300:#D1D5DB;
+      --gray-400:#9CA3AF;--gray-500:#6B7280;--gray-700:#374151;--gray-900:#111827;
+      --white:#fff;--shadow-sm:0 1px 3px rgba(0,0,0,.07);--shadow-md:0 4px 14px rgba(0,0,0,.08);
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--gray-900);
+         -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    /* NAV */
+    nav{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid var(--gray-200);
+        height:58px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;
+        box-shadow:var(--shadow-sm)}
+    .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--blue-600);border-radius:8px;
+               display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-mark svg{width:22px;height:22px}
+    .logo-name{font-size:16px;font-weight:700;color:var(--gray-900)}
+    .logo-name span{color:var(--blue-600)}
+    .nav-r{display:flex;align-items:center;gap:8px}
+    .nav-a{font-size:13px;font-weight:500;color:var(--gray-600);text-decoration:none;
+           padding:5px 10px;border-radius:6px;transition:background .15s}
+    .nav-a:hover{background:var(--gray-100);color:var(--gray-900)}
+    .nav-btn-signup{font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;
+                    background:var(--blue-600);color:#fff;text-decoration:none}
+    .nav-btn-signup:hover{background:var(--blue-700)}
+    .nav-btn-signin{font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;
+                    border:1.5px solid var(--gray-300);background:#fff;color:var(--gray-700);
+                    text-decoration:none}
+    .nav-btn-signin:hover{background:var(--gray-50)}
+    .nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-600);
+                color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;
+                justify-content:center;text-decoration:none}
+    .nav-lo{display:flex;align-items:center;gap:6px}
+    .nav-li{display:none;align-items:center;gap:8px}
+    /* FOOTER */
+    footer{border-top:1px solid var(--gray-200);background:#fff;padding:28px 5%;margin-top:auto}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;
+                  justify-content:space-between;flex-wrap:wrap;gap:14px}
+    .footer-copy{font-size:12px;color:var(--gray-400)}
+    .footer-links{display:flex;gap:20px;list-style:none;flex-wrap:wrap}
+    .footer-links a{font-size:12px;color:var(--gray-400);text-decoration:none;transition:color .2s}
+    .footer-links a:hover{color:var(--gray-700)}
+
+    .hero{background:var(--blue-600);padding:48px 5% 56px;text-align:center}
+    .hero h1{font-family:'Instrument Serif',serif;font-size:clamp(26px,4vw,38px);font-weight:400;color:#fff;margin-bottom:10px}
+    .hero p{font-size:15px;color:rgba(255,255,255,.8);max-width:480px;margin:0 auto;line-height:1.6}
+    .content{max-width:740px;margin:0 auto;padding:44px 5% 72px;flex:1}
+    .updated{font-size:12px;color:var(--gray-400);margin-bottom:24px}
+    .sec{margin-bottom:14px}
+    .pol{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:22px 24px;
+         box-shadow:var(--shadow-sm)}
+    .pol h3{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:10px}
+    .pol p,.pol li{font-size:14px;color:var(--gray-600);line-height:1.7;margin-bottom:7px}
+    .pol ul{padding-left:18px}
+    .pol li{margin-bottom:4px}
+    .pol a{color:var(--blue-600);font-weight:600;text-decoration:none}
+    .pol a:hover{text-decoration:underline}
+    .intro-p{font-size:15px;color:var(--gray-700);line-height:1.75;margin-bottom:20px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 100 100" fill="none"><rect x="38" y="10" width="24" height="38" rx="5" fill="white"/><rect x="32" y="8" width="36" height="11" rx="5.5" fill="white"/><path d="M36 48 L16 78 Q11 89 22 91 L78 91 Q89 89 84 78 L64 48 Z" fill="white"/><path d="M20 74 L16 80 Q11 89 22 91 L78 91 Q89 89 84 80 L80 74 Z" fill="#93C5FD"/><circle cx="32" cy="83" r="4.5" fill="white" opacity="0.5"/><circle cx="50" cy="80" r="3.5" fill="white" opacity="0.45"/><circle cx="66" cy="84" r="4" fill="white" opacity="0.4"/><text x="50" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="26" font-weight="bold" fill="#2563EB">5</text><rect x="41" y="14" width="8" height="28" rx="4" fill="white" opacity="0.25"/></svg></div>
+    <span class="logo-name">Cram<span>Lab</span></span>
+  </a>
+  <div class="nav-r">
+    <a href="calculator.html" class="nav-a" >Calculators</a><a href="about.html" class="nav-a" >About</a><a href="contact.html" class="nav-a" >Contact</a>
+    <div class="nav-lo" id="nav-lo">
+      <a href="auth.html" class="nav-btn-signin">Sign In</a>
+      <a href="auth.html#signup" class="nav-btn-signup">Sign Up Free</a>
+    </div>
+    <div class="nav-li" id="nav-li">
+      <a href="account.html" class="nav-avatar" id="nav-av" title="My Account">?</a>
+    </div>
+  </div>
+</nav>
+<div class="hero">
+  <h1>Privacy Policy</h1>
+  <p>We keep this simple. Here's exactly what we collect, why, and what we do with it.</p>
+</div>
+<div class="content">
+  <div class="updated">Last updated: January 2025</div>
+  <p class="intro-p">CramLab is committed to protecting your privacy. This policy explains what information we collect when you use CramLab, how we use it, and your rights around it.</p>
+
+  <div class="sec"><div class="pol">
+    <h3>1. What we collect</h3>
+    <p><strong>Without an account:</strong> We collect nothing. No cookies, no tracking, no stored data.</p>
+    <p><strong>With an account:</strong> We collect your name, email address, and calculator scores (so we can save your progress). We also collect basic usage data (which subjects you use) so we can improve the site.</p>
+    <p><strong>Google sign-in:</strong> We receive your Google display name and email only. We never receive your password or any other Google account data.</p>
+  </div></div>
+
+  <div class="sec"><div class="pol">
+    <h3>2. How we use your data</h3>
+    <ul>
+      <li>To save your calculator scores so you can pick up where you left off</li>
+      <li>To understand which subjects are used most, so we can prioritize what to build next</li>
+      <li>To send account emails (password reset, etc.) — we do not send marketing emails</li>
+    </ul>
+    <p>We do not sell your data. We do not share it with advertisers or third parties for marketing.</p>
+  </div></div>
+
+  <div class="sec"><div class="pol">
+    <h3>3. How we store your data</h3>
+    <p>Your account and scores are stored securely using <strong>Google Firebase</strong>. Data is encrypted in transit and at rest. Firebase security rules ensure only you can read or write your own data.</p>
+  </div></div>
+
+  <div class="sec"><div class="pol">
+    <h3>4. Advertising</h3>
+    <p>CramLab is currently ad-free. When we launch publicly, we may display ads through Google AdSense. If we do, Google may use cookies to show relevant ads. You can opt out at <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>. We will update this policy before any advertising is enabled.</p>
+  </div></div>
+
+  <div class="sec"><div class="pol">
+    <h3>5. Your rights</h3>
+    <ul>
+      <li><strong>Access:</strong> View all your data in Account settings</li>
+      <li><strong>Deletion:</strong> Delete your account and all data from the Account page — permanent and immediate</li>
+      <li><strong>Correction:</strong> Update your name and email in Account settings</li>
+    </ul>
+  </div></div>
+
+  <div class="sec"><div class="pol">
+    <h3>6. Children's privacy</h3>
+    <p>CramLab is designed for high school students. We do not knowingly collect information from children under 13. If you believe a child under 13 has created an account, please <a href="contact.html">contact us</a> and we'll delete it promptly.</p>
+  </div></div>
+
+  <div class="sec"><div class="pol">
+    <h3>7. Contact</h3>
+    <p>Questions? <a href="contact.html">Contact us</a> and we'll respond promptly.</p>
+  </div></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board or AP®.</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html">Sign In</a></li>
+      <li><a href="auth.html#signup">Sign Up</a></li>
+    </ul>
+  </div>
+</footer>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { firebaseConfig } from "./firebase-config.js";
+  const auth = getAuth(initializeApp(firebaseConfig));
+  onAuthStateChanged(auth, u => {
+    const lo=document.getElementById('nav-lo'), li=document.getElementById('nav-li'), av=document.getElementById('nav-av');
+    if(u){ if(lo)lo.style.display='none'; if(li)li.style.display='flex'; if(av)av.textContent=(u.displayName||u.email)[0].toUpperCase(); }
+    else{ if(lo)lo.style.display='flex'; if(li)li.style.display='none'; }
+  });
+</script>
+</body>
+</html>

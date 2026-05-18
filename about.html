@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue-50:#EFF6FF;--blue-100:#DBEAFE;--blue-600:#2563EB;--blue-700:#1D4ED8;
+      --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;--gray-300:#D1D5DB;
+      --gray-400:#9CA3AF;--gray-500:#6B7280;--gray-700:#374151;--gray-900:#111827;
+      --white:#fff;--shadow-sm:0 1px 3px rgba(0,0,0,.07);--shadow-md:0 4px 14px rgba(0,0,0,.08);
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--gray-900);
+         -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    /* NAV */
+    nav{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid var(--gray-200);
+        height:58px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;
+        box-shadow:var(--shadow-sm)}
+    .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--blue-600);border-radius:8px;
+               display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-mark svg{width:22px;height:22px}
+    .logo-name{font-size:16px;font-weight:700;color:var(--gray-900)}
+    .logo-name span{color:var(--blue-600)}
+    .nav-r{display:flex;align-items:center;gap:8px}
+    .nav-a{font-size:13px;font-weight:500;color:var(--gray-600);text-decoration:none;
+           padding:5px 10px;border-radius:6px;transition:background .15s}
+    .nav-a:hover{background:var(--gray-100);color:var(--gray-900)}
+    .nav-btn-signup{font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;
+                    background:var(--blue-600);color:#fff;text-decoration:none}
+    .nav-btn-signup:hover{background:var(--blue-700)}
+    .nav-btn-signin{font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;
+                    border:1.5px solid var(--gray-300);background:#fff;color:var(--gray-700);
+                    text-decoration:none}
+    .nav-btn-signin:hover{background:var(--gray-50)}
+    .nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-600);
+                color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;
+                justify-content:center;text-decoration:none}
+    .nav-lo{display:flex;align-items:center;gap:6px}
+    .nav-li{display:none;align-items:center;gap:8px}
+    /* FOOTER */
+    footer{border-top:1px solid var(--gray-200);background:#fff;padding:28px 5%;margin-top:auto}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;
+                  justify-content:space-between;flex-wrap:wrap;gap:14px}
+    .footer-copy{font-size:12px;color:var(--gray-400)}
+    .footer-links{display:flex;gap:20px;list-style:none;flex-wrap:wrap}
+    .footer-links a{font-size:12px;color:var(--gray-400);text-decoration:none;transition:color .2s}
+    .footer-links a:hover{color:var(--gray-700)}
+
+    .hero{background:var(--blue-600);padding:56px 5% 64px;text-align:center}
+    .hero h1{font-family:'Instrument Serif',serif;font-size:clamp(28px,5vw,44px);font-weight:400;color:#fff;margin-bottom:12px;line-height:1.2}
+    .hero p{font-size:16px;color:rgba(255,255,255,.82);max-width:520px;margin:0 auto;line-height:1.7}
+    .content{max-width:740px;margin:0 auto;padding:52px 5% 72px;flex:1}
+    .sec{margin-bottom:48px}
+    .sec h2{font-family:'Instrument Serif',serif;font-size:24px;font-weight:400;color:var(--gray-900);margin-bottom:12px}
+    .sec p{font-size:15px;color:var(--gray-700);line-height:1.75;margin-bottom:10px}
+    .sec p:last-child{margin-bottom:0}
+    .sec a{color:var(--blue-600);font-weight:600;text-decoration:none}
+    .sec a:hover{text-decoration:underline}
+    .values{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;margin-top:10px}
+    .v-card{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:20px;box-shadow:var(--shadow-sm)}
+    .v-icon{font-size:22px;margin-bottom:9px}
+    .v-title{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:5px}
+    .v-desc{font-size:13px;color:var(--gray-500);line-height:1.5}
+    .team-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:24px;
+               display:flex;align-items:flex-start;gap:18px;box-shadow:var(--shadow-sm)}
+    .team-av{width:52px;height:52px;border-radius:50%;background:var(--blue-600);color:#fff;
+             font-family:'Instrument Serif',serif;font-size:22px;display:flex;align-items:center;
+             justify-content:center;flex-shrink:0}
+    .team-name{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:3px}
+    .team-role{font-size:12px;color:var(--blue-600);font-weight:600;margin-bottom:8px}
+    .team-bio{font-size:13px;color:var(--gray-500);line-height:1.6}
+    .timeline{list-style:none;border-left:2px solid var(--blue-100);padding-left:20px;
+              display:flex;flex-direction:column;gap:16px}
+    .timeline li{position:relative}
+    .timeline li::before{content:'';position:absolute;left:-26px;top:5px;width:10px;height:10px;
+                         border-radius:50%;background:var(--blue-600);border:2px solid #fff;
+                         box-shadow:0 0 0 2px var(--blue-100)}
+    .tl-t{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:3px}
+    .tl-d{font-size:13px;color:var(--gray-500);line-height:1.5}
+    .cta-box{background:var(--blue-600);border-radius:14px;padding:36px;text-align:center}
+    .cta-box h3{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;color:#fff;margin-bottom:8px}
+    .cta-box p{font-size:14px;color:rgba(255,255,255,.75);margin-bottom:20px}
+    .btn-white{background:#fff;color:var(--blue-600);padding:10px 22px;border-radius:8px;
+               font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+    .btn-white:hover{opacity:.9}
+    @media(max-width:500px){.team-card{flex-direction:column}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 100 100" fill="none"><rect x="38" y="10" width="24" height="38" rx="5" fill="white"/><rect x="32" y="8" width="36" height="11" rx="5.5" fill="white"/><path d="M36 48 L16 78 Q11 89 22 91 L78 91 Q89 89 84 78 L64 48 Z" fill="white"/><path d="M20 74 L16 80 Q11 89 22 91 L78 91 Q89 89 84 80 L80 74 Z" fill="#93C5FD"/><circle cx="32" cy="83" r="4.5" fill="white" opacity="0.5"/><circle cx="50" cy="80" r="3.5" fill="white" opacity="0.45"/><circle cx="66" cy="84" r="4" fill="white" opacity="0.4"/><text x="50" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="26" font-weight="bold" fill="#2563EB">5</text><rect x="41" y="14" width="8" height="28" rx="4" fill="white" opacity="0.25"/></svg></div>
+    <span class="logo-name">Cram<span>Lab</span></span>
+  </a>
+  <div class="nav-r">
+    <a href="calculator.html" class="nav-a" >Calculators</a><a href="about.html" class="nav-a" style=color:var(--blue-600);font-weight:700>About</a><a href="contact.html" class="nav-a" >Contact</a>
+    <div class="nav-lo" id="nav-lo">
+      <a href="auth.html" class="nav-btn-signin">Sign In</a>
+      <a href="auth.html#signup" class="nav-btn-signup">Sign Up Free</a>
+    </div>
+    <div class="nav-li" id="nav-li">
+      <a href="account.html" class="nav-avatar" id="nav-av" title="My Account">?</a>
+    </div>
+  </div>
+</nav>
+<div class="hero">
+  <h1>Built for students,<br><em>by students.</em></h1>
+  <p>AP prep shouldn't cost $30 a month. Every tool on CramLab is free — and always will be.</p>
+</div>
+<div class="content">
+  <div class="sec">
+    <h2>Why we built this</h2>
+    <p>AP exams are high-stakes. A 4 or 5 can mean thousands of dollars in college credit saved — but knowing <em>how close</em> you are to that score has always been a guessing game. Tools that actually help are locked behind $30/month paywalls.</p>
+    <p>CramLab flips that. We built accurate score calculators using real College Board composite scoring weights, combined with 2024 national distribution data so you can see exactly where you stand. All of it free, no account required.</p>
+    <p>We're a small team building fast — the core calculator works right now for any student who needs it, and practice tests are next.</p>
+  </div>
+  <div class="sec">
+    <h2>What we stand for</h2>
+    <div class="values">
+      <div class="v-card"><div class="v-icon">🆓</div><div class="v-title">Free forever</div><div class="v-desc">Core tools will never require a credit card, trial, or subscription.</div></div>
+      <div class="v-card"><div class="v-icon">🎯</div><div class="v-title">Actually accurate</div><div class="v-desc">Real College Board formulas and 2024 national data — not approximations.</div></div>
+      <div class="v-card"><div class="v-icon">📱</div><div class="v-title">Works anywhere</div><div class="v-desc">Phone, tablet, or laptop — built for wherever students actually study.</div></div>
+      <div class="v-card"><div class="v-icon">🚀</div><div class="v-title">Always improving</div><div class="v-desc">Practice tests, more subjects, and smarter tools are actively in development.</div></div>
+    </div>
+  </div>
+  <div class="sec">
+    <h2>The team</h2>
+    <div class="team-card">
+      <div class="team-av">C</div>
+      <div>
+        <div class="team-name">The CramLab Team</div>
+        <div class="team-role">Founders</div>
+        <div class="team-bio">We built CramLab because we went through the AP grind and knew there had to be a better way. We're students and builders who believe great study tools shouldn't require a subscription. Practice tests, more subjects, and smarter score predictions are all coming — and we'd love your feedback along the way.</div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <h2>What's coming</h2>
+    <ul class="timeline">
+      <li><div class="tl-t">✅ Score Calculators — 17 subjects live</div><div class="tl-d">Real scoring formulas, 2024 distribution data, expert tips for every section.</div></li>
+      <li><div class="tl-t">🔄 Practice Tests — In development</div><div class="tl-d">Full-length, timed AP practice exams with instant scoring and feedback.</div></li>
+      <li><div class="tl-t">📖 Study Guides — Planned</div><div class="tl-d">Concise, grader-focused content for every topic on every AP exam.</div></li>
+      <li><div class="tl-t">📊 Score Tracking — Planned</div><div class="tl-d">Track progress over time across multiple subjects and practice attempts.</div></li>
+    </ul>
+    <p style="margin-top:16px">Have a subject you want prioritized? <a href="contact.html">Tell us.</a></p>
+  </div>
+  <div class="cta-box">
+    <h3>Ready to find your score?</h3>
+    <p>Pick a subject and get your predicted AP score in under 5 minutes. No account required.</p>
+    <a href="calculator.html" class="btn-white">Open the Calculator →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board or AP®.</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html">Sign In</a></li>
+      <li><a href="auth.html#signup">Sign Up</a></li>
+    </ul>
+  </div>
+</footer>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { firebaseConfig } from "./firebase-config.js";
+  const auth = getAuth(initializeApp(firebaseConfig));
+  onAuthStateChanged(auth, u => {
+    const lo=document.getElementById('nav-lo'), li=document.getElementById('nav-li'), av=document.getElementById('nav-av');
+    if(u){ if(lo)lo.style.display='none'; if(li)li.style.display='flex'; if(av)av.textContent=(u.displayName||u.email)[0].toUpperCase(); }
+    else{ if(lo)lo.style.display='flex'; if(li)li.style.display='none'; }
+  });
+</script>
+</body>
+</html>

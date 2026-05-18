@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CramLab — Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue-50:#EFF6FF;--blue-100:#DBEAFE;--blue-600:#2563EB;--blue-700:#1D4ED8;
+      --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;--gray-300:#D1D5DB;
+      --gray-400:#9CA3AF;--gray-500:#6B7280;--gray-700:#374151;--gray-900:#111827;
+      --white:#fff;--shadow-sm:0 1px 3px rgba(0,0,0,.07);--shadow-md:0 4px 14px rgba(0,0,0,.08);
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--gray-900);
+         -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    /* NAV */
+    nav{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid var(--gray-200);
+        height:58px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;
+        box-shadow:var(--shadow-sm)}
+    .logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--blue-600);border-radius:8px;
+               display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-mark svg{width:22px;height:22px}
+    .logo-name{font-size:16px;font-weight:700;color:var(--gray-900)}
+    .logo-name span{color:var(--blue-600)}
+    .nav-r{display:flex;align-items:center;gap:8px}
+    .nav-a{font-size:13px;font-weight:500;color:var(--gray-600);text-decoration:none;
+           padding:5px 10px;border-radius:6px;transition:background .15s}
+    .nav-a:hover{background:var(--gray-100);color:var(--gray-900)}
+    .nav-btn-signup{font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;
+                    background:var(--blue-600);color:#fff;text-decoration:none}
+    .nav-btn-signup:hover{background:var(--blue-700)}
+    .nav-btn-signin{font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;
+                    border:1.5px solid var(--gray-300);background:#fff;color:var(--gray-700);
+                    text-decoration:none}
+    .nav-btn-signin:hover{background:var(--gray-50)}
+    .nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-600);
+                color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;
+                justify-content:center;text-decoration:none}
+    .nav-lo{display:flex;align-items:center;gap:6px}
+    .nav-li{display:none;align-items:center;gap:8px}
+    /* FOOTER */
+    footer{border-top:1px solid var(--gray-200);background:#fff;padding:28px 5%;margin-top:auto}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;
+                  justify-content:space-between;flex-wrap:wrap;gap:14px}
+    .footer-copy{font-size:12px;color:var(--gray-400)}
+    .footer-links{display:flex;gap:20px;list-style:none;flex-wrap:wrap}
+    .footer-links a{font-size:12px;color:var(--gray-400);text-decoration:none;transition:color .2s}
+    .footer-links a:hover{color:var(--gray-700)}
+
+    .hero{background:var(--blue-600);padding:48px 5% 56px;text-align:center}
+    .hero h1{font-family:'Instrument Serif',serif;font-size:clamp(26px,4vw,38px);font-weight:400;color:#fff;margin-bottom:10px}
+    .hero p{font-size:15px;color:rgba(255,255,255,.8);max-width:480px;margin:0 auto;line-height:1.6}
+    .content{max-width:740px;margin:0 auto;padding:44px 5% 72px;flex:1}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+    .c-card{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:22px;
+            box-shadow:var(--shadow-sm);text-align:center}
+    .c-card .icon{font-size:26px;margin-bottom:9px}
+    .c-card h3{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:5px}
+    .c-card p{font-size:13px;color:var(--gray-500);line-height:1.5;margin-bottom:9px}
+    .c-card a{font-size:13px;font-weight:600;color:var(--blue-600);text-decoration:none}
+    .form-card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:28px;
+               box-shadow:var(--shadow-sm)}
+    .form-card h2{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;color:var(--gray-900);margin-bottom:6px}
+    .form-card>p{font-size:14px;color:var(--gray-500);margin-bottom:20px}
+    .fg{margin-bottom:14px}
+    .fg label{display:block;font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:4px}
+    .fg input,.fg select,.fg textarea{width:100%;padding:10px 13px;border:1.5px solid var(--gray-200);
+      border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-900);
+      background:#fff;outline:none;transition:border-color .15s;resize:vertical}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue-600);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .submit-btn{width:100%;padding:12px;background:var(--blue-600);color:#fff;border:none;
+                border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+                cursor:pointer;transition:background .15s}
+    .submit-btn:hover{background:var(--blue-700)}
+    .success-msg{display:none;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;
+                 padding:14px;text-align:center;color:#15803D;font-weight:600;font-size:14px;margin-top:14px}
+    .success-msg.show{display:block}
+    .faq{margin-top:44px}
+    .faq h2{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;color:var(--gray-900);margin-bottom:14px}
+    .faq-item{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:16px 20px;
+              margin-bottom:8px;box-shadow:var(--shadow-sm)}
+    .faq-q{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:6px}
+    .faq-a{font-size:13px;color:var(--gray-500);line-height:1.6}
+    @media(max-width:560px){.contact-grid,.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 100 100" fill="none"><rect x="38" y="10" width="24" height="38" rx="5" fill="white"/><rect x="32" y="8" width="36" height="11" rx="5.5" fill="white"/><path d="M36 48 L16 78 Q11 89 22 91 L78 91 Q89 89 84 78 L64 48 Z" fill="white"/><path d="M20 74 L16 80 Q11 89 22 91 L78 91 Q89 89 84 80 L80 74 Z" fill="#93C5FD"/><circle cx="32" cy="83" r="4.5" fill="white" opacity="0.5"/><circle cx="50" cy="80" r="3.5" fill="white" opacity="0.45"/><circle cx="66" cy="84" r="4" fill="white" opacity="0.4"/><text x="50" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="26" font-weight="bold" fill="#2563EB">5</text><rect x="41" y="14" width="8" height="28" rx="4" fill="white" opacity="0.25"/></svg></div>
+    <span class="logo-name">Cram<span>Lab</span></span>
+  </a>
+  <div class="nav-r">
+    <a href="calculator.html" class="nav-a" >Calculators</a><a href="about.html" class="nav-a" >About</a><a href="contact.html" class="nav-a" style=color:var(--blue-600);font-weight:700>Contact</a>
+    <div class="nav-lo" id="nav-lo">
+      <a href="auth.html" class="nav-btn-signin">Sign In</a>
+      <a href="auth.html#signup" class="nav-btn-signup">Sign Up Free</a>
+    </div>
+    <div class="nav-li" id="nav-li">
+      <a href="account.html" class="nav-avatar" id="nav-av" title="My Account">?</a>
+    </div>
+  </div>
+</nav>
+<div class="hero">
+  <h1>Get in touch</h1>
+  <p>Questions, feedback, bug reports, subject requests — we read everything and respond fast.</p>
+</div>
+<div class="content">
+  <div class="contact-grid">
+    <div class="c-card"><div class="icon">🐛</div><h3>Found a bug?</h3><p>Something not working right? Let us know and we'll fix it fast.</p><a href="mailto:hello@cramlab.com">hello@cramlab.com</a></div>
+    <div class="c-card"><div class="icon">💡</div><h3>Feature request?</h3><p>Want a subject added or a feature built? Your input shapes what we build next.</p><a href="mailto:hello@cramlab.com">hello@cramlab.com</a></div>
+  </div>
+
+  <div class="form-card">
+    <h2>Send us a message</h2>
+    <p>Fill out the form and we'll get back to you within 24 hours.</p>
+    <div class="form-row">
+      <div class="fg"><label for="cn">Name</label><input type="text" id="cn" placeholder="Your name"></div>
+      <div class="fg"><label for="ce">Email</label><input type="email" id="ce" placeholder="you@example.com"></div>
+    </div>
+    <div class="fg">
+      <label for="ct">What's this about?</label>
+      <select id="ct">
+        <option value="">Select a topic…</option>
+        <option value="bug">Bug report</option>
+        <option value="feature">Feature request / new subject</option>
+        <option value="score">Question about a score calculation</option>
+        <option value="account">Account issue</option>
+        <option value="other">Something else</option>
+      </select>
+    </div>
+    <div class="fg"><label for="cm">Message</label><textarea id="cm" rows="5" placeholder="Tell us what's on your mind…"></textarea></div>
+    <button class="submit-btn" onclick="sendMsg()">Send Message</button>
+    <div class="success-msg" id="succ">✓ Message sent! We'll get back to you within 24 hours.</div>
+  </div>
+
+  <div class="faq">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item"><div class="faq-q">Are the score predictions accurate?</div><div class="faq-a">Our calculators use real College Board composite scoring weights and published 2024 exam data. They're close approximations — the College Board doesn't publish exact raw-to-scaled conversion tables, so there's a small margin of uncertainty. Think of it as a reliable estimate, not a guarantee.</div></div>
+    <div class="faq-item"><div class="faq-q">Is CramLab really free?</div><div class="faq-a">Yes — all score calculators are free and will always be free. We may add an optional premium tier for practice tests in the future, but the core tools stay free.</div></div>
+    <div class="faq-item"><div class="faq-q">When are practice tests coming?</div><div class="faq-a">Practice tests are our top priority after the calculator launch. Create a free account and you'll be among the first to know when they go live.</div></div>
+    <div class="faq-item"><div class="faq-q">Can you add [subject]?</div><div class="faq-a">Probably! Use the form above to request a subject — requests directly influence what we build next.</div></div>
+    <div class="faq-item"><div class="faq-q">Is CramLab affiliated with the College Board?</div><div class="faq-a">No. CramLab is an independent student tool. "AP" and "Advanced Placement" are registered trademarks of the College Board, which does not endorse this site.</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board or AP®.</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html">Sign In</a></li>
+      <li><a href="auth.html#signup">Sign Up</a></li>
+    </ul>
+  </div>
+</footer>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { firebaseConfig } from "./firebase-config.js";
+  const auth = getAuth(initializeApp(firebaseConfig));
+  onAuthStateChanged(auth, u => {
+    const lo=document.getElementById('nav-lo'),li=document.getElementById('nav-li'),av=document.getElementById('nav-av');
+    if(u){if(lo)lo.style.display='none';if(li)li.style.display='flex';if(av)av.textContent=(u.displayName||u.email)[0].toUpperCase();}
+    else{if(lo)lo.style.display='flex';if(li)li.style.display='none';}
+  });
+  window.sendMsg = function() {
+    const name=document.getElementById('cn').value.trim();
+    const email=document.getElementById('ce').value.trim();
+    const type=document.getElementById('ct').value;
+    const msg=document.getElementById('cm').value.trim();
+    if(!name||!email||!msg){alert('Please fill in your name, email, and message.');return;}
+    const sub=encodeURIComponent('CramLab: '+(type||'Message'));
+    const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+msg);
+    window.location.href='mailto:hello@cramlab.com?subject='+sub+'&body='+body;
+    document.getElementById('succ').classList.add('show');
+  };
+</script>
+</body>
+</html>

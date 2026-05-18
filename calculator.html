@@ -144,6 +144,15 @@
       .sb-grid { display:flex; flex-wrap:wrap; gap:4px; }
       .sb { flex:1; min-width:100px; justify-content:center; font-size:12px; padding:6px 8px; }
     }
+  
+    footer { border-top:1px solid var(--gray-200); background:#fff; padding:28px 5%; margin-top:auto; }
+    .footer-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+    .footer-copy { font-size:12px; color:var(--gray-400); }
+    .footer-links { display:flex; gap:20px; list-style:none; flex-wrap:wrap; }
+    .footer-links a { font-size:12px; color:var(--gray-400); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--gray-700); }
+  
+    .sg-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);padding:0 4px;margin:14px 0 5px;display:block}.sg-label:first-child{margin-top:0}
   </style>
 </head>
 <body>
@@ -169,26 +178,48 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sg-label">Subjects</div>
+
+    <div class="sg-label">📐 Math</div>
     <div class="sb-grid">
-      <button class="sb active" id="sb-calc"   onclick="go('calc')"><span class="sb-em">📐</span>Calculus AB</button>
-      <button class="sb"        id="sb-calcbc" onclick="go('calcbc')"><span class="sb-em">🧮</span>Calculus BC</button>
-      <button class="sb"        id="sb-eng"    onclick="go('eng')"><span class="sb-em">✍️</span>English Lang</button>
-      <button class="sb"        id="sb-englit" onclick="go('englit')"><span class="sb-em">📖</span>English Lit</button>
-      <button class="sb"        id="sb-ush"    onclick="go('ush')"><span class="sb-em">🏛️</span>US History</button>
-      <button class="sb"        id="sb-euro"   onclick="go('euro')"><span class="sb-em">🇪🇺</span>Euro History</button>
-      <button class="sb"        id="sb-world"  onclick="go('world')"><span class="sb-em">🌍</span>World History</button>
-      <button class="sb"        id="sb-gov"    onclick="go('gov')"><span class="sb-em">⚖️</span>Gov & Politics</button>
-      <button class="sb"        id="sb-bio"    onclick="go('bio')"><span class="sb-em">🧬</span>Biology</button>
-      <button class="sb"        id="sb-chem"   onclick="go('chem')"><span class="sb-em">⚗️</span>Chemistry</button>
-      <button class="sb"        id="sb-phys1"  onclick="go('phys1')"><span class="sb-em">⚡</span>Physics 1</button>
-      <button class="sb"        id="sb-psych"  onclick="go('psych')"><span class="sb-em">🧠</span>Psychology</button>
-      <button class="sb"        id="sb-stats"  onclick="go('stats')"><span class="sb-em">📊</span>Statistics</button>
-      <button class="sb"        id="sb-macro"  onclick="go('macro')"><span class="sb-em">📈</span>Macroeconomics</button>
-      <button class="sb"        id="sb-micro"  onclick="go('micro')"><span class="sb-em">💹</span>Microeconomics</button>
-      <button class="sb"        id="sb-hug"    onclick="go('hug')"><span class="sb-em">🗺️</span>Human Geo</button>
-      <button class="sb"        id="sb-csp"    onclick="go('csp')"><span class="sb-em">💻</span>CS Principles</button>
+      <button class="sb active" id="sb-calc"   onclick="go('calc')" class="sb active"><span class="sb-em">📐</span>Calculus AB</button>
+      <button class="sb" id="sb-calcbc" onclick="go('calcbc')"><span class="sb-em">🧮</span>Calculus BC</button>
+      <button class="sb" id="sb-stats"  onclick="go('stats')"><span class="sb-em">📊</span>Statistics</button>
     </div>
+
+    <div class="sg-label">🔬 Science</div>
+    <div class="sb-grid">
+      <button class="sb" id="sb-bio"   onclick="go('bio')"><span class="sb-em">🧬</span>Biology</button>
+      <button class="sb" id="sb-chem"  onclick="go('chem')"><span class="sb-em">⚗️</span>Chemistry</button>
+      <button class="sb" id="sb-phys1" onclick="go('phys1')"><span class="sb-em">⚡</span>Physics 1</button>
+    </div>
+
+    <div class="sg-label">📖 English</div>
+    <div class="sb-grid">
+      <button class="sb" id="sb-eng"    onclick="go('eng')"><span class="sb-em">✍️</span>English Lang</button>
+      <button class="sb" id="sb-englit" onclick="go('englit')"><span class="sb-em">📖</span>English Lit</button>
+    </div>
+
+    <div class="sg-label">🏛️ History & Social Studies</div>
+    <div class="sb-grid">
+      <button class="sb" id="sb-ush"   onclick="go('ush')"><span class="sb-em">🏛️</span>US History</button>
+      <button class="sb" id="sb-euro"  onclick="go('euro')"><span class="sb-em">🇪🇺</span>Euro History</button>
+      <button class="sb" id="sb-world" onclick="go('world')"><span class="sb-em">🌍</span>World History</button>
+      <button class="sb" id="sb-gov"   onclick="go('gov')"><span class="sb-em">⚖️</span>Gov & Politics</button>
+      <button class="sb" id="sb-hug"   onclick="go('hug')"><span class="sb-em">🗺️</span>Human Geo</button>
+    </div>
+
+    <div class="sg-label">💡 Social Science</div>
+    <div class="sb-grid">
+      <button class="sb" id="sb-psych" onclick="go('psych')"><span class="sb-em">🧠</span>Psychology</button>
+      <button class="sb" id="sb-macro" onclick="go('macro')"><span class="sb-em">📈</span>Macroeconomics</button>
+      <button class="sb" id="sb-micro" onclick="go('micro')"><span class="sb-em">💹</span>Microeconomics</button>
+    </div>
+
+    <div class="sg-label">💻 Computer Science</div>
+    <div class="sb-grid">
+      <button class="sb" id="sb-csp" onclick="go('csp')"><span class="sb-em">💻</span>CS Principles</button>
+    </div>
+
   </aside>
 
   <main>
@@ -489,5 +520,18 @@
 
   Object.values(scores).forEach(fn => fn());
 </script>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 CramLab. Not affiliated with the College Board or AP®.</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html">Sign In</a></li>
+      <li><a href="auth.html#signup">Sign Up</a></li>
+    </ul>
+  </div>
+</footer>
 </body>
 </html>
